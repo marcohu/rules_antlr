@@ -115,7 +115,7 @@ Runs ANTLR 4 on the given grammar files.
 <a name="antlr4_args"></a>
 ### Attributes
 
-[](ANTLR4 START)
+[](ANTLR4START)
 <table class="params-table">
   <colgroup>
     <col class="col-param" />
@@ -259,7 +259,7 @@ Java, Python2, Python3 or Swift (case-sensitive).</p>
     </tr>
   </tbody>
 </table>
-[](ANTLR4 END)
+[](ANTLR4END)
 
 
 <a name="antlr3"></a>
@@ -276,7 +276,7 @@ antlr3(name, deps=[], srcs=[], debug, depend, dfa, dump, imports=[],
 
 Runs ANTLR 3 on the given grammar files.
 
-[](ANTLR3 START)
+[](ANTLR3START)
 <table class="params-table">
   <colgroup>
     <col class="col-param" />
@@ -484,7 +484,7 @@ enough, you can override the traceIn and traceOut methods.</p>
     </tr>
   </tbody>
 </table>
-[](ANTLR3 END)
+[](ANTLR3END)
 
 
 <a name="antlr2"></a>
@@ -497,7 +497,7 @@ antlr2(name, deps=[], srcs=[], debug, diagnostic, docbook, html,
 
 Runs ANTLR 2 on the given grammar files.
 
-[](ANTLR2 START)
+[](ANTLR2START)
 <table class="params-table">
   <colgroup>
     <col class="col-param" />
@@ -596,4 +596,4 @@ works for parsers, not lexers or tree parsers.</p>
     </tr>
   </tbody>
 </table>
-[](ANTLR2 END)
+[](ANTLR2END)
