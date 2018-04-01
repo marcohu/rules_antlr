@@ -194,6 +194,14 @@ you need to use a different version, you can specify the dependencies here.</p>
 Java, Python2, Python3 or Swift (case-sensitive).</p>
       </td>
     </tr>
+    <tr id="antlr4.layout">
+      <td><code>layout</code></td>
+      <td>
+        <p><code>String; Optional; Default is ''</code></p>
+        <p>The directory layout to match file paths against for package/namespace
+detection by convention. The default depends on the target language.</p>
+      </td>
+    </tr>
     <tr id="antlr4.listener">
       <td><code>listener</code></td>
       <td>
@@ -593,7 +601,7 @@ works for parsers, not lexers or tree parsers.</p>
       <td><code>traceTreeParser</code></td>
       <td>
         <p><code>Boolean; Optional; Default is False</code></p>
-        <p>Jave tree walker rules call traceIn/traceOut.</p>
+        <p>Have tree walker rules call traceIn/traceOut.</p>
       </td>
     </tr>
   </tbody>
