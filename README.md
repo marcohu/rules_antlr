@@ -302,7 +302,7 @@ Runs ANTLR 3 on the given grammar files.
     <tr id="antlr3.deps">
       <td><code>deps</code></td>
       <td>
-        <p><code>List of <a href="https://bazel.build/docs/build-ref.html#labels">labels</a>; Optional; Default is ['@antlr3_runtime//jar']</code></p>
+        <p><code>List of <a href="https://bazel.build/docs/build-ref.html#labels">labels</a>; Optional; Default is ['@antlr3_runtime//jar', '@antlr3_tool//jar', '@stringtemplate4//jar']</code></p>
         <p>The dependencies to use. Defaults to the most recent ANTLR 3 release,
 but if you need to use a different version, you can specify the
 dependencies here.</p>
@@ -458,7 +458,7 @@ dependencies here.</p>
     <tr id="antlr3.message_format">
       <td><code>message_format</code></td>
       <td>
-        <p><code>String; Optional; Default is 'antlr'</code></p>
+        <p><code>String; Optional; Default is ''</code></p>
         <p>Specify output style for messages.</p>
       </td>
     </tr>
