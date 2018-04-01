@@ -259,6 +259,7 @@ Java, Python2, Python3 or Swift (case-sensitive).</p>
     </tr>
   </tbody>
 </table>
+
 [](ANTLR4END)
 
 
@@ -484,6 +485,7 @@ enough, you can override the traceIn and traceOut methods.</p>
     </tr>
   </tbody>
 </table>
+
 [](ANTLR3END)
 
 
@@ -596,4 +598,6 @@ works for parsers, not lexers or tree parsers.</p>
     </tr>
   </tbody>
 </table>
+
 [](ANTLR2END)
+
