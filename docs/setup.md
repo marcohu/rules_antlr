@@ -1,6 +1,6 @@
 # Setup
 
-To enable *antlr_rules*, add the following to your `WORKSPACE` file to include
+To use the ANTLR rules, add the following to your `WORKSPACE` file to include
 the external repository, replacing the version number in the `tag` attribute
 with the version of the rules you wish to depend on:
 
@@ -37,7 +37,7 @@ load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 
 antlr_dependencies(2, 3, 4)
 ```
-But be careful when updating to a new *antlr_rules* version as these dependencies
+But be careful when updating to a new ANTLR rules version as these dependencies
 might change. Alternatively you can pull the necessary dependencies yourself to
 avoid coupling. For ANTLR 4.7.1:
 
@@ -75,7 +75,7 @@ default dependency names. You are not required to use these exact names. But if 
 invocation.
 
 
-As a convenience there is also a shortcut for the ["optimized fork"](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
+As a convenience there is also a shortcut for the ["optimized" fork](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr4_optimized_dependencies")
