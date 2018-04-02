@@ -111,7 +111,7 @@ Depending on the ANTLR version, there are three ways to control namespacing and 
 
 ### Common Project Directories
 
-The [`antlr4`](#antrl4) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
+The [`antlr4`](#antlr4) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
 
 | Language                 | Default Directory<span style="display:inline-block;width:4em"/>|
 |--------------------------|------------------|
