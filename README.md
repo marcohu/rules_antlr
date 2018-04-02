@@ -113,16 +113,16 @@ Depending on the ANTLR version, there are three ways to control namespacing and 
 
 The [`antlr4`](#antrl4) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
 
-| Language | Default Directory<span style="display:inline-block;width:4em"/>
-|------------|
-| C          | `src/antlr4`
-| Cpp        | `src/antlr4`
-| CSharp, CSharp2, CSharp3 | `src/antlr4`
-| Go         | &nbsp;
-| Java       | `src/main/antlr4`
-| JavaScript | `src/antlr4`
-| Python, Python2, Python3 | `src/antlr4`
-| Swift      | &nbsp;
+| Language                 | Default Directory<span style="display:inline-block;width:4em"/>|
+|--------------------------|------------------|
+| C                        | `src/antlr4`     |
+| Cpp                      | `src/antlr4`     |
+| CSharp, CSharp2, CSharp3 | `src/antlr4`     |
+| Go                       | &nbsp;           |
+| Java                     | `src/main/antlr4`|
+| JavaScript               | `src/antlr4`     |
+| Python, Python2, Python3 | `src/antlr4`     |
+| Swift                    |  &nbsp;          |
 
  For languages with no default, you have to set your preference with the [`layout`](#antlr4.layout) attribute.
 
