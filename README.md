@@ -105,8 +105,8 @@ directory for further samples.
 
 ```python
 antlr4(name, deps=[], srcs=[], atn, depend, encoding, error,
-       force_atn, force_atn, imports=[], language, layout, listener,
-       log, long_messages, message_format, no_listener, no_visitor,
+       force_atn, imports=[], language, layout, listener, log,
+       long_messages, message_format, no_listener, no_visitor,
        options={}, package, visitor)
 ```
 
@@ -189,7 +189,7 @@ you need to use a different version, you can specify the dependencies here.</p>
     <tr id="antlr4.language">
       <td><code>language</code></td>
       <td>
-        <p><code>String; Optional; Default is ''</code></p>
+        <p><code>String; Optional; Default is 'Java'</code></p>
         <p>The code generation target language. Either Cpp, CSharp, Go, JavaScript,
 Java, Python2, Python3 or Swift (case-sensitive).</p>
       </td>
@@ -284,6 +284,9 @@ antlr3(name, deps=[], srcs=[], debug, depend, dfa, dump, imports=[],
 ```
 
 Runs ANTLR 3 on the given grammar files.
+
+<a name="antlr3_args"></a>
+### Attributes
 
 [](ANTLR3START)
 <table class="params-table">
@@ -506,6 +509,9 @@ antlr2(name, deps=[], srcs=[], debug, diagnostic, docbook, html,
 ```
 
 Runs ANTLR 2 on the given grammar files.
+
+<a name="antlr2_args"></a>
+### Attributes
 
 [](ANTLR2START)
 <table class="params-table">
