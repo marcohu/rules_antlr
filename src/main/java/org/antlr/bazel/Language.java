@@ -347,7 +347,7 @@ enum Language
         Pattern.DOTALL);
 
     private static final Pattern HEADER = Pattern.compile(
-        "(?:(?:parser|lexer);;)?@?header.*?\\{(.*?)\\}",
+        "@?(?:(?:parser|lexer)::)?header.*?\\{(.*?)\\}",
         Pattern.DOTALL);
 
     private static final Pattern NAMESPACE = Pattern.compile(
@@ -503,6 +503,11 @@ enum Language
      */
     private static String header(String grammar)
     {
+        Matcher h = HEADER.matcher(grammar);
+        
+        if (h.find())
+            System.out.println(">>" + h.group() + "<<");
+        
         Matcher header = HEADER.matcher(grammar);
 
         return header.find() ? header.group(1) : null;
