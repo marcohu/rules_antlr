@@ -96,6 +96,7 @@ def _generate(ctx):
             "GRAMMARS": ",".join([f.path for f in ctx.files.srcs]),
             "OUTPUT_DIRECTORY": output_dir,
             "PACKAGE_NAME": ctx.attr.package,
+            "DIRECTORY_LAYOUT": ctx.attr.layout,
             "SRC_JAR": srcjar.path,
             "TARGET_LANGUAGE": ctx.attr.language,
             "TOOL_CLASSPATH": ",".join([f.path for f in tool_inputs]),
