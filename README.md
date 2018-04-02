@@ -97,6 +97,35 @@ To just generate the source files you would use:
 Refer to the [examples](https://github.com/marcohu/rules_antlr/tree/master/examples)
 directory for further samples.
 
+## Project Layout
+
+ANTLR rules will store all generated source files in a `target-name.srcjar` zip archive below your workspace [`bazel-bin`](https://docs.bazel.build/versions/master/output_directories.html#documentation-of-the-current-bazel-output-directory-layout) folder.
+Depending on the ANTLR version, there are three ways to control namespacing and directory structure for generated code, all with their pros and cons.
+
+1. The [`package`](#antlr4.package) rule attribute ([`antlr4`](#antlr4) only). Setting the namespace via the [`package`](#antlr4.package) attribute will generate the corresponding target language specific namespacing code (where applicable) and puts the generated source files below a corresponding directory structure. To not create the directory structure, set the [`layout`](#antlr4.layout) attribute to `flat`.<br>Very expressive and allows language independent grammars, but only available with ANTLR 4, requires several runs for different namespaces, might complicate refactoring and can conflict with language specific code in `@header {...}` sections as they are mutually exclusive.
+
+2. Language specific application code in grammar `@header {...}` section. To not create the corresponding directory structure, set the [`layout`](#antlr4.layout) attribute to `flat`.<br>Allows different namespaces to be processed in a single run and will not require changes to build files upon refactoring, but ties grammars to a specific language and can conflict with the [`package`](#antlr4.package) attribute as they are mutually exclusive.
+
+3. The project layout ([`antlr4`](#antlr4) only). Putting your grammars below a common project directory will determine namespace and corresponding directory structure for the generated source files from the relative project path. ANTLR rules uses different defaults for the different target languages (see below), but you can define the root directory yourself via the [`layout`](#antlr4.layout) attribute.<br>Allows different namespaces to be processed in a single run without language coupling, but requires conformity to a specific (albeit configurable) project layout and the [`layout`](#antlr4.layout) attribute for certain languages.
+
+
+### Common Project Directories
+
+The [`antlr4`](#antrl4) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
+
+| Language | Default Directory<span style="display:inline-block;width:4em"/>
+|------------|
+| C          | `src/antlr4`
+| Cpp        | `src/antlr4`
+| CSharp, CSharp2, CSharp3 | `src/antlr4`
+| Go         | &nbsp;
+| Java       | `src/main/antlr4`
+| JavaScript | `src/antlr4`
+| Python, Python2, Python3 | `src/antlr4`
+| Swift      | &nbsp;
+
+ For languages with no default, you have to set your preference with the [`layout`](#antlr4.layout) attribute.
+
 <a name="reference"></a>
 ## Build Rule Reference
 
@@ -614,4 +643,3 @@ works for parsers, not lexers or tree parsers.</p>
 </table>
 
 [](ANTLR2END)
-
