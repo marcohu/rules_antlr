@@ -347,7 +347,7 @@ enum Language
         Pattern.DOTALL);
 
     private static final Pattern HEADER = Pattern.compile(
-        "(?:(?:parser|lexer);;)?@?header.*?\\{(.*?)\\}",
+        "@?(?:(?:parser|lexer)::)?header.*?\\{(.*?)\\}",
         Pattern.DOTALL);
 
     private static final Pattern NAMESPACE = Pattern.compile(
