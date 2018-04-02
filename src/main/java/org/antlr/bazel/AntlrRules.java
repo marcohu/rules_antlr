@@ -211,6 +211,12 @@ public class AntlrRules
                         {
                             Grammar grammar = findGrammar(file, names);
 
+                            // indicates imported file that does not belong in the .srcjar
+                            if (grammar == null)
+                            {
+                                return CONTINUE;
+                            }
+
                             // source files should be stored below their corresponding
                             // package/namespace
                             target = root.resolve(grammar.getNamespacePath().toString())
@@ -315,7 +321,7 @@ public class AntlrRules
 
         $Tool.getDeclaredMethod("process").invoke(tool);
 
-        int errors = (int)$ErrorManager.getDeclaredMethod("getNumErrors").invoke(null);
+        int errors = (int) $ErrorManager.getDeclaredMethod("getNumErrors").invoke(null);
 
         if (errors > 0)
         {
@@ -443,6 +449,11 @@ public class AntlrRules
                 for (String name : grammar.names)
                 {
                     result.put(name, grammar);
+                }
+
+                for (String name : grammar.imports)
+                {
+                    result.put(name, null);
                 }
             }
         }

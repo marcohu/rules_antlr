@@ -15,10 +15,6 @@ import static org.antlr.bazel.Language.*;
 import static org.antlr.bazel.Version.*;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-
-import org.antlr.bazel.Grammar;
-import org.antlr.bazel.Namespace;
-import org.antlr.bazel.Version;
 import org.junit.Test;
 
 
@@ -34,10 +30,58 @@ public class GrammarTest
     {
         try (FileSystem fs = fs(Configuration.unix(), 2))
         {
-            Grammar grammar = grammar(V2, fs.getPath("root/src/main/antlr/Java.g"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("java"), grammar.namespace);
-            assertEquals("java", grammar.getNamespacePath().toString());
+            Grammar g = grammar(V2, fs.getPath("root/src/main/antlr/Java.g"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("java"), g.namespace);
+            assertEquals("java", g.getNamespacePath().toString());
+        }
+    }
+
+
+    @Test
+    public void imports() throws Exception
+    {
+        try (FileSystem fs = fs(Configuration.unix(), 3))
+        {
+            Path f = fs.getPath("test.g");
+            Files.write(f, "grammar Simple;\n".getBytes(StandardCharsets.UTF_8));
+
+            Grammar g = grammar(V3, f);
+            assertEquals(Arrays.asList("").toString(), g.imports.toString());
+
+            Files.write(f, "grammar Simple;\nimport A;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A ;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A,B;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A, B").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A, B;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A, B").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A ,B;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A, B").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A, B;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A, B").toString(), g.imports.toString());
+
+            Files.write(f,
+                "grammar Simple;\nimport A,B,C;".getBytes(StandardCharsets.UTF_8));
+            g = grammar(V3, f);
+            assertEquals(Arrays.asList("A, B, C").toString(), g.imports.toString());
         }
     }
 
@@ -45,7 +89,8 @@ public class GrammarTest
     @Test
     public void names() throws IOException
     {
-        Grammar grammar = grammar(V2, Paths.get("src/test/resources/org/antlr/bazel/data.g"));
+        Grammar grammar = grammar(V2,
+            Paths.get("src/test/resources/org/antlr/bazel/data.g"));
         assertEquals(JAVA, grammar.language);
         assertEquals(Namespace.of("java"), grammar.namespace);
         assertEquals("java", grammar.getNamespacePath().toString());
@@ -53,8 +98,7 @@ public class GrammarTest
             grammar.names.toArray());
         assertEquals("data.g", grammar.toString());
 
-        grammar = grammar(V2,
-            Paths.get("src/test/resources/org/antlr/bazel//subc.g"));
+        grammar = grammar(V2, Paths.get("src/test/resources/org/antlr/bazel//subc.g"));
         assertEquals(JAVA, grammar.language);
         assertEquals(Namespace.of(""), grammar.namespace);
         assertEquals("", grammar.getNamespacePath().toString());
@@ -67,7 +111,8 @@ public class GrammarTest
         assertEquals("", grammar.getNamespacePath().toString());
         assertArrayEquals(Arrays.asList("Lang").toArray(), grammar.names.toArray());
 
-        grammar = grammar(V3, Paths.get("src/test/resources/org/antlr/bazel/LangDumpDecl.g"));
+        grammar = grammar(V3,
+            Paths.get("src/test/resources/org/antlr/bazel/LangDumpDecl.g"));
         assertEquals(C, grammar.language);
         assertEquals(Namespace.of(""), grammar.namespace);
         assertEquals("", grammar.getNamespacePath().toString());
@@ -81,117 +126,114 @@ public class GrammarTest
     {
         try (FileSystem fs = fs(Configuration.unix(), 4))
         {
-            Grammar grammar = grammar(V4, fs.getPath("root/src/main/antlr4/Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of(""), grammar.namespace);
-            assertEquals("", grammar.getNamespacePath().toString());
+            Grammar g = grammar(V4, fs.getPath("root/src/main/antlr4/Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of(""), g.namespace);
+            assertEquals("", g.getNamespacePath().toString());
 
-            grammar = grammar(V4, fs.getPath("root/src/main/antlr4/nested/Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("nested"), grammar.namespace);
-            assertEquals("nested", grammar.getNamespacePath().toString());
+            g = grammar(V4, fs.getPath("root/src/main/antlr4/nested/Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("nested"), g.namespace);
+            assertEquals("nested", g.getNamespacePath().toString());
 
-            grammar = grammar(V4,
-                fs.getPath("root/src/main/antlr4/nested/deeply/Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("nested.deeply"), grammar.namespace);
-            assertEquals("nested/deeply", grammar.getNamespacePath().toString());
+            g = grammar(V4, fs.getPath("root/src/main/antlr4/nested/deeply/Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("nested.deeply"), g.namespace);
+            assertEquals("nested/deeply", g.getNamespacePath().toString());
 
-            grammar = grammar(V4, fs.getPath("root/src/main/nested/deeply/Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of(""), grammar.namespace);
-            assertEquals("", grammar.getNamespacePath().toString());
+            g = grammar(V4, fs.getPath("root/src/main/nested/deeply/Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of(""), g.namespace);
+            assertEquals("", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root/src/main/antlr4/Hello.g4"),
                 CSHARP,
                 Namespace.of("com.foo"),
                 StandardCharsets.UTF_8,
                 null);
-            assertEquals(CSHARP, grammar.language);
-            assertEquals(Namespace.of("com.foo"), grammar.namespace);
-            assertEquals("com/foo", grammar.getNamespacePath().toString());
+            assertEquals(CSHARP, g.language);
+            assertEquals(Namespace.of("com.foo"), g.namespace);
+            assertEquals("com/foo", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root/src/main/antlr4/Hello.g4"),
                 GO,
                 Namespace.of("com/foo"),
                 StandardCharsets.UTF_8,
                 null);
-            assertEquals(GO, grammar.language);
-            assertEquals(Namespace.of("com/foo"), grammar.namespace);
-            assertEquals("com/foo", grammar.getNamespacePath().toString());
+            assertEquals(GO, g.language);
+            assertEquals(Namespace.of("com/foo"), g.namespace);
+            assertEquals("com/foo", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root/src/main/antlr4/Hello.g4"),
                 GO,
                 Namespace.of("com/foo"),
                 StandardCharsets.UTF_8,
                 "src/antlr");
-            assertEquals(GO, grammar.language);
-            assertEquals(Namespace.of("com/foo"), grammar.namespace);
-            assertEquals("com/foo", grammar.getNamespacePath().toString());
+            assertEquals(GO, g.language);
+            assertEquals(Namespace.of("com/foo"), g.namespace);
+            assertEquals("com/foo", g.getNamespacePath().toString());
         }
 
         try (FileSystem fs = fs(Configuration.windows(), 4))
         {
-            Grammar grammar = grammar(V4,
-                fs.getPath("root\\src\\main\\antlr4\\Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of(""), grammar.namespace);
-            assertEquals("".toString(), grammar.getNamespacePath().toString());
+            Grammar g = grammar(V4, fs.getPath("root\\src\\main\\antlr4\\Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of(""), g.namespace);
+            assertEquals("".toString(), g.getNamespacePath().toString());
 
-            grammar = grammar(V4,
-                fs.getPath("root\\src\\main\\antlr4\\nested\\Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("nested"), grammar.namespace);
-            assertEquals("nested", grammar.getNamespacePath().toString());
+            g = grammar(V4, fs.getPath("root\\src\\main\\antlr4\\nested\\Hello.g4"));
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("nested"), g.namespace);
+            assertEquals("nested", g.getNamespacePath().toString());
 
-            grammar = grammar(V4,
+            g = grammar(V4,
                 fs.getPath("root\\src\\main\\antlr4\\nested\\deeply\\Hello.g4"));
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("nested.deeply"), grammar.namespace);
-            assertEquals("nested\\deeply", grammar.getNamespacePath().toString());
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("nested.deeply"), g.namespace);
+            assertEquals("nested\\deeply", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root\\src\\main\\antlr4\\Hello.g4"),
                 CPP,
                 Namespace.of("com::foo"),
                 StandardCharsets.UTF_8,
                 null);
-            assertEquals(CPP, grammar.language);
-            assertEquals(Namespace.of("com::foo"), grammar.namespace);
-            assertEquals("com\\foo", grammar.getNamespacePath().toString());
+            assertEquals(CPP, g.language);
+            assertEquals(Namespace.of("com::foo"), g.namespace);
+            assertEquals("com\\foo", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root\\src\\main\\antlr4\\Hello.g4"),
                 CSHARP,
                 Namespace.of("com.foo"),
                 StandardCharsets.UTF_8,
                 null);
-            assertEquals(CSHARP, grammar.language);
-            assertEquals(Namespace.of("com.foo"), grammar.namespace);
-            assertEquals("com\\foo", grammar.getNamespacePath().toString());
+            assertEquals(CSHARP, g.language);
+            assertEquals(Namespace.of("com.foo"), g.namespace);
+            assertEquals("com\\foo", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root\\src\\main\\antlr4\\Hello.g4"),
                 GO,
                 Namespace.of("com/foo"),
                 StandardCharsets.UTF_8,
                 null);
-            assertEquals(GO, grammar.language);
-            assertEquals(Namespace.of("com/foo"), grammar.namespace);
-            assertEquals("com\\foo", grammar.getNamespacePath().toString());
+            assertEquals(GO, g.language);
+            assertEquals(Namespace.of("com/foo"), g.namespace);
+            assertEquals("com\\foo", g.getNamespacePath().toString());
 
-            grammar = new Grammar(V4,
+            g = new Grammar(V4,
                 fs.getPath("root\\src\\main\\antlr4\\nested\\deeply\\Hello.g4"),
                 JAVA,
                 Namespace.of("com.foo"),
                 StandardCharsets.UTF_8,
                 "flat");
-            assertEquals(JAVA, grammar.language);
-            assertEquals(Namespace.of("com.foo"), grammar.namespace);
-            assertEquals("", grammar.getNamespacePath().toString());
+            assertEquals(JAVA, g.language);
+            assertEquals(Namespace.of("com.foo"), g.namespace);
+            assertEquals("", g.getNamespacePath().toString());
         }
     }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -21,6 +22,9 @@ class Grammar
 {
     /** The used encoding.. */
     public final Charset encoding;
+
+    /** The imported grammars. */
+    public final Collection<String> imports;
 
     /** The target language. */
     public final Language language;
@@ -63,6 +67,7 @@ class Grammar
                                        : this.language.getLayout();
         this.namespace = namespace(namespace, text);
         this.names = detectNames(version, text);
+        this.imports = detectImports(text);
     }
 
     /**
@@ -82,6 +87,34 @@ class Grammar
     public String toString()
     {
         return path.getFileName().toString();
+    }
+
+
+    private Collection<String> detectImports(String text)
+    {
+        Collection<String> imports = new ArrayList<>();
+
+        // strip blocks to avoid matching language specific import
+        String t = text.replaceAll("(?s)\\{.*?\\}", "");
+        Pattern p = Pattern.compile("import\\s*([^\\s,;]+)");
+        Matcher matcher = p.matcher(t);
+
+        if (matcher.find())
+        {
+            imports.add(matcher.group(1));
+
+            // unfortunately Java does not provide access to repeated capturing group
+            // matches, we therefore have to iterate over each group individually
+            Pattern group = Pattern.compile("\\s*,\\s*([^\\s,;]+)");
+            matcher = group.matcher(t.substring(matcher.end()));
+
+            while (matcher.find())
+            {
+                imports.add(matcher.group(1));
+            }
+        }
+
+        return Collections.unmodifiableCollection(imports);
     }
 
 
