@@ -1,44 +1,42 @@
 # Setup
 
-To use the ANTLR rules, add the following to your `WORKSPACE` file to include
-the external repository, replacing the version number in the `tag` attribute
-with the version of the rules you wish to depend on:
+To use the ANTLR rules, add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file to include
+the external repository:
 
 ```python
-git_repository(
+http_archive(
     name = "rules_antlr",
-    remote = "https://github.com/marcohu/rules_antlr.git",
-    tag = "0.1.0",
+    sha256 = "66e1fcf1f8b5f2daa7c09268e5a10ab136834d73f0d0a94724100958ae560763",
+    strip_prefix = "rules_antlr-0.1.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
 )
 ```
 
-Then you can load the necessary external dependencies with the provided shortcuts in your `WORKSPACE` file:
+Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file. For the current ANTLR release:
 
 ```python
-load("@rules_antlr//antlr:deps.bzl", "antlr4_dependencies")
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 
-antlr4_dependencies()
+antlr_dependencies()
 ```
 
-If you need different versions at once, you can either use:
+If you need a different version or want to make the version explicit, you can specify the version number:
 
 ```python
-load("@rules_antlr//antlr:deps.bzl", "antlr2_dependencies", "antlr3_dependencies", "antlr4_dependencies")
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 
-antlr2_dependencies()
-antlr3_dependencies()
-antlr4_dependencies()
+antlr_dependencies(4)
 ```
 
-Or the shorter:
+If you require several releases, you can specify several versions at once:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 
 antlr_dependencies(2, 3, 4)
 ```
-But be careful when updating to a new ANTLR rules version as these dependencies
-might change. Alternatively you can pull the necessary dependencies yourself to
+But be careful when updating to a new ANTLR rules version as the bundled dependencies
+might change with each release. Alternatively you can pull the necessary dependencies yourself to
 avoid coupling. For ANTLR 4.7.1:
 
 ```python
@@ -78,7 +76,7 @@ invocation.
 As a convenience there is also a shortcut for the ["optimized" fork](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
 
 ```python
-load("@rules_antlr//antlr:deps.bzl", "antlr4_optimized_dependencies")
+load("@rules_antlr//antlr:deps.bzl", "antlr_optimized_dependencies")
 
-antlr4_optimized_dependencies()
+antlr_optimized_dependencies()
 ```

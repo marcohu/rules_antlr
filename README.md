@@ -14,19 +14,19 @@ Different rules are available that align with the ANTLR release streams.
 ## Quick Setup
 
 Add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace)
-file to include the external repository, replacing the version number in the
-[`tag`](https://docs.bazel.build/versions/master/be/workspace.html#git_repository.tag) attribute
-with the version of the rules you wish to depend on and load the external dependencies necessary for
+file to include the external repository and load the external dependencies necessary for
 the [`antlr4`](#antlr4) rule:
 
 ```python
-git_repository(
+http_archive(
     name = "rules_antlr",
-    remote = "https://github.com/marcohu/rules_antlr.git",
-    tag = "0.1.0",
+    sha256 = "66e1fcf1f8b5f2daa7c09268e5a10ab136834d73f0d0a94724100958ae560763",
+    strip_prefix = "rules_antlr-0.1.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
 )
-load("@rules_antlr//antlr:deps.bzl", "antlr4_dependencies")
-antlr4_dependencies()
+
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+antlr_dependencies()
 ```
 
 More detailed instructions can be found in the
@@ -79,20 +79,20 @@ java_library(
 Compiling the project generates the lexer/parser files:
 
 ```
-$ bazel build //antlr4/HelloWorld
-INFO: Analysed target //antlr4/HelloWorld:HelloWorld (0 packages loaded).
+$ bazel build //HelloWorld
+INFO: Analysed target //HelloWorld:HelloWorld (0 packages loaded).
 INFO: Found 1 target...
-Target //antlr4/HelloWorld:HelloWorld up-to-date:
-  bazel-bin/antlr4/HelloWorld/libHelloWorld.jar
+Target //HelloWorld:HelloWorld up-to-date:
+  bazel-bin/HelloWorld/libHelloWorld.jar
 INFO: Elapsed time: 0.940s, Critical Path: 0.76s
 INFO: Build completed successfully, 4 total actions
 ```
 
-The generated source files can be found in the `generated.srcjar` archive below your workspace `bazel-bin/antlr4/HelloWorld` directory.
+The generated source files can be found in the `generated.srcjar` archive below your workspace `bazel-bin/HelloWorld` directory.
 
 To just generate the source files you would use:
 
-    $ bazel build //antlr4/HelloWorld:generated
+    $ bazel build //HelloWorld:generated
 
 Refer to the [examples](https://github.com/marcohu/rules_antlr/tree/master/examples)
 directory for further samples.
