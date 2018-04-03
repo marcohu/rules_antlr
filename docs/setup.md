@@ -6,7 +6,7 @@ the external repository:
 ```python
 http_archive(
     name = "rules_antlr",
-    sha256 = "66e1fcf1f8b5f2daa7c09268e5a10ab136834d73f0d0a94724100958ae560763",
+    sha256 = "ba34d0497736a629f38e359e66c423dbd79a4d8b1bd524db49be9e8f9e0ba2f7",
     strip_prefix = "rules_antlr-0.1.0",
     urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
 )
