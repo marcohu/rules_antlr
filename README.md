@@ -20,7 +20,7 @@ the [`antlr4`](#antlr4) rule:
 ```python
 http_archive(
     name = "rules_antlr",
-    sha256 = "ba34d0497736a629f38e359e66c423dbd79a4d8b1bd524db49be9e8f9e0ba2f7",
+    sha256 = "acd2a25f31aeeea5f58cdb434ae109d03826ae7cc11fe9efce1740102e3f4531",
     strip_prefix = "rules_antlr-0.1.0",
     urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
 )
