@@ -3,7 +3,6 @@ package org.antlr.bazel;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.CopyOption;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitOption;
@@ -12,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,15 +22,12 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Defines a test project.
+ * Defines a temporary test project.
  *
  * @author  Marco Hunsicker
  */
 class TestProject implements Closeable
 {
-    private static final CopyOption[] ATTRIBUTES =
-        { StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING };
-
     private final String name;
     private final Path outputDirectory;
     private final Path root;
@@ -53,7 +48,7 @@ class TestProject implements Closeable
 
         if (copy)
         {
-            copy(Paths.get(project).toRealPath(), root);
+            Disk.copy(Paths.get(project).toRealPath(), root);
         }
         else
         {
@@ -105,33 +100,26 @@ class TestProject implements Closeable
     {
         if (Files.exists(root))
         {
-            delete(root);
+            Disk.delete(root);
         }
     }
 
 
-    String[] antlr2() throws IOException
+    String[] antlr2()
     {
-        return classpath("src/it/lib/antlr-2.7.7/antlr-2.7.7.jar");
+        return Dependencies.antlr2();
     }
 
 
-    String[] antlr4() throws IOException
+    String[] antlr3()
     {
-        return classpath("src/it/lib/antlr-4.7.1/antlr4-4.7.1.jar",
-            "src/it/lib/antlr-4.7.1/antlr4-runtime-4.7.1.jar",
-            "src/it/lib/antlr-3.5.2/antlr-runtime-3.5.2.jar",
-            "src/it/lib/org.abego.treelayout.core-1.0.3.jar",
-            "src/it/lib/javax.json-1.0.4.jar",
-            "src/it/lib/ST4-4.0.8.jar");
+        return Dependencies.antlr3();
     }
 
-    String[] antlr3() throws IOException
+
+    String[] antlr4()
     {
-        return classpath(
-            "src/it/lib/antlr-3.5.2/antlr-runtime-3.5.2.jar",
-            "src/it/lib/antlr-3.5.2/antlr-3.5.2.jar",
-            "src/it/lib/ST4-4.0.8.jar");
+        return Dependencies.antlr4();
     }
 
 
@@ -229,100 +217,6 @@ class TestProject implements Closeable
                     throw new AssertionError("Path does not exist: " + path);
                 }
             }
-        }
-    }
-
-
-    private static void copy(final Path path, final Path target, CopyOption... options)
-        throws IOException
-    {
-        final CopyOption[] opt = (options.length == 0) ? ATTRIBUTES : options;
-
-        if (Files.isDirectory(path))
-        {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>()
-                {
-                    @Override
-                    public FileVisitResult preVisitDirectory(Path dir,
-                        BasicFileAttributes attrs) throws IOException
-                    {
-                        Files.createDirectories(
-                            target.resolve(path.relativize(dir).toString()));
-
-                        return FileVisitResult.CONTINUE;
-                    }
-
-
-                    @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-                        throws IOException
-                    {
-                        Files.copy(file,
-                            target.resolve(path.relativize(file).toString()),
-                            opt);
-
-                        return FileVisitResult.CONTINUE;
-                    }
-                });
-        }
-        else
-        {
-            Files.copy(path, target, opt);
-        }
-    }
-
-
-    private static void delete(Path path) throws IOException
-    {
-        if (Files.isDirectory(path))
-        {
-            Files.walkFileTree(path, DeleteVisitor.INSTANCE);
-        }
-        else if (Files.exists(path))
-        {
-            Files.delete(path);
-        }
-    }
-
-
-    private String[] classpath(String... libs) throws IOException
-    {
-        List<String> result = new ArrayList<>();
-
-        for (String lib : libs)
-        {
-            Path target = Paths.get(lib).toRealPath();
-            Path link = root.resolve("lib").resolve(target.getFileName());
-
-            Files.createSymbolicLink(link, target);
-
-            result.add(target.toString());
-        }
-
-        return result.toArray(new String[0]);
-    }
-
-    private static class DeleteVisitor extends SimpleFileVisitor<Path>
-    {
-        public static final DeleteVisitor INSTANCE = new DeleteVisitor();
-
-        @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException cause)
-            throws IOException
-        {
-            Files.delete(dir);
-
-            return FileVisitResult.CONTINUE;
-        }
-
-
-        @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-            throws IOException
-        {
-            Files.delete(file);
-
-            return FileVisitResult.CONTINUE;
         }
     }
 }

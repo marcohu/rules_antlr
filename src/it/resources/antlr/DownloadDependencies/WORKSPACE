@@ -1,0 +1,9 @@
+workspace(name="dependencies")
+
+local_repository(
+    name = "rules_antlr",
+    path = "../../../../../../rules_antlr",
+)
+
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+antlr_dependencies(2, 3, 4)
