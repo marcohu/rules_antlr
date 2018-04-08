@@ -44,6 +44,8 @@ def _generate(ctx):
         args.add("-lib")
         args.add(lib)
 
+    args.add("-make")
+
     if ctx.attr.message_format:
         args.add("-message-format")
         args.add(ctx.attr.message_format)
