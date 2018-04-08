@@ -32,9 +32,9 @@ class Dependencies
     private static final Map<Version, String[]> DEPENDENCIES = download();
 
     /**
-     * Returns the ANTLR 4 dependencies.
+     * Returns the ANTLR 2 dependencies.
      *
-     * @return  the ANTLR 4 dependencies.
+     * @return  the ANTLR 2 dependencies.
      */
     public static String[] antlr2()
     {
@@ -54,9 +54,9 @@ class Dependencies
 
 
     /**
-     * Returns the ANTLR 2 dependencies.
+     * Returns the ANTLR 4 dependencies.
      *
-     * @return  the ANTLR 2 dependencies.
+     * @return  the ANTLR 4 dependencies.
      */
     public static String[] antlr4()
     {
