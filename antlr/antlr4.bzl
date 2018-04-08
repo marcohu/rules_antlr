@@ -22,7 +22,7 @@ def _generate(ctx):
     """ Generates the source files. """
 
     if not ctx.files.srcs:
-        fail("No grammars provided, either add the grammars attribute or check your filespec", attr="srcs")
+        fail("No grammars provided, either add the srcs attribute or check your filespec", attr="srcs")
 
     args = ctx.actions.args()
 
