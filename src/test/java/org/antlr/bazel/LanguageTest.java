@@ -49,6 +49,8 @@ public class LanguageTest
             Language.detect("grammar G2;\noptions{language=Java ;}\nr : C;"));
         assertEquals(JAVASCRIPT,
             Language.detect("grammar G2;\noptions{language=JavaScript ;}\nr : C;"));
+        assertEquals(OBJC,
+            Language.detect("grammar G2;\noptions{language=ObjC;}\nr : C;"));
         assertEquals(PYTHON,
             Language.detect("grammar G2;\noptions{language=Python ;}\nr : C;"));
         assertEquals(PYTHON,
@@ -76,6 +78,7 @@ public class LanguageTest
             JAVA.getLayout().toString());
         assertEquals(".*[\\\\/]src[\\\\/]antlr[234]?[\\\\/](.*)",
             JAVASCRIPT.getLayout().toString());
+        assertEquals("", OBJC.getLayout().toString());
         assertEquals(".*[\\\\/]src[\\\\/]antlr[234]?[\\\\/](.*)",
             PYTHON.getLayout().toString());
         assertEquals("", SWIFT.getLayout().toString());
@@ -113,6 +116,9 @@ public class LanguageTest
             JAVA.detectNamespace("header {package foo.bar;}").toString());
         assertEquals("foo.bar",
             JAVA.detectNamespace("header {package\nfoo.bar;}").toString());
+
+        assertEquals(null, OBJC.detectNamespace(""));
+
         assertEquals(null, PYTHON.detectNamespace("header \"Lexer.__main__\" {}"));
         assertEquals(null, RUBY.detectNamespace(""));
         assertEquals(null, RUBY.detectNamespace("header {}"));

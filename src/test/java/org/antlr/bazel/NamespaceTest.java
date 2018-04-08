@@ -66,6 +66,8 @@ public class NamespaceTest
             Namespace.of(Paths.get("org\\antlr/test"), Language.JAVA).toString());
         assertEquals("org/antlr/test",
             Namespace.of(Paths.get("org\\antlr/test"), Language.JAVASCRIPT).toString());
+        assertEquals("org\\antlr/test",
+            Namespace.of(Paths.get("org\\antlr/test"), Language.OBJC).toString());
         assertEquals("org/antlr/test",
             Namespace.of(Paths.get("org\\antlr/test"), Language.PYTHON).toString());
         assertEquals("org::antlr::test",
@@ -88,6 +90,8 @@ public class NamespaceTest
             Namespace.of("org.antlr.test").toPath(Language.JAVA));
         assertEquals("org/antlr/test",
             Namespace.of("org/antlr/test").toPath(Language.JAVASCRIPT));
+        assertEquals("org/antlr/test",
+            Namespace.of("org/antlr/test").toPath(Language.OBJC));
         assertEquals("org/antlr/test",
             Namespace.of("org.antlr.test").toPath(Language.PYTHON));
         assertEquals("org/antlr/test",

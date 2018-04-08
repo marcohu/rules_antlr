@@ -228,6 +228,39 @@ enum Language
         }
     },
 
+    /** The Objective-C target language. */
+    OBJC
+    {
+        private final DirectoryLayout layout = new DirectoryLayout();
+
+        @Override
+        public String toPath(String namespace)
+        {
+            return namespace;
+        }
+
+
+        @Override
+        public String toId(Path path)
+        {
+            return path.toString();
+        }
+
+
+        @Override
+        public Namespace detectNamespace(String grammar)
+        {
+            return null;
+        }
+
+
+        @Override
+        public DirectoryLayout getLayout()
+        {
+            return layout;
+        }
+    },
+
     /** The Python target language. */
     PYTHON
     {
@@ -467,6 +500,11 @@ enum Language
             case "JavaScript" :
             {
                 return JAVASCRIPT;
+            }
+
+            case "ObjC" :
+            {
+                return OBJC;
             }
 
             case "Python" :
