@@ -39,6 +39,10 @@ def _generate(ctx):
     if ctx.attr.dump:
         args.add("-dump")
 
+    if ctx.attr.language:
+        args.add("-language")
+        args.add(ctx.attr.language)
+
     lib = _get_lib_dir(ctx.files.imports)
     if lib:
         args.add("-lib")
@@ -149,6 +153,7 @@ antlr3 = rule(
         "dfa":                  attr.bool(default=False),
         "dump":                 attr.bool(default=False),
         "imports":              attr.label_list(allow_files=True),
+        "language":             attr.string(),
         "message_format":       attr.string(),
         "nfa":                  attr.bool(default=False),
         "profile":              attr.bool(default=False),
@@ -189,6 +194,8 @@ Args:
                             dependencies here.
     dfa:                    Generate a DFA for each decision point.
     imports:                The grammar and .tokens files to import. Must be all in the same directory.
+    language:               The code generation target language. Either C, Cpp, CSharp2, CSharp3,
+                            JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).
     message_format:         Specify output style for messages.
     nfa:                    Generate an NFA for each rule.
     dump:                   Print out the grammar without actions.

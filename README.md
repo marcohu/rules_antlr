@@ -487,6 +487,14 @@ dependencies here.</p>
         <p>The grammar and .tokens files to import. Must be all in the same directory.</p>
       </td>
     </tr>
+    <tr id="antlr3.language">
+      <td><code>language</code></td>
+      <td>
+        <p><code>String; Optional; Default is ''</code></p>
+        <p>The code generation target language. Either C, Cpp, CSharp2, CSharp3,
+JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).</p>
+      </td>
+    </tr>
     <tr id="antlr3.message_format">
       <td><code>message_format</code></td>
       <td>
