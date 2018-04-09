@@ -490,7 +490,7 @@ dependencies here.</p>
     <tr id="antlr3.language">
       <td><code>language</code></td>
       <td>
-        <p><code>String; Optional; Default is ''</code></p>
+        <p><code>String; Optional; Default is 'Java'</code></p>
         <p>The code generation target language. Either C, Cpp, CSharp2, CSharp3,
 JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).</p>
       </td>

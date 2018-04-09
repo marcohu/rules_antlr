@@ -153,7 +153,7 @@ antlr3 = rule(
         "dfa":                  attr.bool(default=False),
         "dump":                 attr.bool(default=False),
         "imports":              attr.label_list(allow_files=True),
-        "language":             attr.string(),
+        "language":             attr.string(default="Java"),
         "message_format":       attr.string(),
         "nfa":                  attr.bool(default=False),
         "profile":              attr.bool(default=False),
