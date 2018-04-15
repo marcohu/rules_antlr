@@ -46,13 +46,13 @@ def _antlr4_dependencies(skipAntlr3=False):
 def _antlr4_optimized_dependencies():
     native.http_jar(
         name = "antlr4_runtime",
-        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4-runtime/4.7/antlr4-runtime-4.7.jar",
-        sha256 = "729e327795535e62633d15b364a168f07f3239f9a692a98b154623cdec1807c8",
+        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
+        sha256 = "ce4f77ff9dc014feb9a8e700de5c77101d203acb6a1e8fa3446905c391ac72b9",
     )
     native.http_jar(
         name = "antlr4_tool",
-        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4/4.7/antlr4-4.7.jar",
-        sha256 = "e0133570df02e063b29733ccc1587965c89b0298b58909f6696de9d271671f2f",
+        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4/4.7.1/antlr4-4.7.1.jar",
+        sha256 = "de9a7b94b48ea7c8100663cbb1a54465c37671841c0aefdf4c53a72212555ae8",
     )
     _antlr4_transitive_dependencies(False)
 
