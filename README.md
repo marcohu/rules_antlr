@@ -307,9 +307,9 @@ detection by convention. The default depends on the target language.</p>
 antlr3(name, deps=[], srcs=[], debug, depend, dfa, dump, imports=[],
        language, message_format, nfa, profile, report, trace,
        Xconversiontimeout, Xdbgst, Xdbgconversion, Xdfa, Xdfaverbose,
-       Xgrtree, Xm,  Xmaxdfaedges, Xmaxinlinedfastates, Xmultithreaded,
-       Xnfastates, Xnocollapse, Xnomergestopstates, Xnoprune,
-       Xwatchconversion)
+       Xgrtree, Xm,  Xmaxdfaedges, Xmaxinlinedfastates, Xminswitchalts,
+       Xmultithreaded, Xnfastates, Xnocollapse, Xnomergestopstates,
+       Xnoprune, Xsavelexer, Xwatchconversion)
 ```
 
 Runs ANTLR 3 on the given grammar files.
