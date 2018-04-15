@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 class Grammar
 {
-    /** The used encoding.. */
+    /** The used encoding. */
     public final Charset encoding;
 
     /** The imported grammars. */
