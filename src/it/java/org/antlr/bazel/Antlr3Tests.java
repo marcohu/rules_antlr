@@ -52,6 +52,28 @@ public class Antlr3Tests
         }
     }
 
+    @Test
+    public void saveLexer() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/InheritLibFolder"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(project.antlr3())
+                .outputDirectory(project.outputDirectory().toString())
+                .grammars(project.grammars())
+                .args(project.args("-lib", "src/main/antlr3/lib", "-XsaveLexer"))
+                .generate();
+
+            project.validate("Simple_CommonLexer.java",
+                "SimpleLexer.java",
+                "CommonLexer.tokens",
+                "CommonLexer.java",
+                "SimpleParser.java",
+                "Simple.tokens");
+        }
+    }
 
     @Test
     public void inheritFromSameFolder() throws Exception

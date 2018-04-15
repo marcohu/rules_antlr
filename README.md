@@ -410,6 +410,13 @@ dependencies here.</p>
         <p>Max DFA states before table used rather than inlining.</p>
       </td>
     </tr>
+    <tr id="antlr3.Xminswitchalts">
+      <td><code>Xminswitchalts</code></td>
+      <td>
+        <p><code>Integer; Optional; Default is 0</code></p>
+        <p>Don't generate switch() statements for dfas smaller than given number.</p>
+      </td>
+    </tr>
     <tr id="antlr3.Xmultithreaded">
       <td><code>Xmultithreaded</code></td>
       <td>
@@ -443,6 +450,13 @@ dependencies here.</p>
       <td>
         <p><code>Boolean; Optional; Default is False</code></p>
         <p>Do not test EBNF block exit branches.</p>
+      </td>
+    </tr>
+    <tr id="antlr3.Xsavelexer">
+      <td><code>Xsavelexer</code></td>
+      <td>
+        <p><code>Boolean; Optional; Default is False</code></p>
+        <p>Don't delete temporary lexers generated from combined grammars.</p>
       </td>
     </tr>
     <tr id="antlr3.Xwatchconversion">

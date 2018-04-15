@@ -116,6 +116,9 @@ def _generate(ctx):
     if ctx.attr.Xnoprune:
         args.add("-Xnoprune")
 
+    if ctx.attr.XsaveLexer:
+        args.add("-XsaveLexer")
+
     if ctx.attr.Xwatchconversion:
         args.add("-Xwatchconversion")
 
@@ -169,11 +172,13 @@ antlr3 = rule(
         "Xm":                   attr.int(),
         "Xmaxdfaedges":         attr.int(),
         "Xmaxinlinedfastates":  attr.int(),
+        "Xminswitchalts":       attr.int(),
         "Xmultithreaded":       attr.bool(default=False),
         "Xnfastates":           attr.bool(default=False),
         "Xnocollapse":          attr.bool(default=False),
         "Xnoprune":             attr.bool(default=False),
         "Xnomergestopstates":   attr.bool(default=False),
+        "Xsavelexer":           attr.bool(default=False),
         "Xwatchconversion":     attr.bool(default=False),
         "_tool":          attr.label(
                               executable=True,
@@ -216,9 +221,12 @@ Args:
     Xdbgst:                 Put tags at start/stop of all templates in output.
     Xm:                     Max number of rule invocations during conversion.
     Xmaxdfaedges:           Max "comfortable" number of edges for single DFA state.
+    Xminswitchalts:         Don't generate switch() statements for dfas smaller than given number.
     Xconversiontimeout:     Set NFA conversion timeout for each decision.
     Xmaxinlinedfastates:    Max DFA states before table used rather than inlining.
     Xnfastates:             For nondeterminisms, list NFA states for each path.
+    Xsavelexer:             Don't delete temporary lexers generated from combined grammars.
+
 
 Outputs:
     name.srcjar:            The .srcjar with the generated files.

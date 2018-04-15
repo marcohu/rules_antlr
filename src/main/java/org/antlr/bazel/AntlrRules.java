@@ -48,6 +48,7 @@ public class AntlrRules
     private final Path sandbox;
     private Path srcjar;
     private Version version;
+    private boolean keepImports;
 
     /**
      * Creates a new AntlrRules object.
@@ -97,6 +98,8 @@ public class AntlrRules
     AntlrRules args(String[] args)
     {
         this.args = args;
+
+        keepImports = Arrays.asList(args).contains("-XsaveLexer");
 
         return this;
     }
@@ -453,7 +456,7 @@ public class AntlrRules
 
                 for (String name : grammar.imports)
                 {
-                    result.put(name, null);
+                    result.put(name, keepImports ? grammar : null);
                 }
             }
         }
