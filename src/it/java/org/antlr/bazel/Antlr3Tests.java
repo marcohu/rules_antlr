@@ -1,6 +1,7 @@
 package org.antlr.bazel;
 
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,7 +14,7 @@ import org.junit.Test;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr3Tests
+public class Antlr3Tests extends BazelTestSupport
 {
     @Test
     public void basic() throws Exception
@@ -35,6 +36,19 @@ public class Antlr3Tests
 
 
     @Test
+    public void detectLanguage() throws Exception
+    {
+        build("//antlr3/DetectLanguage");
+
+        assertContents(
+            Paths.get("examples/bazel-bin/antlr3/DetectLanguage/DetectLanguage.srcjar"),
+            "Antlr/Examples/HoistedPredicates//TLexer.cs",
+            "Antlr/Examples/HoistedPredicates//TParser.cs",
+            "Antlr/Examples/HoistedPredicates//T.tokens");
+    }
+
+
+    @Test
     public void inheritFromLibFolder() throws Exception
     {
         try (TestProject project = TestProject.create("examples/antlr3/InheritLibFolder"))
@@ -51,6 +65,26 @@ public class Antlr3Tests
             assertTrue(Files.exists(project.srcjar()));
         }
     }
+
+
+    @Test
+    public void inheritFromSameFolder() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/InheritSameFolder"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(project.antlr3())
+                .outputDirectory(project.outputDirectory().toString())
+                .grammars(project.grammars())
+                .args(project.args())
+                .generate();
+
+            assertTrue(Files.exists(project.srcjar()));
+        }
+    }
+
 
     @Test
     public void saveLexer() throws Exception
@@ -72,24 +106,6 @@ public class Antlr3Tests
                 "CommonLexer.java",
                 "SimpleParser.java",
                 "Simple.tokens");
-        }
-    }
-
-    @Test
-    public void inheritFromSameFolder() throws Exception
-    {
-        try (TestProject project = TestProject.create("examples/antlr3/InheritSameFolder"))
-        {
-            AntlrRules.create(project.root())
-                .srcjar(project.srcjar().toString())
-                .version("3")
-                .classpath(project.antlr3())
-                .outputDirectory(project.outputDirectory().toString())
-                .grammars(project.grammars())
-                .args(project.args())
-                .generate();
-
-            assertTrue(Files.exists(project.srcjar()));
         }
     }
 

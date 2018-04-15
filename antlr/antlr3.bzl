@@ -156,7 +156,7 @@ antlr3 = rule(
         "dfa":                  attr.bool(default=False),
         "dump":                 attr.bool(default=False),
         "imports":              attr.label_list(allow_files=True),
-        "language":             attr.string(default="Java"),
+        "language":             attr.string(),
         "message_format":       attr.string(),
         "nfa":                  attr.bool(default=False),
         "profile":              attr.bool(default=False),
@@ -178,7 +178,7 @@ antlr3 = rule(
         "Xnocollapse":          attr.bool(default=False),
         "Xnoprune":             attr.bool(default=False),
         "Xnomergestopstates":   attr.bool(default=False),
-        "Xsavelexer":           attr.bool(default=False),
+        "XsaveLexer":           attr.bool(default=False),
         "Xwatchconversion":     attr.bool(default=False),
         "_tool":          attr.label(
                               executable=True,
