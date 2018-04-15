@@ -122,7 +122,7 @@ antlr4 = rule(
         "error":          attr.bool(default=False),
         "force_atn":      attr.bool(default=False),
         "imports":        attr.label_list(allow_files=True),
-        "language":       attr.string(default="Java"),
+        "language":       attr.string(),
         "layout":         attr.string(),
         "listener":       attr.bool(default=True),
         "log":            attr.bool(default=False),

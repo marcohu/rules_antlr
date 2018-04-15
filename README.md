@@ -218,7 +218,7 @@ you need to use a different version, you can specify the dependencies here.</p>
     <tr id="antlr4.language">
       <td><code>language</code></td>
       <td>
-        <p><code>String; Optional; Default is 'Java'</code></p>
+        <p><code>String; Optional; Default is ''</code></p>
         <p>The code generation target language. Either Cpp, CSharp, Go, JavaScript,
 Java, Python2, Python3 or Swift (case-sensitive).</p>
       </td>
@@ -305,8 +305,8 @@ detection by convention. The default depends on the target language.</p>
 
 ```python
 antlr3(name, deps=[], srcs=[], debug, depend, dfa, dump, imports=[],
-       message_format, nfa, profile, report, trace,
-       Xconversiontimeout,  Xdbgst, Xdbgconversion, Xdfa, Xdfaverbose,
+       language, message_format, nfa, profile, report, trace,
+       Xconversiontimeout, Xdbgst, Xdbgconversion, Xdfa, Xdfaverbose,
        Xgrtree, Xm,  Xmaxdfaedges, Xmaxinlinedfastates, Xmultithreaded,
        Xnfastates, Xnocollapse, Xnomergestopstates, Xnoprune,
        Xwatchconversion)
