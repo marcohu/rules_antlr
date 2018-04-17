@@ -1,0 +1,12 @@
+# On trusty images, the Bazel apt repository can be used.
+addons:
+  apt:
+    sources:
+    - sourceline: 'deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8'
+      key_url: 'https://bazel.build/bazel-release.pub.gpg'
+    packages:
+    - bazel
+
+script:
+  - bazel build //...
+  - bazel test //...
