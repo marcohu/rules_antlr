@@ -6,6 +6,7 @@ import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
 import org.junit.Test;
 
 
@@ -14,7 +15,7 @@ import org.junit.Test;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr2Tests
+public class Antlr2Test
 {
     @Test
     public void basic() throws Exception

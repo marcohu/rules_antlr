@@ -1,7 +1,7 @@
 package org.antlr.bazel;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -14,7 +14,7 @@ import org.junit.Test;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr3Tests extends BazelTestSupport
+public class Antlr3Test extends BazelTestSupport
 {
     @Test
     public void basic() throws Exception
@@ -30,7 +30,7 @@ public class Antlr3Tests extends BazelTestSupport
                 .args(project.args())
                 .generate();
 
-            assertTrue(Files.exists(project.srcjar()));
+            project.validate("SimpleCLexer.java", "SimpleCParser.java", "SimpleC.tokens");
         }
     }
 
@@ -38,10 +38,10 @@ public class Antlr3Tests extends BazelTestSupport
     @Test
     public void detectLanguage() throws Exception
     {
-        build("//antlr3/DetectLanguage");
+        Path bin = build("//antlr3/DetectLanguage");
+        Path srcjar = bin.resolve("antlr3/DetectLanguage/csharp.srcjar");
 
-        assertContents(
-            Paths.get("examples/bazel-bin/antlr3/DetectLanguage/DetectLanguage.srcjar"),
+        assertContents(srcjar,
             "Antlr/Examples/HoistedPredicates//TLexer.cs",
             "Antlr/Examples/HoistedPredicates//TParser.cs",
             "Antlr/Examples/HoistedPredicates//T.tokens");
@@ -62,7 +62,10 @@ public class Antlr3Tests extends BazelTestSupport
                 .args(project.args("-lib", "src/main/antlr3/lib"))
                 .generate();
 
-            assertTrue(Files.exists(project.srcjar()));
+            project.validate("Simple_CommonLexer.java",
+                "SimpleLexer.java",
+                "SimpleParser.java",
+                "Simple.tokens");
         }
     }
 
@@ -81,7 +84,10 @@ public class Antlr3Tests extends BazelTestSupport
                 .args(project.args())
                 .generate();
 
-            assertTrue(Files.exists(project.srcjar()));
+            project.validate("Simple_CommonLexer.java",
+                            "SimpleLexer.java",
+                            "SimpleParser.java",
+                            "Simple.tokens");
         }
     }
 

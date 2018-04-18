@@ -8,7 +8,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -22,14 +21,15 @@ import org.junit.Test;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr4Tests extends BazelTestSupport
+public class Antlr4Test extends BazelTestSupport
 {
+
     @Test
     public void detectLanguage() throws Exception
     {
-        build("//antlr4/DetectLanguage:cpp");
-
-        assertContents(Paths.get("examples/bazel-bin/antlr4/DetectLanguage/cpp.srcjar"),
+        Path bin = build("//antlr4/DetectLanguage:cpp");
+        Path srcjar = bin.resolve("antlr4/DetectLanguage/cpp.srcjar");
+        assertContents(srcjar,
             "Hello.interp",
             "Hello.tokens",
             "HelloBaseListener.cpp",

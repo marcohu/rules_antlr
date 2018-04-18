@@ -41,6 +41,7 @@ public class AntlrRules
     private Charset encoding = Charset.defaultCharset();
     private final FileSystem fs;
     private List<String> grammars;
+    private boolean keepImports;
     private Language language;
     private String layout;
     private Namespace namespace;
@@ -48,7 +49,6 @@ public class AntlrRules
     private final Path sandbox;
     private Path srcjar;
     private Version version;
-    private boolean keepImports;
 
     /**
      * Creates a new AntlrRules object.
@@ -392,7 +392,7 @@ public class AntlrRules
             }
         }
 
-        return new URLClassLoader(urls.toArray(new URL[urls.size()]), null);
+        return new ContextClassLoader(urls, null);
     }
 
 

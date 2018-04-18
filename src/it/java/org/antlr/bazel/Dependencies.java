@@ -1,8 +1,6 @@
 package org.antlr.bazel;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -19,7 +17,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -68,20 +65,16 @@ class Dependencies
     {
         try
         {
-            // the Bazel workspace root we use for dependency loading
-            Path workspace = Paths.get("src/it/resources/antlr/DownloadDependencies")
-                .toRealPath();
-            assertTrue(Files.exists(workspace));
+            TestWorkspace workspace = new TestWorkspace();
+            Path output = workspace.path("output_base");
 
-            Path base = getBaseDirectory(workspace);
-
-            Map<Version, String[]> deps = loadDependencies(base);
+            Map<Version, String[]> deps = loadDependencies(output);
 
             // if short-circuiting did not work, fetch the dependencies
             if (deps.isEmpty())
             {
-                fetchDependencies(workspace, base);
-                deps = loadDependencies(base);
+                fetchDependencies(workspace.root, output);
+                deps = loadDependencies(output);
             }
 
             assertFalse(deps.isEmpty());
@@ -116,38 +109,6 @@ class Dependencies
         }
 
         assertEquals(0, p.exitValue());
-    }
-
-
-    private static Path getBaseDirectory(Path root) throws Exception
-    {
-        Process p = new ProcessBuilder().command("bazel", "info", "output_base")
-            .directory(Paths.get(".").toRealPath().toFile())
-            .redirectErrorStream(true)
-            .directory(root.toFile())
-            .start();
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(p.getInputStream())))
-        {
-            StringBuilder buf = new StringBuilder();
-            String line = null;
-
-            while ((line = reader.readLine()) != null)
-            {
-                buf.append(line);
-            }
-
-            Path base = Paths.get(buf.toString());
-            assertTrue(Files.exists(base));
-
-            return base;
-        }
-        finally
-        {
-            p.waitFor();
-            assertEquals(0, p.exitValue());
-        }
     }
 
 

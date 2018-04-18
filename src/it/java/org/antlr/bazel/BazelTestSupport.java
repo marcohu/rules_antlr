@@ -6,7 +6,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -49,16 +48,21 @@ class BazelTestSupport
      *
      * @param   target  the target to build.
      *
+     * @return  the path to the bazel-bin directory of the workspace.
+     *
      * @throws  Exception  if an error occurred.
      */
-    protected void build(String target) throws Exception
+    protected Path build(String target) throws Exception
     {
-        Path workspace = Paths.get("examples");
+        TestWorkspace workspace = new TestWorkspace();
+
         Process p = new ProcessBuilder().command("bazel", "build", target)
-            .directory(workspace.toFile())
+            .directory(workspace.root.toFile())
             .inheritIO()
             .start();
         p.waitFor();
         assertEquals(0, p.exitValue());
+
+        return workspace.path("bazel-bin");
     }
 }

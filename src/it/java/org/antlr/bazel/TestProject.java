@@ -48,11 +48,11 @@ class TestProject implements Closeable
 
         if (copy)
         {
-            Disk.copy(Paths.get(project).toRealPath(), root);
+            Disk.copy(path(project), root);
         }
         else
         {
-            Path target = Paths.get(project).resolve("src").toRealPath();
+            Path target = path(project).resolve("src");
             Path link = root.resolve("src");
             Files.createSymbolicLink(link, target);
         }
@@ -218,5 +218,35 @@ class TestProject implements Closeable
                 }
             }
         }
+    }
+
+
+    /**
+     * Returns the absolute path of the given relative project directory.
+     *
+     * @param   project  the project.
+     *
+     * @return  the project directory.
+     *
+     * @throws  IOException  if an I/O error occurred.
+     */
+    private Path path(String project) throws IOException
+    {
+        Path directory = Paths.get(project);
+
+        if (Files.exists(directory))
+        {
+            return directory.toRealPath();
+        }
+
+        // TODO is there a way to provide the same directory layout when running Bazel?
+        directory = Paths.get("external").resolve(project);
+
+        if (Files.exists(directory))
+        {
+            return directory.toRealPath();
+        }
+
+        throw new IOException("Could not find project directory " + project);
     }
 }

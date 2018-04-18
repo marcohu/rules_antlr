@@ -4,7 +4,7 @@ load("@rules_antlr//antlr:antlr3.bzl", "antlr3", "imports")
 
 antlr3(
     name = "generated",
-    srcs = glob(["src/main/antlr3/*.g"]),
+    srcs = ["src/main/antlr3/Simple.g"],
     imports = imports("src/main/antlr3/lib"),
 )
 
