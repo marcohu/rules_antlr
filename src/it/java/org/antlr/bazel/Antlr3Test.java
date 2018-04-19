@@ -80,14 +80,14 @@ public class Antlr3Test extends BazelTestSupport
                 .version("3")
                 .classpath(project.antlr3())
                 .outputDirectory(project.outputDirectory().toString())
-                .grammars(project.grammars())
+                .grammars(project.grammars("CommonLexer.g"))
                 .args(project.args())
                 .generate();
 
             project.validate("Simple_CommonLexer.java",
-                            "SimpleLexer.java",
-                            "SimpleParser.java",
-                            "Simple.tokens");
+                "SimpleLexer.java",
+                "SimpleParser.java",
+                "Simple.tokens");
         }
     }
 
@@ -102,14 +102,13 @@ public class Antlr3Test extends BazelTestSupport
                 .version("3")
                 .classpath(project.antlr3())
                 .outputDirectory(project.outputDirectory().toString())
-                .grammars(project.grammars())
+                .grammars(project.grammars("CommonLexer.g"))
                 .args(project.args("-lib", "src/main/antlr3/lib", "-XsaveLexer"))
                 .generate();
 
             project.validate("Simple_CommonLexer.java",
                 "SimpleLexer.java",
                 "CommonLexer.tokens",
-                "CommonLexer.java",
                 "SimpleParser.java",
                 "Simple.tokens");
         }

@@ -9,6 +9,7 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -135,7 +138,7 @@ class TestProject implements Closeable
     }
 
 
-    String[] grammars() throws IOException
+    String[] grammars(String... exclusions) throws IOException
     {
         List<String> result = new ArrayList<>();
 
@@ -144,13 +147,16 @@ class TestProject implements Closeable
             Integer.MAX_VALUE,
             new SimpleFileVisitor<Path>()
             {
+                PathMatcher grammar = root.getFileSystem()
+                        .getPathMatcher("glob:**/*.g{3,4,}");
+                Set<String> excludes = new HashSet<>(Arrays.asList(exclusions));
+
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException
                 {
-                    if (file.getFileSystem()
-                        .getPathMatcher("glob:**/*.g{3,4,}")
-                        .matches(file))
+                    if (grammar.matches(file)
+                        && !excludes.contains(file.getFileName().toString()))
                     {
                         result.add(file.toAbsolutePath().toString());
                     }
