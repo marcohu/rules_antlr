@@ -214,10 +214,36 @@ class TestProject implements Closeable
             {
                 if (Files.notExists(fs.getPath(path)))
                 {
-                    throw new AssertionError("Path does not exist: " + path);
+                    throw new AssertionError(
+                        String.format("Path does not exist: %s. Archive contains: %s",
+                            path,
+                            contents(fs.getPath("/"))));
                 }
             }
         }
+    }
+
+
+    private String contents(Path root) throws IOException
+    {
+        StringBuilder buf = new StringBuilder();
+
+        Files.walkFileTree(root,
+            EnumSet.of(FileVisitOption.FOLLOW_LINKS),
+            Integer.MAX_VALUE,
+            new SimpleFileVisitor<Path>()
+            {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException
+                {
+                    buf.append("\n").append(root.relativize(file));
+
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+
+        return buf.toString();
     }
 
 
