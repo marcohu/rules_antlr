@@ -115,9 +115,9 @@ class Dependencies
     private static Map<Version, String[]> loadDependencies(final Path base)
         throws IOException
     {
-        final Collection<String> deps2 = new ArrayList<>();
-        final Collection<String> deps3 = new ArrayList<>();
-        final Collection<String> deps4 = new ArrayList<>();
+        Collection<String> deps2 = new ArrayList<>();
+        Collection<String> deps3 = new ArrayList<>();
+        Collection<String> deps4 = new ArrayList<>();
 
         Path external = base.resolve("external");
 

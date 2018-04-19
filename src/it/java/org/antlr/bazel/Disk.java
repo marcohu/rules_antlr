@@ -35,10 +35,10 @@ class Disk
      *
      * @throws  IOException  if an I/O error occurred.
      */
-    public static void copy(final Path path, final Path target, CopyOption... options)
+    public static void copy(Path path, Path target, CopyOption... options)
         throws IOException
     {
-        final CopyOption[] opt = (options.length == 0) ? ATTRIBUTES : options;
+        CopyOption[] opt = (options.length == 0) ? ATTRIBUTES : options;
 
         if (Files.isDirectory(path))
         {

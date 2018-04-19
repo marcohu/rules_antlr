@@ -124,7 +124,7 @@ public class AntlrRules
 
     void generate() throws Exception
     {
-        final Map<Namespace, Collection<Grammar>> namespaces = groupByNamespace(grammars);
+        Map<Namespace, Collection<Grammar>> namespaces = groupByNamespace(grammars);
 
         // use reflection so we are not tied to a specific ANTLR version
         try (URLClassLoader loader = classloader(classpath))
@@ -173,7 +173,7 @@ public class AntlrRules
             }
         }
 
-        final Map<String, Grammar> names = grammarNames(namespaces);
+        Map<String, Grammar> names = grammarNames(namespaces);
 
         URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
         Map<String, String> env = new HashMap<>();
@@ -181,7 +181,7 @@ public class AntlrRules
 
         try (FileSystem archive = FileSystems.newFileSystem(uri, env))
         {
-            final Path root = archive.getPath("/");
+            Path root = archive.getPath("/");
 
             Files.walkFileTree(outputDirectory, new SimpleFileVisitor<Path>()
                 {
@@ -524,7 +524,7 @@ public class AntlrRules
 
                     argument = argument.replace(";" + lib, "");
 
-                    final Path target = sandbox.resolve(path).getParent();
+                    Path target = sandbox.resolve(path).getParent();
                     Files.createDirectories(target);
 
                     Path srcjar = sandbox.resolve(lib);

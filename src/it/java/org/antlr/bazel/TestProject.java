@@ -137,7 +137,7 @@ class TestProject implements Closeable
 
     String[] grammars() throws IOException
     {
-        final List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
 
         Files.walkFileTree(root,
             EnumSet.of(FileVisitOption.FOLLOW_LINKS),
