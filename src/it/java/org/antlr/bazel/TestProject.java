@@ -15,11 +15,13 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -232,7 +234,7 @@ class TestProject implements Closeable
 
     private String contents(Path root) throws IOException
     {
-        StringBuilder buf = new StringBuilder();
+        List<String> paths = new ArrayList<>();
 
         Files.walkFileTree(root,
             EnumSet.of(FileVisitOption.FOLLOW_LINKS),
@@ -243,13 +245,15 @@ class TestProject implements Closeable
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException
                 {
-                    buf.append("\n").append(root.relativize(file));
+                    paths.add(root.relativize(file).toString());
 
                     return FileVisitResult.CONTINUE;
                 }
             });
 
-        return buf.toString();
+        Collections.sort(paths);
+
+        return paths.stream().collect(Collectors.joining("\n"));
     }
 
 
