@@ -32,25 +32,18 @@ public class GrammarTest
     public void compare() throws IOException
     {
         List<Grammar> g = Arrays.asList(
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")),
             grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")),
-            grammar(V4,
-                Paths.get(
-                    "examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")));
+                path("examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")));
 
         List<Grammar> expected = Arrays.asList(
             grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
+                path("examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
 
         Collections.sort(g);
 
@@ -75,16 +68,13 @@ public class GrammarTest
     public void equals() throws IOException
     {
         Grammar g1 = grammar(V4,
-            Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4"));
+            path("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4"));
         assertEquals(g1, g1);
         assertEquals(
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")));
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")));
         assertNotEquals(g1,
-            grammar(V4,
-                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
+            grammar(V4, path("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
         assertNotEquals(g1, null);
         assertNotEquals(g1, new String());
     }
@@ -93,7 +83,7 @@ public class GrammarTest
     @Test
     public void hashcode() throws IOException
     {
-        Path path = Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4");
+        Path path = path("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4");
         Grammar g = grammar(V4, path);
         assertEquals(31 + path.hashCode(), g.hashCode());
     }
@@ -151,34 +141,28 @@ public class GrammarTest
     public void names() throws IOException
     {
         Grammar grammar = grammar(V2,
-            Paths.get("src/test/resources/org/antlr/bazel/data.g"));
+            path("examples/antlr2/Calc/src/main/antlr2/calc.g"));
         assertEquals(JAVA, grammar.language);
-        assertEquals(Namespace.of("java"), grammar.namespace);
-        assertEquals("java", grammar.getNamespacePath().toString());
-        assertArrayEquals(Arrays.asList("DataParser", "DataLexer", "data").toArray(),
+        assertEquals(Namespace.of("calc"), grammar.namespace);
+        assertEquals("calc", grammar.getNamespacePath().toString());
+        assertArrayEquals(
+            Arrays.asList("CalcParser", "CalcLexer", "CalcTreeWalker", "calc").toArray(),
             grammar.names.toArray());
-        assertEquals("data.g", grammar.toString());
 
-        grammar = grammar(V2, Paths.get("src/test/resources/org/antlr/bazel//subc.g"));
+        grammar = grammar(V2,
+            path("examples/antlr2/InheritTinyC/src/main/antlr2/subc.g"));
         assertEquals(JAVA, grammar.language);
         assertEquals(Namespace.of(""), grammar.namespace);
         assertEquals("", grammar.getNamespacePath().toString());
         assertArrayEquals(Arrays.asList("MyCParser", "subc").toArray(),
             grammar.names.toArray());
 
-        grammar = grammar(V3, Paths.get("src/test/resources/org/antlr/bazel/Lang.g"));
-        assertEquals(JAVASCRIPT, grammar.language);
-        assertEquals(Namespace.of(""), grammar.namespace);
-        assertEquals("", grammar.getNamespacePath().toString());
-        assertArrayEquals(Arrays.asList("Lang").toArray(), grammar.names.toArray());
-
-        grammar = grammar(V3,
-            Paths.get("src/test/resources/org/antlr/bazel/LangDumpDecl.g"));
-        assertEquals(C, grammar.language);
-        assertEquals(Namespace.of(""), grammar.namespace);
-        assertEquals("", grammar.getNamespacePath().toString());
-        assertArrayEquals(Arrays.asList("LangDumpDecl").toArray(),
-            grammar.names.toArray());
+        grammar = grammar(V3, path("examples/antlr3/DetectLanguage/src/main/antlr3/T.g"));
+        assertEquals(CSHARP, grammar.language);
+        assertEquals(Namespace.of("Antlr.Examples.HoistedPredicates"), grammar.namespace);
+        assertEquals("Antlr/Examples/HoistedPredicates",
+            grammar.getNamespacePath().toString());
+        assertArrayEquals(Arrays.asList("T").toArray(), grammar.names.toArray());
     }
 
 
@@ -365,5 +349,20 @@ public class GrammarTest
     private Grammar grammar(Version version, Path path) throws IOException
     {
         return new Grammar(version, path, null, null, StandardCharsets.UTF_8, null);
+    }
+
+
+    private Path path(String path)
+    {
+        Path file = Paths.get(path);
+
+        // the folder structure is different when running under Bazel as the examples
+        // directory is linked under the "external" directory
+        if (Files.notExists(file))
+        {
+            file = Paths.get("external").resolve(path);
+        }
+
+        return file;
     }
 }

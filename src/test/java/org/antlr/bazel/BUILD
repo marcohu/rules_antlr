@@ -3,7 +3,11 @@ load("//tools:gen_test_rules.bzl", "java_tests")
 java_library(
     name = "tests",
     srcs = glob(["*.java"]),
-    data = ["//src/test/resources/org/antlr/bazel:srcs"],
+    data = [
+        "@examples//antlr2:srcs",
+        "@examples//antlr3:srcs",
+        "@examples//antlr4:srcs",
+    ],
     deps = [
         "@guava//jar",
         "@jimfs//jar",
