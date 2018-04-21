@@ -23,25 +23,25 @@ import org.junit.Test;
  */
 public class Antlr4Test extends BazelTestSupport
 {
-
     @Test
     public void detectLanguage() throws Exception
     {
         Path bin = build("//antlr4/DetectLanguage:cpp");
         Path srcjar = bin.resolve("antlr4/DetectLanguage/cpp.srcjar");
+
         assertContents(srcjar,
-            "Hello.interp",
-            "Hello.tokens",
-            "HelloBaseListener.cpp",
-            "HelloBaseListener.h",
-            "HelloLexer.cpp",
-            "HelloLexer.h",
-            "HelloLexer.interp",
-            "HelloLexer.tokens",
-            "HelloListener.cpp",
-            "HelloListener.h",
-            "HelloParser.cpp",
-            "HelloParser.h");
+            "Cpp.interp",
+            "Cpp.tokens",
+            "CppBaseListener.cpp",
+            "CppBaseListener.h",
+            "CppLexer.cpp",
+            "CppLexer.h",
+            "CppLexer.interp",
+            "CppLexer.tokens",
+            "CppListener.cpp",
+            "CppListener.h",
+            "CppParser.cpp",
+            "CppParser.h");
     }
 
 
@@ -56,26 +56,21 @@ public class Antlr4Test extends BazelTestSupport
                 .classpath(project.antlr4())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
-                .grammars(project.grammars())
+                .grammars(project.grammars("G3.g4"))
                 .namespace("a")
                 .args(project.args("-package", "a", "-lib", "src/main/antlr4/imports"))
                 .generate();
 
-            project.validate("a/G3.tokens",
-                "a/G2Listener.java",
-                "a/G3Listener.java",
-                "a/G1BaseListener.java",
-                "a/G3BaseListener.java",
-                "a/G1Listener.java",
-                "a/G3.interp",
-                "a/G3Parser.java",
+            project.validate("a/G1.interp",
                 "a/G1.tokens",
-                "a/G2.interp",
-                "a/G1.interp",
+                "a/G1BaseListener.java",
+                "a/G1Listener.java",
                 "a/G1Parser.java",
+                "a/G2.interp",
+                "a/G2.tokens",
                 "a/G2BaseListener.java",
-                "a/G2Parser.java",
-                "a/G2.tokens");
+                "a/G2Listener.java",
+                "a/G2Parser.java");
         }
     }
 
@@ -269,47 +264,85 @@ public class Antlr4Test extends BazelTestSupport
                 .args(project.args())
                 .generate();
 
-            project.validate("GrammarLexerATN.swift",
-                "GrammarLexer.interp",
-                "GrammarLexer.swift",
-                "GrammarLexer.tokens",
-                "GrammarParserBaseListener.swift",
-                "GrammarParser.interp",
-                "GrammarParserListener.swift",
-                "GrammarParserParserATN.swift",
-                "GrammarParser.swift",
-                "GrammarParser.tokens",
-                "hellau_lexer.go",
-                "HellauLexer.interp",
-                "HellauLexer.tokens",
-                "hellauparser_base_listener.go",
-                "hellau_parser.go",
-                "HellauParser.interp",
-                "hellauparser_listener.go",
-                "HellauParser.tokens",
-                "java/HelloBaseListener.java",
-                "java/Hello.interp",
-                "java/HelloLexer.interp",
-                "java/HelloLexer.java",
-                "java/HelloLexer.py",
-                "java/HelloLexer.tokens",
-                "java/HelloListener.java",
-                "java/HelloListener.py",
-                "java/HelloParser.java",
-                "java/HelloParser.py",
-                "java/hellos_base_listener.go",
-                "java/HellosBaseListener.java",
-                "java/Hellos.interp",
-                "java/hellos_lexer.go",
-                "java/HellosLexer.interp",
-                "java/HellosLexer.java",
-                "java/HellosLexer.tokens",
-                "java/hellos_listener.go",
-                "java/HellosListener.java",
-                "java/hellos_parser.go",
-                "java/HellosParser.java",
-                "java/Hellos.tokens",
-                "java/Hello.tokens");
+            project.validate("Cpp.interp",
+                "Cpp.tokens",
+                "CppBaseListener.cpp",
+                "CppBaseListener.h",
+                "CppLexer.cpp",
+                "CppLexer.h",
+                "CppLexer.interp",
+                "CppLexer.tokens",
+                "CppListener.cpp",
+                "CppListener.h",
+                "CppParser.cpp",
+                "CppParser.h",
+                "CSharp.interp",
+                "CSharp.tokens",
+                "CSharpBaseListener.cs",
+                "CSharpLexer.cs",
+                "CSharpLexer.interp",
+                "CSharpLexer.tokens",
+                "CSharpListener.cs",
+                "CSharpParser.cs",
+                "go_base_listener.go",
+                "go_lexer.go",
+                "go_listener.go",
+                "go_parser.go",
+                "goau_lexer.go",
+                "goau_parser.go",
+                "goauparser_base_listener.go",
+                "goauparser_listener.go",
+                "gos_base_listener.go",
+                "gos_lexer.go",
+                "gos_listener.go",
+                "gos_parser.go",
+                "java/Java.interp",
+                "java/Java.tokens",
+                "java/JavaBaseListener.java",
+                "java/JavaLexer.interp",
+                "java/JavaLexer.java",
+                "java/JavaLexer.tokens",
+                "java/JavaListener.java",
+                "java/JavaParser.java",
+                "java/Javas.interp",
+                "java/Javas.tokens",
+                "java/JavasBaseListener.java",
+                "java/JavasLexer.interp",
+                "java/JavasLexer.java",
+                "java/JavasLexer.tokens",
+                "java/JavasListener.java",
+                "java/JavasParser.java",
+                "JavaScript.interp",
+                "JavaScript.tokens",
+                "JavaScriptLexer.interp",
+                "JavaScriptLexer.js",
+                "JavaScriptLexer.tokens",
+                "JavaScriptListener.js",
+                "JavaScriptParser.js",
+                "Python2.interp",
+                "Python2.tokens",
+                "Python2Lexer.interp",
+                "Python2Lexer.py",
+                "Python2Lexer.tokens",
+                "Python2Listener.py",
+                "Python2Parser.py",
+                "Python3.interp",
+                "Python3.tokens",
+                "Python3Lexer.interp",
+                "Python3Lexer.py",
+                "Python3Lexer.tokens",
+                "Python3Listener.py",
+                "Python3Parser.py",
+                "Swift.interp",
+                "Swift.tokens",
+                "SwiftBaseListener.swift",
+                "SwiftLexer.interp",
+                "SwiftLexer.swift",
+                "SwiftLexer.tokens",
+                "SwiftLexerATN.swift",
+                "SwiftListener.swift",
+                "SwiftParser.swift",
+                "SwiftParserATN.swift");
         }
     }
 

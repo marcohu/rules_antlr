@@ -1,5 +1,5 @@
-grammar Hello;
-options { language=CSharp; }
+grammar Java;
+options { language=Java; }
 r  : 'hello' ID ;         // match keyword hello followed by an identifier
 ID : [a-z]+ ;             // match lower-case identifiers
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

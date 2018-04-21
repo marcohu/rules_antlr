@@ -1,5 +1,5 @@
-grammar Hello;
-options { language=Swift; }
+grammar CSharp;
+options { language=CSharp; }
 r  : 'hello' ID ;         // match keyword hello followed by an identifier
 ID : [a-z]+ ;             // match lower-case identifiers
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

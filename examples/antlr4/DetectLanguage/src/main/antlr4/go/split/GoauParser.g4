@@ -1,6 +1,6 @@
-parser grammar HellauParser;
+parser grammar GoauParser;
 options { 
-	tokenVocab	= HellauLexer;
+	tokenVocab	= GoauLexer;
 	language	= Go;
 }
 

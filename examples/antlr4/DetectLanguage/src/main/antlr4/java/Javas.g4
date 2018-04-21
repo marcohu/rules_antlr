@@ -1,4 +1,4 @@
-grammar Hellos;
+grammar Javas;
 options { language=Java; }
 r  : 'hello' ID ;         // match keyword hello followed by an identifier
 ID : [a-z]+ ;             // match lower-case identifiers
