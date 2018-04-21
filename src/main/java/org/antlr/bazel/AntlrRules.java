@@ -21,6 +21,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -479,7 +480,7 @@ public class AntlrRules
                 encoding,
                 layout);
 
-            Collection<Grammar> files = result.get(grammar.namespace);
+            List<Grammar> files = (List<Grammar>) result.get(grammar.namespace);
 
             if (files == null)
             {
@@ -488,6 +489,9 @@ public class AntlrRules
             }
 
             files.add(grammar);
+
+            // enforce order to avoid problems with imported grammars
+            Collections.sort(files);
         }
 
         return result;

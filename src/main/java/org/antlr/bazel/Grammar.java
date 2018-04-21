@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  *
  * @author  Marco Hunsicker
  */
-class Grammar
+class Grammar implements Comparable<Grammar>
 {
     /** The used encoding. */
     public final Charset encoding;
@@ -69,6 +69,25 @@ class Grammar
         this.names = detectNames(version, text);
         this.imports = detectImports(text);
     }
+
+    @Override
+    public int compareTo(Grammar other)
+    {
+        if (imports.isEmpty())
+        {
+            if (!other.imports.isEmpty())
+            {
+                return 1;
+            }
+            else if (other.imports.isEmpty())
+            {
+                return -1;
+            }
+        }
+
+        return 0;
+    }
+
 
     /**
      * Returns the corresponding namespace path.
