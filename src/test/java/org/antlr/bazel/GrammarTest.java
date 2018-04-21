@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -15,6 +17,7 @@ import static org.antlr.bazel.Language.*;
 import static org.antlr.bazel.Version.*;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 
@@ -26,6 +29,36 @@ import org.junit.Test;
 public class GrammarTest
 {
     @Test
+    public void compare() throws IOException
+    {
+        List<Grammar> g = Arrays.asList(
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")),
+            grammar(V4,
+                Paths.get(
+                    "examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")));
+
+        List<Grammar> expected = Arrays.asList(
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/Nested.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
+
+        Collections.sort(g);
+
+        assertEquals(expected, g);
+    }
+
+
+    @Test
     public void detectHeader() throws IOException
     {
         try (FileSystem fs = fs(Configuration.unix(), 2))
@@ -35,6 +68,34 @@ public class GrammarTest
             assertEquals(Namespace.of("java"), g.namespace);
             assertEquals("java", g.getNamespacePath().toString());
         }
+    }
+
+
+    @Test
+    public void equals() throws IOException
+    {
+        Grammar g1 = grammar(V4,
+            Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4"));
+        assertEquals(g1, g1);
+        assertEquals(
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")),
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G3.g4")));
+        assertNotEquals(g1,
+            grammar(V4,
+                Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G2.g4")));
+        assertNotEquals(g1, null);
+        assertNotEquals(g1, new String());
+    }
+
+
+    @Test
+    public void hashcode() throws IOException
+    {
+        Path path = Paths.get("examples/antlr4/InheritSameFolder/src/main/antlr4/G1.g4");
+        Grammar g = grammar(V4, path);
+        assertEquals(31 + path.hashCode(), g.hashCode());
     }
 
 

@@ -79,13 +79,36 @@ class Grammar implements Comparable<Grammar>
             {
                 return 1;
             }
-            else if (other.imports.isEmpty())
-            {
-                return -1;
-            }
+        }
+        else if (other.imports.isEmpty())
+        {
+            return -1;
+        }
+        else if (imports.contains(Strings.stripFileExtension(other.toString())))
+        {
+            return -1;
         }
 
         return 0;
+    }
+
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (this == other)
+        {
+            return true;
+        }
+
+        if ((other == null) || (getClass() != other.getClass()))
+        {
+            return false;
+        }
+
+        Grammar that = (Grammar) other;
+
+        return path.equals(that.path);
     }
 
 
@@ -99,6 +122,13 @@ class Grammar implements Comparable<Grammar>
         // flat layout might be forced for namespace
         return path.getFileSystem()
             .getPath(layout.isFlat() ? "" : namespace.toPath(language));
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return 31 + path.hashCode();
     }
 
 
