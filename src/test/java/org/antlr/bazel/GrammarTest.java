@@ -18,6 +18,8 @@ import static org.antlr.bazel.Version.*;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 
@@ -133,6 +135,12 @@ public class GrammarTest
                 "grammar Simple;\nimport A,B,C;".getBytes(StandardCharsets.UTF_8));
             g = grammar(V3, f);
             assertEquals(Arrays.asList("A, B, C").toString(), g.imports.toString());
+
+            g = grammar(V4, path("examples/antlr4/DetectLanguage/src/main/antlr4/swift/GrammarParser.g4"));
+            assertTrue(g.imports.isEmpty());
+
+            g = grammar(V4, path("examples/antlr3/InheritLibFolder/src/main/antlr3/lib/CommonLexer.g"));
+            assertTrue(g.imports.isEmpty());
         }
     }
 

@@ -144,22 +144,14 @@ class Grammar implements Comparable<Grammar>
         Collection<String> imports = new ArrayList<>();
 
         // strip blocks to avoid matching language specific import
-        String t = text.replaceAll("(?s)\\{.*?\\}", "");
-        Pattern p = Pattern.compile("import\\s*([^\\s,;]+)");
-        Matcher matcher = p.matcher(t);
+        Pattern p = Pattern.compile("import\\s+(.*?);");
+        Matcher matcher = p.matcher(text.replaceAll("(?s)\\{.*?\\}", ""));
 
         if (matcher.find())
         {
-            imports.add(matcher.group(1));
-
-            // unfortunately Java does not provide access to repeated capturing group
-            // matches, we therefore have to iterate over each group individually
-            Pattern group = Pattern.compile("\\s*,\\s*([^\\s,;]+)");
-            matcher = group.matcher(t.substring(matcher.end()));
-
-            while (matcher.find())
+            for (String type : matcher.group(1).split(","))
             {
-                imports.add(matcher.group(1));
+                imports.add(type.trim());
             }
         }
 
