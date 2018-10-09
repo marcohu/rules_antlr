@@ -223,6 +223,7 @@ public class AntlrRules
 
                             // source files should be stored below their corresponding
                             // package/namespace
+                            System.out.println("Adding " + file);
                             target = root.resolve(grammar.getNamespacePath().toString())
                                 .resolve(target.getFileName());
                         }
@@ -403,7 +404,7 @@ public class AntlrRules
      * @param   file      the generated source file.
      * @param   grammars  the processed grammars.
      *
-     * @return  the corresponding grammar.
+     * @return  the corresponding grammar, or null if it could not be found.
      */
     private Grammar findGrammar(Path file, Map<String, Grammar> grammars)
     {
@@ -428,8 +429,7 @@ public class AntlrRules
             }
         }
 
-        throw new IllegalStateException(
-            "Could not find matching grammar for " + file.getFileName());
+        return null;
     }
 
 
