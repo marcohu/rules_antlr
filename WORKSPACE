@@ -1,5 +1,8 @@
 workspace(name="rules_antlr")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 local_repository(
   name = "examples",
   path = "./examples",
@@ -24,18 +27,23 @@ http_jar(
 load("//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies(2, 3, 4)
 
-git_repository(
-    name = "io_bazel_rules_sass",
-    remote = "https://github.com/bazelbuild/rules_sass.git",
-    tag = "0.0.3",
-)
-load("@io_bazel_rules_sass//sass:sass.bzl", "sass_repositories")
-sass_repositories()
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "io_bazel_skydoc",
     remote = "https://github.com/bazelbuild/skydoc.git",
-    tag = "0.1.4",
+    tag = "0.2.0",
 )
-load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
+
+load("@io_bazel_skydoc//:setup.bzl", "skydoc_repositories")
 skydoc_repositories()
+
+load("@io_bazel_rules_sass//:package.bzl", "rules_sass_dependencies")
+rules_sass_dependencies()
+
+load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
+node_repositories()
+
+load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
+sass_repositories()
+
