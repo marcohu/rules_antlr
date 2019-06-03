@@ -45,7 +45,7 @@ def _generate(ctx):
 
     ctx.actions.run(
         arguments = [args],
-        inputs = ctx.files.srcs + ctx.files.imports + tool_inputs,
+        inputs = ctx.files.srcs + ctx.files.imports,
         outputs = [srcjar],
         mnemonic = "ANTLR2",
         executable = ctx.executable._tool,
@@ -58,6 +58,7 @@ def _generate(ctx):
         },
         input_manifests = input_manifests,
         progress_message = "Processing ANTLR 2 grammars",
+        tools = tool_inputs,
     )
 
 
