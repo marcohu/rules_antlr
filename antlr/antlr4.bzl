@@ -109,32 +109,38 @@ def _generate(ctx):
 
 antlr4 = rule(
     implementation = _generate,
+    doc = """
+Runs [ANTLR 4](https://www.antlr.org//) on a set of grammars.
+    """,
     attrs = {
-        "atn":            attr.bool(default=False),
-        "depend":         attr.bool(default=False),
+        "atn":            attr.bool(default=False, doc="Generate rule augmented transition network diagrams."),
+        "depend":         attr.bool(default=False, doc="Generate a list of file dependencies instead of parser and/or lexer."),
         "deps":           attr.label_list(default=[
                               Label("@antlr4_tool//jar"),
                               Label("@antlr4_runtime//jar"),
                               Label("@antlr3_runtime//jar"),
                               Label("@stringtemplate4//jar"),
                               Label("@javax_json//jar"),
-                          ]),
-        "encoding":       attr.string(default="UTF-8"),
-        "error":          attr.bool(default=False),
-        "force_atn":      attr.bool(default=False),
-        "imports":        attr.label_list(allow_files=True),
-        "language":       attr.string(),
-        "layout":         attr.string(),
-        "listener":       attr.bool(default=True),
-        "log":            attr.bool(default=False),
-        "long_messages":  attr.bool(default=False),
-        "message_format": attr.string(default="antlr"),
-        "no_listener":    attr.bool(default=False),
-        "no_visitor":     attr.bool(default=True),
-        "options":        attr.string_dict(),
-        "package":        attr.string(),
-        "srcs":           attr.label_list(allow_files=True, mandatory=True),
-        "visitor":        attr.bool(default=False),
+                          ], doc="""
+The dependencies to use. Defaults to the official ANTLR 4 release, but if
+you need to use a different version, you can specify the dependencies here.
+                        """),
+        "encoding":       attr.string(default="UTF-8", doc="The grammar file encoding, e.g. euc-jp."),
+        "error":          attr.bool(default=False, doc="Treat warnings as errors."),
+        "force_atn":      attr.bool(default=False, doc="Use the ATN simulator for all predictions."),
+        "imports":        attr.label_list(allow_files=True, doc="The grammar and .tokens files to import. Must be all in the same directory."),
+        "language":       attr.string(doc="The code generation target language. Either Cpp, CSharp, Go, JavaScript, Java, Python2, Python3 or Swift (case-sensitive)."),
+        "layout":         attr.string(doc=""),
+        "listener":       attr.bool(default=True, doc="Generate parse tree listener."),
+        "log":            attr.bool(default=False, doc="Dump lots of logging info to antlr-timestamp.log."),
+        "long_messages":  attr.bool(default=False, doc="Show exception details when available for errors and warnings."),
+        "message_format": attr.string(default="antlr", doc="The output style for messages. Either antlr, gnu or vs2005."),
+        "no_listener":    attr.bool(default=False, doc="Do not generate parse tree listener."),
+        "no_visitor":     attr.bool(default=True, doc="Do not generate parse tree visitor."),
+        "options":        attr.string_dict(doc="Set/override grammar-level options."),
+        "package":        attr.string(doc="The package/namespace for the generated code."),
+        "srcs":           attr.label_list(allow_files=True, mandatory=True, doc="The grammar files to process."),
+        "visitor":        attr.bool(default=False, doc="Generate parse tree visitor."),
         "_tool":          attr.label(
                               executable=True,
                               cfg="host",

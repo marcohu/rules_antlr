@@ -145,41 +145,46 @@ def _generate(ctx):
 
 antlr3 = rule(
     implementation = _generate,
+    doc = "Runs [ANTLR 3](https://www.antlr3.org//) on a set of grammars.",
     attrs = {
-        "debug":                attr.bool(default=False),
-        "depend":               attr.bool(default=False),
+        "debug":                attr.bool(default=False, doc="Generate a parser that emits debugging events."),
+        "depend":               attr.bool(default=False, doc="Generate file dependencies; don't actually run antlr."),
         "deps":                 attr.label_list(default=[
                                     Label("@antlr3_runtime//jar"),
                                     Label("@antlr3_tool//jar"),
                                     Label("@stringtemplate4//jar"),
-                                ]),
-        "dfa":                  attr.bool(default=False),
-        "dump":                 attr.bool(default=False),
-        "imports":              attr.label_list(allow_files=True),
-        "language":             attr.string(),
-        "message_format":       attr.string(),
-        "nfa":                  attr.bool(default=False),
-        "profile":              attr.bool(default=False),
-        "report":               attr.bool(default=False),
-        "srcs":                 attr.label_list(allow_files=True, mandatory=True),
-        "trace":                attr.bool(default=False),
-        "Xconversiontimeout":   attr.int(),
-        "Xdbgconversion":       attr.bool(default=False),
-        "Xdbgst":               attr.bool(default=False),
-        "Xdfa":                 attr.bool(default=False),
-        "Xdfaverbose":          attr.bool(default=False),
-        "Xgrtree":              attr.bool(default=False),
-        "Xm":                   attr.int(),
-        "Xmaxdfaedges":         attr.int(),
-        "Xmaxinlinedfastates":  attr.int(),
-        "Xminswitchalts":       attr.int(),
-        "Xmultithreaded":       attr.bool(default=False),
-        "Xnfastates":           attr.bool(default=False),
-        "Xnocollapse":          attr.bool(default=False),
-        "Xnoprune":             attr.bool(default=False),
-        "Xnomergestopstates":   attr.bool(default=False),
-        "XsaveLexer":           attr.bool(default=False),
-        "Xwatchconversion":     attr.bool(default=False),
+                                ], doc="""
+The dependencies to use. Defaults to the most recent ANTLR 3 release,
+but if you need to use a different version, you can specify the
+dependencies here.
+"""),
+        "dfa":                  attr.bool(default=False, doc="Generate a DFA for each decision point."),
+        "dump":                 attr.bool(default=False, doc="Print out the grammar without actions."),
+        "imports":              attr.label_list(allow_files=True, doc="The grammar and .tokens files to import. Must be all in the same directory."),
+        "language":             attr.string(doc="The code generation target language. Either C, Cpp, CSharp2, CSharp3, JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive)."),
+        "message_format":       attr.string(doc="Specify output style for messages."),
+        "nfa":                  attr.bool(default=False, doc="Generate an NFA for each rule."),
+        "profile":              attr.bool(default=False, doc="Generate a parser that computes profiling information."),
+        "report":               attr.bool(default=False, doc="Print out a report about the grammar(s) processed."),
+        "srcs":                 attr.label_list(allow_files=True, mandatory=True, doc="The grammar files to process."),
+        "trace":                attr.bool(default=False, doc="Generate a parser with trace output. If the default output is not enough, you can override the traceIn and traceOut methods."),
+        "Xconversiontimeout":   attr.int(doc="Set NFA conversion timeout for each decision."),
+        "Xdbgconversion":       attr.bool(default=False, doc="Dump lots of info during NFA conversion."),
+        "Xdbgst":               attr.bool(default=False, doc="Put tags at start/stop of all templates in output."),
+        "Xdfa":                 attr.bool(default=False, doc="Print DFA as text."),
+        "Xdfaverbose":          attr.bool(default=False, doc="Generate DFA states in DOT with NFA configs."),
+        "Xgrtree":              attr.bool(default=False, doc="Print the grammar AST."),
+        "Xm":                   attr.int(doc="Max number of rule invocations during conversion."),
+        "Xmaxdfaedges":         attr.int(doc="Max &quot;comfortable&quot; number of edges for single DFA state."),
+        "Xmaxinlinedfastates":  attr.int(doc="Max DFA states before table used rather than inlining."),
+        "Xminswitchalts":       attr.int(doc="Don't generate switch() statements for dfas smaller than given number."),
+        "Xmultithreaded":       attr.bool(default=False, doc="Run the analysis in 2 threads."),
+        "Xnfastates":           attr.bool(default=False, doc="For nondeterminisms, list NFA states for each path."),
+        "Xnocollapse":          attr.bool(default=False, doc="Collapse incident edges into DFA states."),
+        "Xnoprune":             attr.bool(default=False, doc="Do not test EBNF block exit branches."),
+        "Xnomergestopstates":   attr.bool(default=False, doc="Max DFA states before table used rather than inlining."),
+        "XsaveLexer":           attr.bool(default=False, doc="For nondeterminisms, list NFA states for each path."),
+        "Xwatchconversion":     attr.bool(default=False, doc="Don't delete temporary lexers generated from combined grammars."),
         "_tool":          attr.label(
                               executable=True,
                               cfg="host",
@@ -189,45 +194,4 @@ antlr3 = rule(
         "src_jar": "%{name}.srcjar",
     },
 )
-""" Runs [ANTLR 3](https://www.antlr.org//) on a set of grammars.
 
-Args:
-    debug:                  Generate a parser that emits debugging events.
-    depend:                 Generate file dependencies; don't actually run antlr.
-    deps:                   The dependencies to use. Defaults to the most recent ANTLR 3 release,
-                            but if you need to use a different version, you can specify the
-                            dependencies here.
-    dfa:                    Generate a DFA for each decision point.
-    imports:                The grammar and .tokens files to import. Must be all in the same directory.
-    language:               The code generation target language. Either C, Cpp, CSharp2, CSharp3,
-                            JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).
-    message_format:         Specify output style for messages.
-    nfa:                    Generate an NFA for each rule.
-    dump:                   Print out the grammar without actions.
-    profile:                Generate a parser that computes profiling information.
-    report:                 Print out a report about the grammar(s) processed.
-    srcs:                   The grammar files to process.
-    trace:                  Generate a parser with trace output. If the default output is not
-                            enough, you can override the traceIn and traceOut methods.
-    Xgrtree:                Print the grammar AST.
-    Xdfa:                   Print DFA as text.
-    Xnoprune:               Do not test EBNF block exit branches.
-    Xnocollapse:            Collapse incident edges into DFA states.
-    Xdbgconversion:         Dump lots of info during NFA conversion.
-    Xmultithreaded:         Run the analysis in 2 threads.
-    Xnomergestopstates:     Do not merge stop states.
-    Xdfaverbose:            Generate DFA states in DOT with NFA configs.
-    Xwatchconversion:       Print a message for each NFA before converting.
-    Xdbgst:                 Put tags at start/stop of all templates in output.
-    Xm:                     Max number of rule invocations during conversion.
-    Xmaxdfaedges:           Max "comfortable" number of edges for single DFA state.
-    Xminswitchalts:         Don't generate switch() statements for dfas smaller than given number.
-    Xconversiontimeout:     Set NFA conversion timeout for each decision.
-    Xmaxinlinedfastates:    Max DFA states before table used rather than inlining.
-    Xnfastates:             For nondeterminisms, list NFA states for each path.
-    Xsavelexer:             Don't delete temporary lexers generated from combined grammars.
-
-
-Outputs:
-    name.srcjar:            The .srcjar with the generated files.
-"""
