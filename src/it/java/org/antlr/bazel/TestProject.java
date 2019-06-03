@@ -40,7 +40,7 @@ class TestProject implements Closeable
      * Creates a new TestProject object.
      *
      * @param   project  the project name.
-     * @param   copy     if [@code true] the project files are copied into the test
+     * @param   copy     if {@code true} the project files are copied into the test
      *                   directory. Otherwise they are sym-linked.
      *
      * @throws  IOException  if an I/O error occurred.
