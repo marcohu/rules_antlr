@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 load("//tools:gen_test_rules.bzl", "java_tests")
 
 java_library(

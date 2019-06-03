@@ -16,6 +16,7 @@ java_library(
         "@jimfs//jar",
         "@junit//jar",
         "//src/main/java/org/antlr/bazel",
+        "//src/test/java/org/antlr/bazel:tests",
     ],
 )
 
@@ -43,6 +44,7 @@ java_library(
         "@jimfs//jar",
         "@junit//jar",
         "//src/main/java/org/antlr/bazel",
+        "//src/test/java/org/antlr/bazel:tests",
     ],
 )
 
@@ -72,6 +74,7 @@ java_library(
         "@jimfs//jar",
         "@junit//jar",
         "//src/main/java/org/antlr/bazel",
+        "//src/test/java/org/antlr/bazel:tests",
     ],
 )
 

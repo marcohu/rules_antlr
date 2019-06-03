@@ -30,14 +30,7 @@ class TestWorkspace
      */
     public TestWorkspace() throws IOException
     {
-        Path examples = Paths.get("examples");
-
-        // the folder structure is different when running under Bazel as the workspace
-        // is linked under the runfiles directory
-        if (Files.notExists(examples))
-        {
-            examples = Paths.get("external").resolve("examples").toRealPath();
-        }
+        Path examples = Projects.path("examples");
 
         assertTrue(Files.exists(examples));
 

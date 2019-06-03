@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -362,15 +361,6 @@ public class GrammarTest
 
     private Path path(String path)
     {
-        Path file = Paths.get(path);
-
-        // the folder structure is different when running under Bazel as the examples
-        // directory is linked under the "external" directory
-        if (Files.notExists(file))
-        {
-            file = Paths.get("external").resolve(path);
-        }
-
-        return file;
+        return Projects.path(path);
     }
 }
