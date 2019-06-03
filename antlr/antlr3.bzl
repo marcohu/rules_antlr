@@ -57,7 +57,7 @@ def _generate(ctx):
     if ctx.attr.nfa:
         args.add("-nfa")
 
-    output_dir = ctx.configuration.genfiles_dir.path
+    output_dir = ctx.configuration.genfiles_dir.path + "/rules_antlr"
     args.add("-o")
     args.add(output_dir)
 

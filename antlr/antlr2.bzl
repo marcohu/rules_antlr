@@ -24,7 +24,7 @@ def _generate(ctx):
         args.add("-glib")
         args.add(";".join([x.path for x in ctx.files.imports]))
 
-    output_dir = ctx.configuration.genfiles_dir.path
+    output_dir = ctx.configuration.genfiles_dir.path + "/rules_antlr"
     args.add("-o")
     args.add(output_dir)
 
