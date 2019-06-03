@@ -23,6 +23,7 @@ java_library(
 java_tests(
     name = "antlr2",
     test_files = glob(["Antlr2Test.java"]),
+    default_test_size = "enormous",
     deps = [":antlr2_tests"],
 )
 
@@ -51,6 +52,7 @@ java_library(
 java_tests(
     name = "antlr3",
     test_files = glob(["Antlr3Test.java"]),
+    default_test_size = "enormous",
     deps = [":antlr3_tests"],
 )
 
@@ -81,6 +83,7 @@ java_library(
 java_tests(
     name = "antlr4",
     test_files = glob(["Antlr4Test.java"]),
+    default_test_size = "enormous",
     deps = [":antlr4_tests"],
 )
 
