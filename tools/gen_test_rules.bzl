@@ -36,7 +36,7 @@ def java_tests(name,
                  flaky_tests=[],
                  tags=[],
                  prefix="",
-                 jvm_flags=["-XX:MaxPermSize=128m"],
+                 jvm_flags=[],
                  args=[],
                  visibility=None,
                  shard_count=1):
