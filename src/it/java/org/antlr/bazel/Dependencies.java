@@ -129,11 +129,11 @@ class Dependencies
                         .getPathMatcher("glob:**/*.jar");
                     PathMatcher antlr4 = base.getFileSystem()
                         .getPathMatcher(
-                            "regex:.*(antlr4|antlr4-runtime|antlr-runtime|ST4|javax.json)-.*.jar");
+                            "regex:.*(antlr._tool|antlr._runtime|stringtemplate4|javax_json)/jar/downloaded.jar");
                     PathMatcher antlr3 = base.getFileSystem()
-                        .getPathMatcher("regex:.*/(antlr-3|antlr-runtime|ST4).*.jar");
+                        .getPathMatcher("regex:.*/(antlr3_tool|antlr3_runtime|stringtemplate4)/jar/downloaded.jar");
                     PathMatcher antlr2 = base.getFileSystem()
-                        .getPathMatcher("glob:**/antlr-2*.jar");
+                        .getPathMatcher("glob:**/antlr2/jar/downloaded.jar");
 
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
