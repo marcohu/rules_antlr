@@ -311,7 +311,7 @@ public class AntlrRules
         Class<?> $Tool = loader.loadClass("antlr.Tool");
 
         $Tool.getDeclaredMethod("doEverything", String[].class)
-            .invoke($Tool.newInstance(), new Object[] { args });
+            .invoke($Tool.getDeclaredConstructor().newInstance(), new Object[] { args });
     }
 
 
