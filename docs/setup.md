@@ -6,13 +6,13 @@ the external repository:
 ```python
 http_archive(
     name = "rules_antlr",
-    sha256 = "acd2a25f31aeeea5f58cdb434ae109d03826ae7cc11fe9efce1740102e3f4531",
-    strip_prefix = "rules_antlr-0.1.0",
-    urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
+    sha256 = "",
+    strip_prefix = "rules_antlr-0.2.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.2.0.tar.gz"],
 )
 ```
 
-Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file. For the current ANTLR release:
+Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file. For the most recent supported ANTLR release:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
@@ -20,7 +20,7 @@ load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies()
 ```
 
-If you need a different version or want to make the version explicit, you can specify the version number:
+If you need a different version or want to make the version explicit, you can specify the version number. Either specify just the major version:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
@@ -28,27 +28,45 @@ load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies(4)
 ```
 
+Or better make the version explicit to avoid coupling:
+
+```python
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+
+antlr_dependencies(472)
+```
+
+The currently supported integer release numbers are:
+
+| Release  | Provided Versions|
+|----------|------------------|
+| 4        | 471, 472         |
+| 3        | 352              |
+| 2        | 277              |
+
 If you require several releases, you can specify several versions at once:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 
-antlr_dependencies(2, 3, 4)
+antlr_dependencies(277, 352, 472)
 ```
-But be careful when updating to a new ANTLR rules version as the bundled dependencies
-might change with each release. Alternatively you can pull the necessary dependencies yourself to
-avoid coupling. For ANTLR 4.7.1:
+
+If you don't use explicit versions, be careful when updating to a new rules_antlr
+release as the bundled dependencies might change. If your preferred ANTLR
+release is not supported out-of-the-box, you can pull the necessary dependencies
+yourself. E.g. for ANTLR 4.7:
 
 ```python
 http_jar(
     name = "antlr4_runtime",
-    url = "http://central.maven.org/maven2/org/antlr/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
-    sha256 = "43516d19beae35909e04d06af6c0c58c17bc94e0070c85e8dc9929ca640dc91d",
+    url = "http://central.maven.org/maven2/org/antlr/antlr4-runtime/4.7/antlr4-runtime-4.7.jar",
+    sha256 = "2a61943f803bbd1d0e02dffd19b92a418f83340c994346809e3b51e2231aa6c0",
 )
 http_jar(
     name = "antlr4_tool",
-    url = "http://central.maven.org/maven2/org/antlr/antlr4/4.7.1/antlr4-4.7.1.jar",
-    sha256 = "a2cdc2f2f8eb893728832568dc54d080eb5a1495edb3b66e51b97122a60a0d87",
+    url = "http://central.maven.org/maven2/org/antlr/antlr4/4.7/antlr4-4.7.jar",
+    sha256 = "7867257028b3373af011dee7b6ce9b587a8fd5c7a0b25f68b2ff4cb90be8aa07",
 )
 http_jar(
     name = "antlr3_runtime",
@@ -69,14 +87,17 @@ http_jar(
 
 Look at the source code of
 [`deps.bzl`](https://github.com/marcohu/rules_antlr/tree/master/antlr/deps.bzl) for the
-default dependency names. You are not required to use these exact names. But if you don't, you have to list the dependencies explicitly on rule
-invocation.
+default dependency names. You are not required to use these exact names. But if you don't, you have to provide your dependencies explicitly on rule
+invocation via the `deps` parameter.
 
 
-As a convenience there is also a shortcut for the ["optimized" fork](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
+As a convenience there is also a shortcut for the ["optimized" ANTLR4 fork](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
 
 ```python
 load("@rules_antlr//antlr:deps.bzl", "antlr_optimized_dependencies")
 
-antlr_optimized_dependencies()
+antlr_optimized_dependencies(472)
 ```
+
+It should support the same versions as the official ANTLR release.
+

@@ -2,37 +2,58 @@
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 
+v4 = [4, 471, 472]
+v3 = [3, 352]
+v2 = [2, 277]
+
 def antlr_dependencies(*versions):
     """ Loads the dependencies for the specified ANTLR releases. """
     if versions:
         skipAntlr3 = False
         versions = sorted(versions)
         for version in versions:
-            if (version == 4):
-                _antlr4_dependencies(skipAntlr3)
-            elif (version == 3):
+            if (version == 4 or version == 472):
+                _antlr472_dependencies(skipAntlr3)
+            elif (version == 471):
+                _antlr471_dependencies(skipAntlr3)
+            elif (version == 3 or version == 352):
                 _antlr3_dependencies()
                 skipAntlr3 = True
-            elif (version == 2):
+            elif (version == 2 or version == 272):
                 _antlr2_dependencies()
             else:
-                fail("Invalid ANTLR version provided: {0}. Currently supported are 2, 3, 4".format(version))
+                fail("Invalid ANTLR version provided: {0}. Currently supported are: {1}".format(version, v4 + v3 + v2))
     else:
-        _antlr4_dependencies(False)
+        _antlr472_dependencies(False)
 
 def antlr_optimized_dependencies(*versions):
     """ Loads the dependencies for the "optimized" fork of ANTLR 4 maintained by Sam Harwell. """
     if versions:
         versions = sorted(versions)
         for version in versions:
-            if (version == 4):
-                _antlr4_optimized_dependencies()
+            if (version == 4 or version == 472):
+                _antlr472_optimized_dependencies()
+            elif (version == 471):
+                _antlr471_optimized_dependencies()
             else:
-                fail("Invalid ANTLR version provided: {0}. Currently supported is 4".format(version))
+                fail("Invalid ANTLR version provided: {0}. Currently supported are: {1}".format(version, v4))
     else:
-        _antlr4_optimized_dependencies()
+        _antlr472_optimized_dependencies()
 
-def _antlr4_dependencies(skipAntlr3=False):
+def _antlr472_dependencies(skipAntlr3=False):
+    http_jar(
+        name = "antlr4_runtime",
+        url = "http://central.maven.org/maven2/org/antlr/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar",
+        sha256 = "4c518b87d4bdff8b44cd8cbc1af816e944b62a3fe5b80b781501cf1f4759bbc4",
+    )
+    http_jar(
+        name = "antlr4_tool",
+        url = "http://central.maven.org/maven2/org/antlr/antlr4/4.7.2/antlr4-4.7.2.jar",
+        sha256 = "a3811fad1e4cb6dde62c189c204cf931c5fa40e06e43839ead4a9f2e188f2fe5",
+    )
+    _antlr4_transitive_dependencies(skipAntlr3)
+
+def _antlr471_dependencies(skipAntlr3=False):
     http_jar(
         name = "antlr4_runtime",
         url = "http://central.maven.org/maven2/org/antlr/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
@@ -45,7 +66,20 @@ def _antlr4_dependencies(skipAntlr3=False):
     )
     _antlr4_transitive_dependencies(skipAntlr3)
 
-def _antlr4_optimized_dependencies():
+def _antlr472_optimized_dependencies():
+    http_jar(
+        name = "antlr4_runtime",
+        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar",
+        sha256 = "fdec73953ba059034336a8e0b0ea5204f6897900bf0b0fa35347ce8a8bb88816",
+    )
+    http_jar(
+        name = "antlr4_tool",
+        url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4/4.7.2/antlr4-4.7.2.jar",
+        sha256 = "fcc2a0365de371d8676ab9b45c49aa2e784036a77b76383892887c89c5725ca3",
+    )
+    _antlr4_transitive_dependencies(False)
+
+def _antlr471_optimized_dependencies():
     http_jar(
         name = "antlr4_runtime",
         url = "http://central.maven.org/maven2/com/tunnelvisionlabs/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
@@ -99,3 +133,4 @@ def _antlr2_dependencies():
         url = "http://central.maven.org/maven2/antlr/antlr/2.7.7/antlr-2.7.7.jar",
         sha256 = "88fbda4b912596b9f56e8e12e580cc954bacfb51776ecfddd3e18fc1cf56dc4c",
     )
+
