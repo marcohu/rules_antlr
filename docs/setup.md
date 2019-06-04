@@ -4,6 +4,8 @@ To use the ANTLR rules, add the following to your [`WORKSPACE`](https://docs.baz
 the external repository:
 
 ```python
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+...
 http_archive(
     name = "rules_antlr",
     sha256 = "",
@@ -36,13 +38,13 @@ load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies(472)
 ```
 
-The currently supported integer release numbers are:
+The currently supported release numbers are:
 
-| Release  | Provided Versions|
-|----------|------------------|
-| 4        | 471, 472         |
-| 3        | 352              |
-| 2        | 277              |
+| Release  Stream | Supported Versions|
+|-----------------|-------------------|
+| 4               | 471, 472          |
+| 3               | 352               |
+| 2               | 277               |
 
 If you require several releases, you can specify several versions at once:
 
@@ -53,9 +55,10 @@ antlr_dependencies(277, 352, 472)
 ```
 
 If you don't use explicit versions, be careful when updating to a new rules_antlr
-release as the bundled dependencies might change. If your preferred ANTLR
-release is not supported out-of-the-box, you can pull the necessary dependencies
-yourself. E.g. for ANTLR 4.7:
+release as the bundled dependencies might change.
+
+If your preferred ANTLR release is not supported out-of-the-box, you can pull
+the necessary dependencies yourself. E.g. for ANTLR 4.7:
 
 ```python
 http_jar(
