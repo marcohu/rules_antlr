@@ -1,4 +1,5 @@
-# On trusty images, the Bazel apt repository can be used.
+dist: xenial
+
 addons:
   apt:
     sources:
