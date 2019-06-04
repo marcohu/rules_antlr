@@ -6,7 +6,8 @@
 # ANTLR Rules for Bazel
 
 These build rules are used for processing [ANTLR](https://www.antlr.org)
-grammars with [Bazel](https://bazel.build/).
+grammars with [Bazel](https://bazel.build/). Currently only Java targets are
+really usable due to shortcomings with the Bazel rules for other languages.
 
 <a name="toc"></a>
 ### Rules
@@ -23,11 +24,13 @@ file to include the external repository and load the external dependencies neces
 the [`antlr4`](#antlr4) rule:
 
 ```python
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+...
 http_archive(
     name = "rules_antlr",
-    sha256 = "acd2a25f31aeeea5f58cdb434ae109d03826ae7cc11fe9efce1740102e3f4531",
-    strip_prefix = "rules_antlr-0.1.0",
-    urls = ["https://github.com/marcohu/rules_antlr/archive/0.1.0.tar.gz"],
+    sha256 = "",
+    strip_prefix = "rules_antlr-0.2.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.2.0.tar.gz"],
 )
 
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
@@ -38,7 +41,7 @@ More detailed instructions can be found in the
 [Setup](https://github.com/marcohu/rules_antlr/tree/master/docs/setup.md) section.
 
 <a name="basic-example"></a>
-## Basic Example
+## Basic Java Example
 
 Suppose you have the following directory structure for a simple ANTLR project:
 
