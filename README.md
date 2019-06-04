@@ -28,7 +28,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
 ...
 http_archive(
     name = "rules_antlr",
-    sha256 = "",
+    sha256 = "932f0637acc20b67d90e68e47d019961105b00c5991a72ffee33bc1e58541734",
     strip_prefix = "rules_antlr-0.2.0",
     urls = ["https://github.com/marcohu/rules_antlr/archive/0.2.0.tar.gz"],
 )
