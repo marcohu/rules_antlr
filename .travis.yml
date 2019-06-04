@@ -8,7 +8,8 @@ addons:
     - bazel
 
 script:
-  - bazel test --jobs 2 --test_output=errors --test_timeout=3000 //...
+  - bazel version
+  - bazel test --jobs 2 --test_output=errors --test_verbose_timeout_warnings --test_timeout=300,300,900,3000 //...
   - bazel shutdown
 
 language: java
