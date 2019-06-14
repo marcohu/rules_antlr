@@ -89,9 +89,9 @@ antlr3(
 
 Refer to the rule reference documentation for the available rules and attributes:
 
-* <a href="#antlr4">ANTLR 4</a>
-* <a href="#antlr3">ANTLR 3</a>
-* <a href="#antlr2">ANTLR 2</a>
+* <a href="docs/antlr4.md">ANTLR 4</a>
+* <a href="docs/antlr3.md">ANTLR 3</a>
+* <a href="docs/antlr2.md">ANTLR 2</a>
 
 
 <a name="basic-example"></a>
