@@ -144,7 +144,7 @@ def _generate(ctx):
     )
 
 
-antlr3 = rule(
+antlr = rule(
     implementation = _generate,
     doc = "Runs [ANTLR 3](https://www.antlr3.org//) on a set of grammars.",
     attrs = {

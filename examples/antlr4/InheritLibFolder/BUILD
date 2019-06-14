@@ -1,8 +1,8 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr4.bzl", "antlr4", "imports")
+load("@rules_antlr//antlr:antlr4.bzl", "antlr", "imports")
 
-antlr4(
+antlr(
     name = "generated",
     srcs = glob(["src/main/antlr4/*.g4"]),
     imports = imports("src/main/antlr4/imports"),

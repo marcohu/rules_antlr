@@ -1,8 +1,8 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr3.bzl", "antlr3")
+load("@rules_antlr//antlr:antlr3.bzl", "antlr")
 
-antlr3(
+antlr(
     name = "csharp",
     srcs = ["src/main/antlr3/T.g"],
 )

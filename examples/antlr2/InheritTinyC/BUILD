@@ -1,8 +1,8 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr2.bzl", "antlr2")
+load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
-antlr2(
+antlr(
     name = "generated",
     srcs = ["src/main/antlr2/subc.g"],
     # to reference an existing grammar, you have to provide both the source and generated files.

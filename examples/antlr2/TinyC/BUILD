@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr2.bzl", "antlr2")
+load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
 filegroup(
     name = "srcs",
@@ -12,7 +12,7 @@ filegroup(
     srcs = ["src/main/antlr2/tinyc.g"],
 )
 
-antlr2(
+antlr(
     name = "generated",
     srcs = [":srcs"],
 )

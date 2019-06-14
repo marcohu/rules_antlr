@@ -107,7 +107,7 @@ def _generate(ctx):
     )
 
 
-antlr4 = rule(
+antlr = rule(
     implementation = _generate,
     doc = """
 Runs [ANTLR 4](https://www.antlr.org//) on a set of grammars.

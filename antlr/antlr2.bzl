@@ -62,7 +62,7 @@ def _generate(ctx):
     )
 
 
-antlr2 = rule(
+antlr = rule(
     implementation = _generate,
     doc = """
 Runs [ANTLR 2](https://www.antlr2.org//) on a set of grammars.

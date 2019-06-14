@@ -12,11 +12,20 @@ bzl_library(
     name = "rules",
     srcs = ["antlr4.bzl", "antlr3.bzl", "antlr2.bzl"],
 )
+
 stardoc(
-    name = "multi-docs",
-    input = "rules.bzl",
-    out = "rules.md",
-    symbol_names = ["antlr4", "antlr3", "antlr2"],
-    deps = [":rules"],
+    name = "antlr4",
+    input = "antlr4.bzl",
+    out = "antlr4.md",
+)
+stardoc(
+    name = "antlr3",
+    input = "antlr3.bzl",
+    out = "antlr3.md",
+)
+stardoc(
+    name = "antlr2",
+    input = "antlr2.bzl",
+    out = "antlr2.md",
 )
 

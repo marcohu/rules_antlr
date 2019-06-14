@@ -1,8 +1,8 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr4.bzl", "antlr4")
+load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
-antlr4(
+antlr(
     name = "generated",
     srcs = ["src/main/antlr4/Hello.g4"],
     options = {"language": "Swift"},
