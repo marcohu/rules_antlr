@@ -116,8 +116,8 @@ public class AntlrRules
 
     AntlrRules encoding(String encoding)
     {
-        this.encoding = (encoding != null) ? Charset.forName(encoding)
-                                           : Charset.defaultCharset();
+        this.encoding = encoding.isEmpty() ? Charset.defaultCharset()
+                                           : Charset.forName(encoding);
 
         return this;
     }
@@ -252,8 +252,7 @@ public class AntlrRules
 
     AntlrRules language(String language)
     {
-        this.language = ((language == null) || language.isEmpty())
-            ? null : Language.of(language);
+        this.language = language.isEmpty() ? null : Language.of(language);
 
         return this;
     }
@@ -261,7 +260,7 @@ public class AntlrRules
 
     AntlrRules layout(String layout)
     {
-        this.layout = ((layout == null) || layout.isEmpty()) ? null : layout;
+        this.layout = layout.isEmpty() ? null : layout;
 
         return this;
     }
@@ -269,8 +268,7 @@ public class AntlrRules
 
     AntlrRules namespace(String namespace)
     {
-        this.namespace = ((namespace == null) || namespace.isEmpty())
-            ? null : Namespace.of(namespace);
+        this.namespace = namespace.isEmpty() ? null : Namespace.of(namespace);
 
         return this;
     }

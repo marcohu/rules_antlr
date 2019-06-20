@@ -25,7 +25,7 @@ public class Antlr2Test
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("2")
-                .encoding(null)
+                .encoding("")
                 .classpath(project.antlr2())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())

@@ -12,7 +12,7 @@
 <pre>
 antlr(<a href="#antlr-name">name</a>, <a href="#antlr-atn">atn</a>, <a href="#antlr-depend">depend</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-encoding">encoding</a>, <a href="#antlr-error">error</a>, <a href="#antlr-force_atn">force_atn</a>, <a href="#antlr-imports">imports</a>, <a href="#antlr-language">language</a>,
       <a href="#antlr-layout">layout</a>, <a href="#antlr-listener">listener</a>, <a href="#antlr-log">log</a>, <a href="#antlr-long_messages">long_messages</a>, <a href="#antlr-message_format">message_format</a>, <a href="#antlr-no_listener">no_listener</a>,
-      <a href="#antlr-visitor">visitor</a>)
+      <a href="#antlr-no_visitor">no_visitor</a>, <a href="#antlr-options">options</a>, <a href="#antlr-package">package</a>, <a href="#antlr-srcs">srcs</a>, <a href="#antlr-visitor">visitor</a>)
 </pre>
 
 

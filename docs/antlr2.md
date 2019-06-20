@@ -10,8 +10,8 @@
 ## antlr
 
 <pre>
-antlr(<a href="#antlr-name">name</a>, <a href="#antlr-debug">debug</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-diagnostic">diagnostic</a>, <a href="#antlr-docbook">docbook</a>, <a href="#antlr-html">html</a>, <a href="#antlr-imports">imports</a>, <a href="#antlr-srcs">srcs</a>, <a href="#antlr-trace">trace</a>,
-      <a href="#antlr-traceTreeParser">traceTreeParser</a>)
+antlr(<a href="#antlr-name">name</a>, <a href="#antlr-debug">debug</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-diagnostic">diagnostic</a>, <a href="#antlr-docbook">docbook</a>, <a href="#antlr-html">html</a>, <a href="#antlr-imports">imports</a>, <a href="#antlr-language">language</a>, <a href="#antlr-package">package</a>,
+      <a href="#antlr-srcs">srcs</a>, <a href="#antlr-trace">trace</a>, <a href="#antlr-traceLexer">traceLexer</a>, <a href="#antlr-traceParser">traceParser</a>, <a href="#antlr-traceTreeParser">traceTreeParser</a>)
 </pre>
 
 
@@ -89,6 +89,24 @@ compile.
         <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a>; optional
         <p>
           The grammar file to import.
+        </p>
+      </td>
+    </tr>
+    <tr id="antlr-language">
+      <td><code>language</code></td>
+      <td>
+        String; optional
+        <p>
+          The code generation target language. Either Cpp, CSharp, Java or Python (case-sensitive).
+        </p>
+      </td>
+    </tr>
+    <tr id="antlr-package">
+      <td><code>package</code></td>
+      <td>
+        String; optional
+        <p>
+          The enclosing namespace to use for C++.
         </p>
       </td>
     </tr>

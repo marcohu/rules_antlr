@@ -14,7 +14,7 @@ antlr(<a href="#antlr-name">name</a>, <a href="#antlr-Xconversiontimeout">Xconve
       <a href="#antlr-Xgrtree">Xgrtree</a>, <a href="#antlr-Xm">Xm</a>, <a href="#antlr-Xmaxdfaedges">Xmaxdfaedges</a>, <a href="#antlr-Xmaxinlinedfastates">Xmaxinlinedfastates</a>, <a href="#antlr-Xminswitchalts">Xminswitchalts</a>,
       <a href="#antlr-Xmultithreaded">Xmultithreaded</a>, <a href="#antlr-Xnfastates">Xnfastates</a>, <a href="#antlr-Xnocollapse">Xnocollapse</a>, <a href="#antlr-Xnomergestopstates">Xnomergestopstates</a>, <a href="#antlr-Xnoprune">Xnoprune</a>,
       <a href="#antlr-XsaveLexer">XsaveLexer</a>, <a href="#antlr-Xwatchconversion">Xwatchconversion</a>, <a href="#antlr-debug">debug</a>, <a href="#antlr-depend">depend</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-dfa">dfa</a>, <a href="#antlr-dump">dump</a>, <a href="#antlr-imports">imports</a>,
-      <a href="#antlr-trace">trace</a>)
+      <a href="#antlr-language">language</a>, <a href="#antlr-message_format">message_format</a>, <a href="#antlr-nfa">nfa</a>, <a href="#antlr-package">package</a>, <a href="#antlr-profile">profile</a>, <a href="#antlr-report">report</a>, <a href="#antlr-srcs">srcs</a>, <a href="#antlr-trace">trace</a>)
 </pre>
 
 Runs [ANTLR 3](https://www.antlr3.org//) on a set of grammars.
@@ -272,6 +272,15 @@ dependencies here.
         </p>
       </td>
     </tr>
+    <tr id="antlr-package">
+      <td><code>package</code></td>
+      <td>
+        String; optional
+        <p>
+          The enclosing namespace to use for C++.
+        </p>
+      </td>
+    </tr>
     <tr id="antlr-profile">
       <td><code>profile</code></td>
       <td>
@@ -316,7 +325,7 @@ dependencies here.
 
 ## imports
 
-       <pre>
+<pre>
 imports(<a href="#imports-folder">folder</a>)
 </pre>
 

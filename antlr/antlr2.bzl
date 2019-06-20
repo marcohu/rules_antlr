@@ -1,11 +1,15 @@
 """Rules for ANTLR 2."""
 
+load("//antlr:internal/impl.bzl",
+    _antlr = "antlr"
+)
+
+
 def _generate(ctx):
-    """ Generates the source files. """
+    _antlr("2", ctx, _args)
 
-    if not ctx.files.srcs:
-        fail("No grammars provided, either add the srcs attribute or check your filespec", attr="srcs")
 
+def _args(ctx, output_dir):
     args = ctx.actions.args()
 
     if ctx.attr.debug:
@@ -24,7 +28,6 @@ def _generate(ctx):
         args.add("-glib")
         args.add(";".join([x.path for x in ctx.files.imports]))
 
-    output_dir = ctx.configuration.genfiles_dir.path + "/rules_antlr"
     args.add("-o")
     args.add(output_dir)
 
@@ -40,26 +43,7 @@ def _generate(ctx):
     if ctx.attr.traceTreeParser:
         args.add("-traceTreeParser")
 
-    srcjar = ctx.outputs.src_jar
-    tool_inputs, _, input_manifests=ctx.resolve_command(tools=ctx.attr.deps + [ctx.attr._tool])
-
-    ctx.actions.run(
-        arguments = [args],
-        inputs = ctx.files.srcs + ctx.files.imports,
-        outputs = [srcjar],
-        mnemonic = "ANTLR2",
-        executable = ctx.executable._tool,
-        env = {
-            "ANTLR_VERSION": "2",
-            "GRAMMARS": ",".join([f.path for f in ctx.files.srcs]),
-            "OUTPUT_DIRECTORY": output_dir,
-            "SRC_JAR": srcjar.path,
-            "TOOL_CLASSPATH": ",".join([f.path for f in tool_inputs]),
-        },
-        input_manifests = input_manifests,
-        progress_message = "Processing ANTLR 2 grammars",
-        tools = tool_inputs,
-    )
+    return args
 
 
 antlr = rule(
@@ -79,6 +63,8 @@ compile.
         "docbook":          attr.bool(default=False, doc="Generate a docbook SGML file from your grammar without actions and so on. It only works for parsers, not lexers or tree parsers."),
         "html":             attr.bool(default=False, doc="Generate a HTML file from your grammar without actions and so on. It only works for parsers, not lexers or tree parsers."),
         "imports":          attr.label_list(allow_files=True, doc="The grammar file to import."),
+        "language":         attr.string(doc="The code generation target language. Either Cpp, CSharp, Java or Python (case-sensitive)."),
+        "package":          attr.string(doc="The package/namespace for the generated code."),
         "srcs":             attr.label_list(allow_files=True, doc="The grammar files to process."),
         "trace":            attr.bool(default=False, doc="Have all rules call traceIn/traceOut."),
         "traceLexer":       attr.bool(default=False, doc="Have lexer rules call traceIn/traceOut."),

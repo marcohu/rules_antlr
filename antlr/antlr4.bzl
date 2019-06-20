@@ -1,29 +1,21 @@
 """Rules for ANTLR 4."""
 
+load("//antlr:internal/impl.bzl",
+    _antlr = "antlr",
+    _lib_dir = "lib_dir")
+
+
 def imports(folder):
     """ Returns the grammar and token files found below the given lib directory. """
     return (native.glob(["{0}/*.g4".format(folder)]) +
         native.glob(["{0}/*.tokens".format(folder)]))
 
 
-def _get_lib_dir(imports):
-    """ Determines the directory that contains the given imports. """
-    lib = {}
-    for resource in imports:
-        lib[resource.path.replace("/" + resource.basename, "")] = None
-    count = len(lib)
-    # the lib directory does not allow nested directories
-    if count > 1:
-        fail("All imports must be located in the same directory, but found {}".format(lib))
-    return lib.keys()[0] if count == 1 else None;
-
-
 def _generate(ctx):
-    """ Generates the source files. """
+    _antlr("4", ctx, _args)
 
-    if not ctx.files.srcs:
-        fail("No grammars provided, either add the srcs attribute or check your filespec", attr="srcs")
 
+def _args(ctx, output_dir):
     args = ctx.actions.args()
 
     if ctx.attr.atn:
@@ -41,7 +33,7 @@ def _generate(ctx):
     if ctx.attr.error:
         args.add("-Werror")
 
-    lib = _get_lib_dir(ctx.files.imports)
+    lib = _lib_dir(ctx.files.imports)
     if lib:
         args.add("-lib")
         args.add(lib)
@@ -67,7 +59,6 @@ def _generate(ctx):
     if ctx.attr.no_visitor:
         args.add("-no-visitor")
 
-    output_dir = ctx.configuration.genfiles_dir.path + "/rules_antlr"
     args.add("-o")
     args.add(output_dir)
 
@@ -81,30 +72,7 @@ def _generate(ctx):
     if ctx.attr.visitor:
         args.add("-visitor")
 
-    srcjar = ctx.outputs.src_jar
-    tool_inputs, _, input_manifests=ctx.resolve_command(tools=ctx.attr.deps + [ctx.attr._tool])
-
-    ctx.actions.run(
-        arguments = [args],
-        inputs = ctx.files.srcs + ctx.files.imports,
-        outputs = [srcjar],
-        mnemonic = "ANTLR4",
-        executable = ctx.executable._tool,
-        env = {
-            "ANTLR_VERSION": "4",
-            "ENCODING": ctx.attr.encoding,
-            "GRAMMARS": ",".join([f.path for f in ctx.files.srcs]),
-            "OUTPUT_DIRECTORY": output_dir,
-            "PACKAGE_NAME": ctx.attr.package,
-            "DIRECTORY_LAYOUT": ctx.attr.layout,
-            "SRC_JAR": srcjar.path,
-            "TARGET_LANGUAGE": ctx.attr.language,
-            "TOOL_CLASSPATH": ",".join([f.path for f in tool_inputs]),
-        },
-        input_manifests = input_manifests,
-        progress_message = "Processing ANTLR 4 grammars",
-        tools = tool_inputs
-    )
+    return args
 
 
 antlr = rule(

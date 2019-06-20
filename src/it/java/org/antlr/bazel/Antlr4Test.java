@@ -121,9 +121,9 @@ public class Antlr4Test extends BazelTestSupport
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
-                .namespace(null)
-                .language(null)
-                .layout(null)
+                .namespace("")
+                .language("")
+                .layout("")
                 .args(project.args())
                 .generate();
 

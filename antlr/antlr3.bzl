@@ -1,5 +1,11 @@
 """Rules for ANTLR 3."""
 
+load("//antlr:internal/impl.bzl",
+    _antlr = "antlr",
+    _lib_dir = "lib_dir",
+)
+
+
 def imports(folder):
     """ Returns the grammar and token files found below the given lib directory. """
     return (native.glob(["{0}/*.g".format(folder)]) +
@@ -7,24 +13,11 @@ def imports(folder):
         native.glob(["{0}/*.tokens".format(folder)]))
 
 
-def _get_lib_dir(imports):
-    """ Determines the directory that contains the given imports. """
-    lib = {}
-    for resource in imports:
-        lib[resource.path.replace("/" + resource.basename, "")] = None
-    count = len(lib)
-    # the lib directory does not allow nested directories
-    if count > 1:
-        fail("All imports must be located in the same directory, but found {}".format(lib))
-    return lib.keys()[0] if count == 1 else None;
-
-
 def _generate(ctx):
-    """ Generates the source files. """
+    _antlr("3", ctx, _args)
 
-    if not ctx.files.srcs:
-        fail("No grammars provided, either add the srcs attribute or check your filespec", attr="srcs")
 
+def _args(ctx, output_dir):
     args = ctx.actions.args()
 
     if ctx.attr.debug:
@@ -43,7 +36,7 @@ def _generate(ctx):
         args.add("-language")
         args.add(ctx.attr.language)
 
-    lib = _get_lib_dir(ctx.files.imports)
+    lib = _lib_dir(ctx.files.imports)
     if lib:
         args.add("-lib")
         args.add(lib)
@@ -57,7 +50,6 @@ def _generate(ctx):
     if ctx.attr.nfa:
         args.add("-nfa")
 
-    output_dir = ctx.configuration.genfiles_dir.path + "/rules_antlr"
     args.add("-o")
     args.add(output_dir)
 
@@ -122,26 +114,7 @@ def _generate(ctx):
     if ctx.attr.Xwatchconversion:
         args.add("-Xwatchconversion")
 
-    srcjar = ctx.outputs.src_jar
-    tool_inputs, _, input_manifests=ctx.resolve_command(tools=ctx.attr.deps + [ctx.attr._tool])
-
-    ctx.actions.run(
-        arguments = [args],
-        inputs = ctx.files.srcs + ctx.files.imports,
-        outputs = [srcjar],
-        mnemonic = "ANTLR3",
-        executable = ctx.executable._tool,
-        env = {
-            "ANTLR_VERSION": "3",
-            "GRAMMARS": ",".join([f.path for f in ctx.files.srcs]),
-            "OUTPUT_DIRECTORY": output_dir,
-            "SRC_JAR": srcjar.path,
-            "TOOL_CLASSPATH": ",".join([f.path for f in tool_inputs]),
-        },
-        input_manifests = input_manifests,
-        progress_message = "Processing ANTLR 3 grammars",
-        tools = tool_inputs,
-    )
+    return args
 
 
 antlr = rule(
@@ -165,6 +138,7 @@ dependencies here.
         "language":             attr.string(doc="The code generation target language. Either C, Cpp, CSharp2, CSharp3, JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive)."),
         "message_format":       attr.string(doc="Specify output style for messages."),
         "nfa":                  attr.bool(default=False, doc="Generate an NFA for each rule."),
+        "package":              attr.string(doc="The package/namespace for the generated code."),
         "profile":              attr.bool(default=False, doc="Generate a parser that computes profiling information."),
         "report":               attr.bool(default=False, doc="Print out a report about the grammar(s) processed."),
         "srcs":                 attr.label_list(allow_files=True, mandatory=True, doc="The grammar files to process."),
