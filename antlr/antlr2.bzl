@@ -1,12 +1,16 @@
 """Rules for ANTLR 2."""
 
 load(":impl.bzl",
-    _antlr = "antlr"
-)
+    _antlr = "antlr",
+    _headers = "headers",
+    _sources = "sources")
+
+sources = _sources
+headers = _headers
 
 
 def _generate(ctx):
-    _antlr("2", ctx, _args)
+    return _antlr("2", ctx, _args)
 
 
 def _args(ctx, output_dir):
@@ -74,9 +78,6 @@ compile.
                               executable=True,
                               cfg="host",
                               default=Label("@rules_antlr//src/main/java/org/antlr/bazel")),
-    },
-    outputs = {
-        "src_jar": "%{name}.srcjar",
     },
 )
 

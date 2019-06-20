@@ -6,35 +6,30 @@
 # ANTLR Rules for Bazel
 
 These build rules are used for processing [ANTLR](https://www.antlr.org)
-grammars with [Bazel](https://bazel.build/). Currently only Java targets are
-really usable due to shortcomings with the Bazel rules for other languages.
-
-<a name="toc"></a>
-
+grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Python targets are supported.
 
 <a name="setup"></a>
-## Quick Setup
+## Setup
 
 Add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace)
 file to include the external repository and load the necessary dependencies for the [`antlr`](docs/antlr4.md) rule:
 
 ```python
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
-...
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 http_archive(
     name = "rules_antlr",
-    sha256 = "932f0637acc20b67d90e68e47d019961105b00c5991a72ffee33bc1e58541734",
-    strip_prefix = "rules_antlr-0.2.0",
     urls = ["https://github.com/marcohu/rules_antlr/archive/0.2.0.tar.gz"],
+    strip_prefix = "rules_antlr-0.2.0",
+    sha256 = "932f0637acc20b67d90e68e47d019961105b00c5991a72ffee33bc1e58541734",
 )
 
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
-antlr_dependencies()
+antlr_dependencies(472)
 ```
 
 More detailed instructions can be found in the
-[Setup](https://github.com/marcohu/rules_antlr/tree/master/docs/setup.md) section.
-
+[Setup](docs/setup.md) document.
 
 ### Build Rules
 
@@ -100,14 +95,13 @@ Refer to the rule reference documentation for the available rules and attributes
 Suppose you have the following directory structure for a simple ANTLR project:
 
 ```
-[workspace]/
-  WORKSPACE
-  HelloWorld/
-    BUILD
-    src/
-      main/
-        antlr4/
-          Hello.g4
+HelloWorld/
+└── src
+    └── main
+        └── antlr4
+            ├── BUILD
+            └── Hello.g4
+WORKSPACE
 ```
 
 `HelloWorld/src/main/antlr4/Hello.g4`
@@ -119,40 +113,41 @@ ID : [a-z]+;
 WS : [ \t\r\n]+ -> skip;
 ```
 
-`HelloWorld/BUILD`
+To add code generation to a BUILD file, you load the desired build rule and create a new antlr target. The output&mdash;here a .jar file with the generated source files&mdash;can be used as input for other rules.
+
+`HelloWorld/src/main/antlr4/BUILD`
 
 ```python
 load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
-    name = "generated",
-    srcs = ["src/main/antlr4/Hello.g4"],
+    name = "parser",
+    srcs = ["Hello.g4"],
     package = "hello.world",
+    visibility = ["//visibility:public"],
 )
+```
 
+Building the project generates the lexer/parser files:
+
+```
+$ bazel build //HelloWorld/...
+INFO: Analyzed 2 targets (23 packages loaded, 400 targets configured).
+INFO: Found 2 targets...
+INFO: Elapsed time: 15.295s, Critical Path: 14.37s
+INFO: 8 processes: 6 processwrapper-sandbox, 2 worker.
+INFO: Build completed successfully, 12 total actions
+```
+
+To compile the generated files, add the generating target as input for the `java_library` or `java_binary` rules and reference the required ANTLR dependency:
+
+```python
 java_library(
     name = "HelloWorld",
-    srcs = [":generated"],
+    srcs = [":parser"],
+    deps = ["@antlr4_runtime//jar"],
 )
 ```
-
-Compiling the project generates the lexer/parser files:
-
-```
-$ bazel build //HelloWorld
-INFO: Analysed target //HelloWorld:HelloWorld (0 packages loaded).
-INFO: Found 1 target...
-Target //HelloWorld:HelloWorld up-to-date:
-  bazel-bin/HelloWorld/libHelloWorld.jar
-INFO: Elapsed time: 0.940s, Critical Path: 0.76s
-INFO: Build completed successfully, 4 total actions
-```
-
-The generated source files can be found in the `generated.srcjar` archive below your workspace `bazel-bin/HelloWorld` directory.
-
-To just generate the source files you would use:
-
-    $ bazel build //HelloWorld:generated
 
 Refer to the [examples](examples)
 directory for further samples.

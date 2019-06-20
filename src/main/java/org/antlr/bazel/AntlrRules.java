@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.nio.file.CopyOption;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -50,6 +51,8 @@ public class AntlrRules
     private final Path sandbox;
     private Path srcjar;
     private Version version;
+    private Output output;
+    private boolean split = true;
 
     /**
      * Creates a new AntlrRules object.
@@ -176,63 +179,186 @@ public class AntlrRules
 
         Map<String, Grammar> names = grammarNames(namespaces);
 
-        URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
-        Map<String, String> env = new HashMap<>();
-        env.put("create", "true");
-
-        try (FileSystem archive = FileSystems.newFileSystem(uri, env))
+        switch (output)
         {
-            Path root = archive.getPath("/");
+            case FOLDER:
+            {
+                Files.createDirectories(outputDirectory);
+                Path other = Files.createDirectories(
+                        outputDirectory
+                            .getParent()
+                            .resolve(
+                                outputDirectory
+                                    .getFileName()
+                                    .toString()
+                                    .replace(".cc", ".antlr")));
+                Path headers = Files.createDirectories(
+                        outputDirectory
+                            .getParent()
+                            .resolve(
+                                outputDirectory
+                                    .getFileName()
+                                    .toString()
+                                    .replace(".cc", ".inc")));
+                Path includes = Files.createDirectories(
+                        outputDirectory
+                            .getParent()
+                            .resolve(
+                                outputDirectory
+                                    .getFileName()
+                                    .toString()
+                                    .replace(".cc", ".inc")));
+                Files.createDirectories(includes);
 
-            Files.walkFileTree(outputDirectory, new SimpleFileVisitor<Path>()
+                List<String> files = new ArrayList<>();
+
+                try (DirectoryStream<Path> entries = Files.newDirectoryStream(outputDirectory))
                 {
-                    CopyOption[] options =
-                        {
-                            StandardCopyOption.COPY_ATTRIBUTES,
-                            StandardCopyOption.REPLACE_EXISTING
-                        };
+                    PathMatcher expanded = outputDirectory.getFileSystem()
+                        .getPathMatcher("glob:**/expanded*.g");
+                    PathMatcher csources = outputDirectory.getFileSystem()
+                        .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C}");
+                    PathMatcher cheaders = outputDirectory.getFileSystem()
+                        .getPathMatcher("glob:**.{h,hh,hpp,hxx,inc,inl,H}");
 
-                    @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attr)
-                        throws IOException
+                    for (Path entry : entries)
                     {
-                        String filename = file.getFileName().toString();
-
-                        if (filename.endsWith(".srcjar"))
+                        // for extended grammars ANTLR 2 creates a new grammar file that
+                        // merges the two grammars and must be ignored
+                        if (expanded.matches(entry))
                         {
-                            return CONTINUE;
+                            Files.delete(entry);
+
+                            continue;
                         }
 
-                        if (filename.startsWith("expanded"))
+                        String fileName = entry.getFileName().toString();
+
+                        if (fileName.endsWith(".log"))
                         {
-                            return CONTINUE;
+                            Files.move(entry, other.resolve(entry.getFileName()));
+
+                            continue;
                         }
 
-                        Path target = root.resolve(
-                            outputDirectory.relativize(file).toString());
+                        Grammar grammar = findGrammar(entry, names);
 
-                        if (!filename.endsWith(".log"))
+                        // indicates imported file that should not be kept
+                        if (grammar == null)
                         {
-                            Grammar grammar = findGrammar(file, names);
+                            Files.delete(entry);
 
-                            // indicates imported file that does not belong in the .srcjar
-                            if (grammar == null)
+                            continue;
+                        }
+
+                        if (language != null)
+                        switch (language)
+                        {
+                            case C :
+                            case CPP :
                             {
+                                if (cheaders.matches(entry))
+                                {
+                                    if (split)
+                                    {
+                                        Path target = headers.resolve(
+                                                grammar.getNamespacePath().toString())
+                                                .resolve(entry.getFileName());
+                                        Files.createDirectories(target.getParent());
+                                        Files.move(entry, target);
+
+                                        continue;
+                                    }
+                                }
+                                else if (!csources.matches(entry))
+                                {
+                                    Files.move(entry, other.resolve(entry.getFileName()));
+
+                                    continue;
+                                }
+                            }
+                        }
+
+                        // source files should be stored below their corresponding
+                        // package/namespace
+                        Path target = outputDirectory.resolve(
+                                grammar.getNamespacePath().toString())
+                                .resolve(entry.getFileName());
+
+                        files.add(outputDirectory.relativize(target).toString());
+
+                        if (!target.equals(entry))
+                        {
+                            Files.createDirectories(target.getParent());
+                            Files.move(entry, target);
+                        }
+                    }
+                }
+                break;
+            }
+
+            case SRCJAR:
+            {
+                URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
+                Map<String, String> env = new HashMap<>();
+                env.put("create", "true");
+
+                try (FileSystem archive = FileSystems.newFileSystem(uri, env))
+                {
+                    Path root = archive.getPath("/");
+
+                    Files.walkFileTree(outputDirectory, new SimpleFileVisitor<Path>()
+                        {
+                            CopyOption[] options =
+                                {
+                                    StandardCopyOption.COPY_ATTRIBUTES,
+                                    StandardCopyOption.REPLACE_EXISTING
+                                };
+
+                            @Override
+                            public FileVisitResult visitFile(Path file, BasicFileAttributes attr)
+                                throws IOException
+                            {
+                                String filename = file.getFileName().toString();
+
+                                if (filename.endsWith(".srcjar"))
+                                {
+                                    return CONTINUE;
+                                }
+
+                                if (filename.startsWith("expanded"))
+                                {
+                                    return CONTINUE;
+                                }
+
+                                Path target = root.resolve(
+                                    outputDirectory.relativize(file).toString());
+
+                                if (!filename.endsWith(".log"))
+                                {
+                                    Grammar grammar = findGrammar(file, names);
+
+                                    // indicates imported file that does not belong in the .srcjar
+                                    if (grammar == null)
+                                    {
+                                        return CONTINUE;
+                                    }
+
+                                    // source files should be stored below their corresponding
+                                    // package/namespace
+                                    target = root.resolve(grammar.getNamespacePath().toString())
+                                        .resolve(target.getFileName());
+                                }
+
+                                Files.createDirectories(target.getParent());
+                                Files.copy(file, target, options);
+
                                 return CONTINUE;
                             }
-
-                            // source files should be stored below their corresponding
-                            // package/namespace
-                            target = root.resolve(grammar.getNamespacePath().toString())
-                                .resolve(target.getFileName());
-                        }
-
-                        Files.createDirectories(target.getParent());
-                        Files.copy(file, target, options);
-
-                        return CONTINUE;
-                    }
-                });
+                        });
+                }
+                break;
+            }
         }
     }
 
@@ -285,6 +411,7 @@ public class AntlrRules
     AntlrRules srcjar(String srcjar)
     {
         this.srcjar = sandbox.resolve(srcjar);
+        this.output = srcjar.isBlank() ? Output.FOLDER : Output.SRCJAR;
 
         return this;
     }

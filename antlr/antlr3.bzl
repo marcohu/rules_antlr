@@ -2,8 +2,12 @@
 
 load(":impl.bzl",
     _antlr = "antlr",
-    _lib_dir = "lib_dir",
-)
+    _headers = "headers",
+    _sources = "sources",
+    _lib_dir = "lib_dir")
+
+sources = _sources
+headers = _headers
 
 
 def imports(folder):
@@ -14,7 +18,7 @@ def imports(folder):
 
 
 def _generate(ctx):
-    _antlr("3", ctx, _args)
+    return _antlr("3", ctx, _args)
 
 
 def _args(ctx, output_dir):
@@ -164,9 +168,6 @@ dependencies here.
                               executable=True,
                               cfg="host",
                               default=Label("@rules_antlr//src/main/java/org/antlr/bazel")),
-    },
-    outputs = {
-        "src_jar": "%{name}.srcjar",
     },
 )
 

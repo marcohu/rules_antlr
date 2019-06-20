@@ -223,13 +223,13 @@ class Grammar implements Comparable<Grammar>
         {
             result = ns;
         }
-        else if (ns != null)
+        else if (ns != null && !ns.equals(namespace))
         {
             throw new IllegalStateException(
                 String.format(
                     "Specified package attribute '%s' %s namespace '%s' in grammar %s",
                     namespace,
-                    ns.equals(namespace) ? "duplicating" : "conflicting with",
+                    "conflicting with",
                     ns,
                     path.getFileName()));
         }
