@@ -1,6 +1,6 @@
 """Rules for ANTLR 3."""
 
-load("//antlr:internal/impl.bzl",
+load(":impl.bzl",
     _antlr = "antlr",
     _lib_dir = "lib_dir",
 )

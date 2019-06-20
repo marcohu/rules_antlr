@@ -1,6 +1,6 @@
 """Rules for ANTLR 2."""
 
-load("//antlr:internal/impl.bzl",
+load(":impl.bzl",
     _antlr = "antlr"
 )
 
