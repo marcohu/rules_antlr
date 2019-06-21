@@ -646,14 +646,6 @@ public class Antlr4Test extends BazelTestSupport
                 .namespace("com.company.hello")
                 .args(project.args())
                 .generate();
-
-            fail();
-        }
-        catch (IllegalStateException ex)
-        {
-            assertEquals(
-                "Specified package attribute 'com.company.hello' duplicating namespace 'com.company.hello' in grammar Hello.g4",
-                ex.getMessage());
         }
     }
 }
