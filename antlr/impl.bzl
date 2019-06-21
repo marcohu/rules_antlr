@@ -21,7 +21,7 @@ def antlr(version, ctx, args):
 
     if output_type == "srcjar":
         # the Java rules are special in that the output is a .jar file
-        srcjar = ctx.new_file(ctx.bin_dir, ctx.attr.name + "." + output_type)
+        srcjar = ctx.actions.declare_file(ctx.attr.name + "." + output_type)
         output_dir = ctx.configuration.bin_dir.path + "/rules_antlr"
         outputs = [srcjar]
     else:
