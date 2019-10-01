@@ -1,6 +1,5 @@
 load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
-
 antlr(
     name = "generated",
     srcs = ["xml.g"],

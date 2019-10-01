@@ -11,10 +11,10 @@ java_library(
         "@examples//antlr4:srcs",
     ],
     deps = [
+        "//src/main/java/org/antlr/bazel",
         "@guava//jar",
         "@jimfs//jar",
         "@junit//jar",
-        "//src/main/java/org/antlr/bazel",
     ],
 )
 

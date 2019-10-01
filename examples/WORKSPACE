@@ -1,4 +1,4 @@
-workspace(name="examples")
+workspace(name = "examples")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -8,13 +8,11 @@ local_repository(
 )
 
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+
 antlr_dependencies(2, 3, 4)
 
 http_archive(
     name = "antlr4_runtimes",
-    sha256 = "4d0714f441333a63e50031c9e8e4890c78f3d21e053d46416949803e122a6574",
-    strip_prefix = "antlr4-4.7.1",
-    urls = ["https://github.com/antlr/antlr4/archive/4.7.1.tar.gz"],
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 cc_library(
@@ -28,14 +26,14 @@ py_library(
     srcs = glob(["runtime/Python2/src/*.py"]),
     imports = ["runtime/Python2/src"],
 )
-"""
+""",
+    sha256 = "4d0714f441333a63e50031c9e8e4890c78f3d21e053d46416949803e122a6574",
+    strip_prefix = "antlr4-4.7.1",
+    urls = ["https://github.com/antlr/antlr4/archive/4.7.1.tar.gz"],
 )
 
 http_archive(
     name = "antlr3_runtimes",
-    sha256 = "a66d12fd5ca052fdd2b0a64b70d0c58db40e6dec72c3f4497934203090d92808",
-    strip_prefix = "antlr3-3.5.2",
-    urls = ["https://github.com/antlr/antlr3/archive/3.5.2.tar.gz"],
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 py_library(
@@ -43,14 +41,14 @@ py_library(
     srcs = glob(["runtime/Python3/antlr3/*.py"]),
     imports = ["runtime/Python3/antlr3"],
 )
-"""
+""",
+    sha256 = "a66d12fd5ca052fdd2b0a64b70d0c58db40e6dec72c3f4497934203090d92808",
+    strip_prefix = "antlr3-3.5.2",
+    urls = ["https://github.com/antlr/antlr3/archive/3.5.2.tar.gz"],
 )
 
 http_archive(
     name = "antlr2_runtimes",
-    sha256 = "853aeb021aef7586bda29e74a6b03006bcb565a755c86b66032d8ec31b67dbb9",
-    strip_prefix = "antlr-2.7.7",
-    urls = ["https://www.antlr2.org/download/antlr-2.7.7.tar.gz"],
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 py_library(
@@ -58,5 +56,8 @@ py_library(
     srcs = glob(["lib/python/antlr/*.py"]),
     imports = ["lib/python/antlr"],
 )
-"""
+""",
+    sha256 = "853aeb021aef7586bda29e74a6b03006bcb565a755c86b66032d8ec31b67dbb9",
+    strip_prefix = "antlr-2.7.7",
+    urls = ["https://www.antlr2.org/download/antlr-2.7.7.tar.gz"],
 )

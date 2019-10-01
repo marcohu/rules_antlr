@@ -15,20 +15,21 @@ bzl_library(
 
 stardoc(
     name = "antlr4",
-    input = "antlr4.bzl",
     out = "antlr4.md",
-    deps = [":shared"],
-)
-stardoc(
-    name = "antlr3",
-    input = "antlr3.bzl",
-    out = "antlr3.md",
-    deps = [":shared"],
-)
-stardoc(
-    name = "antlr2",
-    input = "antlr2.bzl",
-    out = "antlr2.md",
+    input = "antlr4.bzl",
     deps = [":shared"],
 )
 
+stardoc(
+    name = "antlr3",
+    out = "antlr3.md",
+    input = "antlr3.bzl",
+    deps = [":shared"],
+)
+
+stardoc(
+    name = "antlr2",
+    out = "antlr2.md",
+    input = "antlr2.bzl",
+    deps = [":shared"],
+)

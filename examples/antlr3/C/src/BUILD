@@ -15,4 +15,3 @@ sources(
     name = "sources",
     rule = ":generated",
 )
-

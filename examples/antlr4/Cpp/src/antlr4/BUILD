@@ -17,7 +17,6 @@ sources(
     rule = ":generated",
 )
 
-
 """
 antlr_cc_library(
     name = "lib2",
@@ -29,10 +28,10 @@ antlr_cc_library(
 
 cc_library(
     name = "lib",
-    hdrs = [":headers"],
     srcs = [":sources"],
+    hdrs = [":headers"],
     includes = ["$(INCLUDES)"],
-    deps = ["@antlr4_runtimes//:cpp"],
-    visibility = ["//visibility:public"],
     toolchains = [":generated"],
+    visibility = ["//visibility:public"],
+    deps = ["@antlr4_runtimes//:cpp"],
 )

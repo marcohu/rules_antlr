@@ -1,4 +1,5 @@
-AntlrInfo = provider(fields = {
+AntlrInfo = provider(
+    fields = {
         "sources": "The generated source files.",
         "headers": "For C/C++ the generated header files.",
         "data": "Additional ANTLR data files",
@@ -6,12 +7,11 @@ AntlrInfo = provider(fields = {
     doc = "A provider containing information about ANTLR code generation.",
 )
 
-
 def antlr(version, ctx, args):
     """ Generates the source files. """
 
     if not ctx.files.srcs:
-        fail("No grammars provided, either add the srcs attribute or check your filespec", attr="srcs")
+        fail("No grammars provided, either add the srcs attribute or check your filespec", attr = "srcs")
 
     srcjar = None
     sources = []
@@ -28,6 +28,7 @@ def antlr(version, ctx, args):
         # for all other languages we use directories
         sources = ctx.actions.declare_directory(ctx.attr.name + extension(ctx.attr.language))
         output_dir = sources.path
+
         # for C/C++ we must split headers from sources
         if (ctx.attr.language == "Cpp" or ctx.attr.language == "C"):
             headers = ctx.actions.declare_directory(ctx.attr.name + ".inc")
@@ -35,7 +36,7 @@ def antlr(version, ctx, args):
         else:
             outputs = [sources]
 
-    tool_inputs, _, input_manifests=ctx.resolve_command(tools=ctx.attr.deps + [ctx.attr._tool])
+    tool_inputs, _, input_manifests = ctx.resolve_command(tools = ctx.attr.deps + [ctx.attr._tool])
 
     ctx.actions.run(
         arguments = [args(ctx, output_dir)],
@@ -68,41 +69,38 @@ def antlr(version, ctx, args):
         platform_common.TemplateVariableInfo({
             "INCLUDES": ctx.attr.name + ".inc/" + ctx.attr.package,
         }),
-        DefaultInfo(files=depset(outputs)),
+        DefaultInfo(files = depset(outputs)),
     ]
 
-
 def _headers(ctx):
-    return [DefaultInfo(files=depset([ctx.attr.rule[AntlrInfo].headers]))]
+    return [DefaultInfo(files = depset([ctx.attr.rule[AntlrInfo].headers]))]
 
 headers = rule(
     implementation = _headers,
     doc = "Filters the generated C/C++ header files from the generated files.",
     attrs = {
         "rule": attr.label(
-            allow_files=True,
-            mandatory=True,
-            doc="The name of the antlr() rule that generated the files.",
+            allow_files = True,
+            mandatory = True,
+            doc = "The name of the antlr() rule that generated the files.",
         ),
     },
 )
 
-
 def _sources(ctx):
-    return [DefaultInfo(files=depset([ctx.attr.rule[AntlrInfo].sources]))]
+    return [DefaultInfo(files = depset([ctx.attr.rule[AntlrInfo].sources]))]
 
 sources = rule(
     implementation = _sources,
     doc = "Filters the generated C/C++ source files from the generated files.",
     attrs = {
         "rule": attr.label(
-            allow_files=True,
-            mandatory=True,
-            doc="The name of the antlr() rule that generated the files.",
+            allow_files = True,
+            mandatory = True,
+            doc = "The name of the antlr() rule that generated the files.",
         ),
     },
 )
-
 
 def extension(language):
     """ Determines the extension to use for tree artifact output. """
@@ -112,15 +110,14 @@ def extension(language):
         return ".py"
     return ""
 
-
 def lib_dir(imports):
     """ Determines the directory that contains the given imports. """
     lib = {}
     for resource in imports:
         lib[resource.path.replace("/" + resource.basename, "")] = None
     count = len(lib)
+
     # the lib directory does not allow nested directories
     if count > 1:
         fail("All imports must be located in the same directory, but found {}".format(lib))
-    return lib.keys()[0] if count == 1 else None;
-
+    return lib.keys()[0] if count == 1 else None

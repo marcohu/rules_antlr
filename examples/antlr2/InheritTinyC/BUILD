@@ -8,7 +8,10 @@ antlr(
     # to reference an existing grammar, you have to provide both the source and generated files.
     # By convention, the grammars come first, the generated files follow immediately. Otherwise
     # processing will fail
-    imports = ["//antlr2/TinyC:parser", "//antlr2/TinyC:generated"],
+    imports = [
+        "//antlr2/TinyC:generated",
+        "//antlr2/TinyC:parser",
+    ],
 )
 
 java_library(

@@ -44,6 +44,15 @@ antlr(
 
 java_library(
     name = "DetectLanguage",
-    srcs = [":cpp", ":csharp", ":go", ":javascript", ":java", ":python2", ":python3", ":swift"],
+    srcs = [
+        ":cpp",
+        ":csharp",
+        ":go",
+        ":java",
+        ":javascript",
+        ":python2",
+        ":python3",
+        ":swift",
+    ],
     deps = ["@antlr4_runtime//jar"],
 )

@@ -40,7 +40,7 @@ def antlr_optimized_dependencies(*versions):
     else:
         _antlr472_optimized_dependencies()
 
-def _antlr472_dependencies(skipAntlr3=False):
+def _antlr472_dependencies(skipAntlr3 = False):
     _download(
         name = "antlr4_runtime",
         path = "org/antlr/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar",
@@ -53,7 +53,7 @@ def _antlr472_dependencies(skipAntlr3=False):
     )
     _antlr4_transitive_dependencies(skipAntlr3)
 
-def _antlr471_dependencies(skipAntlr3=False):
+def _antlr471_dependencies(skipAntlr3 = False):
     _download(
         name = "antlr4_runtime",
         path = "org/antlr/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
@@ -134,7 +134,6 @@ def _antlr2_dependencies():
         sha256 = "88fbda4b912596b9f56e8e12e580cc954bacfb51776ecfddd3e18fc1cf56dc4c",
     )
 
-
 def _download(name, path, sha256):
     http_jar(
         name = name,
@@ -144,4 +143,3 @@ def _download(name, path, sha256):
         ],
         sha256 = sha256,
     )
-

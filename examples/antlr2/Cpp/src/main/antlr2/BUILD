@@ -2,7 +2,10 @@ load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
 filegroup(
     name = "srcs",
-    srcs = ["lexer.g", ":parser",],
+    srcs = [
+        "lexer.g",
+        ":parser",
+    ],
 )
 
 filegroup(
@@ -15,4 +18,3 @@ antlr(
     srcs = [":srcs"],
     language = "Cpp",
 )
-

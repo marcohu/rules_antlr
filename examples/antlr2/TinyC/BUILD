@@ -4,7 +4,10 @@ load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
 filegroup(
     name = "srcs",
-    srcs = ["src/main/antlr2/lexer.g", ":parser",],
+    srcs = [
+        "src/main/antlr2/lexer.g",
+        ":parser",
+    ],
 )
 
 filegroup(
