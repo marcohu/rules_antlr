@@ -7,18 +7,22 @@ v3 = [3, 352]
 v2 = [2, 277]
 
 def antlr_dependencies(*versions):
-    """ Loads the dependencies for the specified ANTLR releases. """
+    """Loads the dependencies for the specified ANTLR releases.
+
+    Args:
+      *versions: the ANTLR releases versions to make available.
+    """
     if versions:
-        skipAntlr3 = False
+        skip_antlr3 = False
         versions = sorted(versions)
         for version in versions:
             if (version == 4 or version == 472):
-                _antlr472_dependencies(skipAntlr3)
+                _antlr472_dependencies(skip_antlr3)
             elif (version == 471):
-                _antlr471_dependencies(skipAntlr3)
+                _antlr471_dependencies(skip_antlr3)
             elif (version == 3 or version == 352):
                 _antlr3_dependencies()
-                skipAntlr3 = True
+                skip_antlr3 = True
             elif (version == 2 or version == 272):
                 _antlr2_dependencies()
             else:
@@ -27,7 +31,11 @@ def antlr_dependencies(*versions):
         _antlr472_dependencies(False)
 
 def antlr_optimized_dependencies(*versions):
-    """ Loads the dependencies for the "optimized" fork of ANTLR 4 maintained by Sam Harwell. """
+    """Loads the dependencies for the "optimized" fork of ANTLR 4 maintained by Sam Harwell.
+
+    Args:
+      *versions: the ANTLR releases versions to make available.
+    """
     if versions:
         versions = sorted(versions)
         for version in versions:
@@ -40,7 +48,7 @@ def antlr_optimized_dependencies(*versions):
     else:
         _antlr472_optimized_dependencies()
 
-def _antlr472_dependencies(skipAntlr3 = False):
+def _antlr472_dependencies(skip_antlr3 = False):
     _download(
         name = "antlr4_runtime",
         path = "org/antlr/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar",
@@ -51,9 +59,9 @@ def _antlr472_dependencies(skipAntlr3 = False):
         path = "org/antlr/antlr4/4.7.2/antlr4-4.7.2.jar",
         sha256 = "a3811fad1e4cb6dde62c189c204cf931c5fa40e06e43839ead4a9f2e188f2fe5",
     )
-    _antlr4_transitive_dependencies(skipAntlr3)
+    _antlr4_transitive_dependencies(skip_antlr3)
 
-def _antlr471_dependencies(skipAntlr3 = False):
+def _antlr471_dependencies(skip_antlr3 = False):
     _download(
         name = "antlr4_runtime",
         path = "org/antlr/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
@@ -64,7 +72,7 @@ def _antlr471_dependencies(skipAntlr3 = False):
         path = "org/antlr/antlr4/4.7.1/antlr4-4.7.1.jar",
         sha256 = "a2cdc2f2f8eb893728832568dc54d080eb5a1495edb3b66e51b97122a60a0d87",
     )
-    _antlr4_transitive_dependencies(skipAntlr3)
+    _antlr4_transitive_dependencies(skip_antlr3)
 
 def _antlr472_optimized_dependencies():
     _download(
@@ -92,8 +100,8 @@ def _antlr471_optimized_dependencies():
     )
     _antlr4_transitive_dependencies(False)
 
-def _antlr4_transitive_dependencies(skipAntlr3):
-    if not skipAntlr3:
+def _antlr4_transitive_dependencies(skip_antlr3):
+    if not skip_antlr3:
         _download(
             name = "antlr3_runtime",
             path = "org/antlr/antlr-runtime/3.5.2/antlr-runtime-3.5.2.jar",

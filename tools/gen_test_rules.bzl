@@ -22,6 +22,8 @@ files.
 
 """
 
+load("@rules_java//java:defs.bzl", "java_test")
+
 def java_tests(
         name,
         test_files,
@@ -40,6 +42,27 @@ def java_tests(
         args = [],
         visibility = None,
         shard_count = 1):
+    """Create Java tests for the given files.
+
+    Args:
+        name: the unique name of this target.
+        test_files: the tests.
+        deps: the list of other libraries to be linked in to the target.
+        exclude_tests: the tests to exclude.
+        default_test_size: the default test size.
+        small_tests: the small tests.
+        medium_tests: the medium tests.
+        large_tests: the large tests.
+        enormous_tests: the enormous tests.
+        resources: the list of data files to include in the test jar.
+        flaky_tests: the tests to mark as flaky.
+        tags: the tags to add.
+        prefix: the prefix to prepend before the test names.
+        jvm_flags: the list of flags to embed in the wrapper script generated for running the tests.
+        args: the arguments to add to <b>--test_arg</b>
+        visibility: the visibility of the created java_tests.
+        shard_count: the number of parallel shards to use to run the test.
+    """
     for test in _get_test_names(test_files):
         if test in exclude_tests:
             continue
@@ -59,7 +82,7 @@ def java_tests(
             native.package_name() + "/" + _strip_right(test, ".java"),
         )
         package = java_class[:java_class.rfind(".")]
-        native.java_test(
+        java_test(
             name = prefix + test,
             runtime_deps = deps,
             resources = resources,
@@ -101,7 +124,10 @@ def _strip_right(str, suffix):
 
 def _index_of_end(str, part):
     """If part is in str, return the index of the first character after part.
-    Return -1 if part is not in str."""
+
+    Returns:
+       -1 if part is not in str.
+    """
     index = str.find(part)
     if index >= 0:
         return index + len(part)

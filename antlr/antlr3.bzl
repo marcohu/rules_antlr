@@ -12,7 +12,7 @@ sources = _sources
 headers = _headers
 
 def imports(folder):
-    """ Returns the grammar and token files found below the given lib directory. """
+    """Returns the grammar and token files found below the given lib directory."""
     return (native.glob(["{0}/*.g".format(folder)]) +
             native.glob(["{0}/*.g3".format(folder)]) +
             native.glob(["{0}/*.tokens".format(folder)]))

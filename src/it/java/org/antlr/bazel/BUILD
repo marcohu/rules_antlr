@@ -1,3 +1,4 @@
+load("@rules_java//java:defs.bzl", "java_library")
 load("//tools:gen_test_rules.bzl", "java_tests")
 
 java_library(
@@ -23,7 +24,7 @@ java_library(
 java_tests(
     name = "antlr2",
     default_test_size = "enormous",
-    test_files = glob(["Antlr2Test.java"]),
+    test_files = ["Antlr2Test.java"],
     deps = [":antlr2_tests"],
 )
 
@@ -52,7 +53,7 @@ java_library(
 java_tests(
     name = "antlr3",
     default_test_size = "enormous",
-    test_files = glob(["Antlr3Test.java"]),
+    test_files = ["Antlr3Test.java"],
     deps = [":antlr3_tests"],
 )
 
@@ -83,6 +84,6 @@ java_library(
 java_tests(
     name = "antlr4",
     default_test_size = "enormous",
-    test_files = glob(["Antlr4Test.java"]),
+    test_files = ["Antlr4Test.java"],
     deps = [":antlr4_tests"],
 )

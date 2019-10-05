@@ -12,7 +12,7 @@ sources = _sources
 headers = _headers
 
 def imports(folder):
-    """ Returns the grammar and token files found below the given lib directory. """
+    """Returns the grammar and token files found below the given lib directory."""
     return (native.glob(["{0}/*.g4".format(folder)]) +
             native.glob(["{0}/*.tokens".format(folder)]))
 
@@ -119,32 +119,3 @@ you need to use a different version, you can specify the dependencies here.
         ),
     },
 )
-""" Runs [ANTLR 4](https://www.antlr.org//) on a set of grammars.
-
-Args:
-    atn:                Generate rule augmented transition network diagrams.
-    depend:             Generate a list of file dependencies instead of parser and/or lexer.
-    deps:               The dependencies to use. Defaults to the official ANTLR 4 release, but if
-                        you need to use a different version, you can specify the dependencies here.
-    encoding:           The grammar file encoding, e.g. euc-jp.
-    error:              Treat warnings as errors.
-    force_atn:          Use the ATN simulator for all predictions.
-    imports:            The grammar and .tokens files to import. Must be all in the same directory.
-    language:           The code generation target language. Either Cpp, CSharp, Go, JavaScript,
-                        Java, Python2, Python3 or Swift (case-sensitive).
-    layout:             The directory layout to match file paths against for package/namespace
-                        detection by convention. The default depends on the target language.
-    listener:           Generate parse tree listener.
-    log:                Dump lots of logging info to antlr-timestamp.log.
-    long_messages:      Show exception details when available for errors and warnings.
-    message_format:     The output style for messages. Either antlr, gnu or vs2005.
-    no_listener:        Do not generate parse tree listener.
-    no_visitor:         Do not generate parse tree visitor.
-    options:            Set/override grammar-level options.
-    package:            The package/namespace for the generated code.
-    srcs:               The grammar files to process.
-    visitor:            Generate parse tree visitor.
-
-Outputs:
-    name.srcjar:        The .srcjar with the generated files.
-"""

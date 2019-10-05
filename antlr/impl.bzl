@@ -1,3 +1,5 @@
+"""The common ANTLR rule implementation."""
+
 AntlrInfo = provider(
     fields = {
         "sources": "The generated source files.",
@@ -8,7 +10,15 @@ AntlrInfo = provider(
 )
 
 def antlr(version, ctx, args):
-    """ Generates the source files. """
+    """Generates the source files.
+
+    Args:
+      version: the ANTLR release to use.
+      ctx: the rule context.
+      args: the ANTLR tool arguments.
+    Returns:
+      the generated files.
+    """
 
     if not ctx.files.srcs:
         fail("No grammars provided, either add the srcs attribute or check your filespec", attr = "srcs")
@@ -103,7 +113,13 @@ sources = rule(
 )
 
 def extension(language):
-    """ Determines the extension to use for tree artifact output. """
+    """Determines the extension to use for tree artifact output.
+
+    Args:
+      language: the programming language abbreviation.
+    Returns:
+      the extension to use, might be empty.
+    """
     if language == "Cpp" or language == "C":
         return ".cc"
     if language == "Python":
@@ -111,7 +127,13 @@ def extension(language):
     return ""
 
 def lib_dir(imports):
-    """ Determines the directory that contains the given imports. """
+    """Determines the directory that contains the given imports.
+
+    Args:
+      imports: the directories where to find the grammars to import.
+    Returns:
+      the directory that contains all imports (if are located in the same directory).
+    """
     lib = {}
     for resource in imports:
         lib[resource.path.replace("/" + resource.basename, "")] = None

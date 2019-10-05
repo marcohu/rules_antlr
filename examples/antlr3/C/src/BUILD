@@ -2,7 +2,7 @@ load("@rules_antlr//antlr:antlr3.bzl", "antlr", "headers", "sources")
 
 antlr(
     name = "generated",
-    srcs = glob(["T.g"]),
+    srcs = ["T.g"],
     language = "C",
 )
 

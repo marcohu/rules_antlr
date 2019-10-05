@@ -1,3 +1,4 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_antlr//antlr:antlr4.bzl", "antlr", "headers", "sources")
 
 antlr(
@@ -17,14 +18,12 @@ sources(
     rule = ":generated",
 )
 
-"""
-antlr_cc_library(
-    name = "lib2",
-    srcs = glob(["*.g4"]),
-    language = "Cpp",
-    package = "antlrcpptest",
-)
-"""
+#antlr_cc_library(
+#    name = "lib2",
+#    srcs = glob(["*.g4"]),
+#    language = "Cpp",
+#    package = "antlrcpptest",
+#)
 
 cc_library(
     name = "lib",
