@@ -31,23 +31,17 @@ load("//antlr:deps.bzl", "antlr_dependencies")
 antlr_dependencies(2, 3, 4)
 
 git_repository(
-    name = "io_bazel_skydoc",
-    remote = "https://github.com/bazelbuild/skydoc.git",
-    tag = "0.3.0",
+    name = "io_bazel_stardoc",
+    remote = "https://github.com/bazelbuild/stardoc.git",
+    tag = "0.4.0",
 )
 
-load("@io_bazel_skydoc//:setup.bzl", "skydoc_repositories")
+load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 
-skydoc_repositories()
+stardoc_repositories()
 
-load("@io_bazel_rules_sass//:package.bzl", "rules_sass_dependencies")
-
-rules_sass_dependencies()
-
-load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
-
-node_repositories()
-
-load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
-
-sass_repositories()
+git_repository(
+    name = "stardoc_templates",
+    remote = "https://github.com/marcohu/stardoc_templates.git",
+    tag = "0.1.0",
+)

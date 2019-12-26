@@ -1,8 +1,3 @@
-# ANTLR 3
-
-## Build Rule Reference
-
-[](ANTLR3START)
 <!-- Generated with Stardoc: http://skydoc.bazel.build -->
 
 <a name="#antlr"></a>
@@ -10,315 +5,89 @@
 ## antlr
 
 <pre>
-antlr(<a href="#antlr-name">name</a>, <a href="#antlr-Xconversiontimeout">Xconversiontimeout</a>, <a href="#antlr-Xdbgconversion">Xdbgconversion</a>, <a href="#antlr-Xdbgst">Xdbgst</a>, <a href="#antlr-Xdfa">Xdfa</a>, <a href="#antlr-Xdfaverbose">Xdfaverbose</a>,
-      <a href="#antlr-Xgrtree">Xgrtree</a>, <a href="#antlr-Xm">Xm</a>, <a href="#antlr-Xmaxdfaedges">Xmaxdfaedges</a>, <a href="#antlr-Xmaxinlinedfastates">Xmaxinlinedfastates</a>, <a href="#antlr-Xminswitchalts">Xminswitchalts</a>,
-      <a href="#antlr-Xmultithreaded">Xmultithreaded</a>, <a href="#antlr-Xnfastates">Xnfastates</a>, <a href="#antlr-Xnocollapse">Xnocollapse</a>, <a href="#antlr-Xnomergestopstates">Xnomergestopstates</a>, <a href="#antlr-Xnoprune">Xnoprune</a>,
-      <a href="#antlr-XsaveLexer">XsaveLexer</a>, <a href="#antlr-Xwatchconversion">Xwatchconversion</a>, <a href="#antlr-debug">debug</a>, <a href="#antlr-depend">depend</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-dfa">dfa</a>, <a href="#antlr-dump">dump</a>, <a href="#antlr-imports">imports</a>,
-      <a href="#antlr-language">language</a>, <a href="#antlr-message_format">message_format</a>, <a href="#antlr-nfa">nfa</a>, <a href="#antlr-package">package</a>, <a href="#antlr-profile">profile</a>, <a href="#antlr-report">report</a>, <a href="#antlr-srcs">srcs</a>, <a href="#antlr-trace">trace</a>)
+antlr(<a href="#antlr-name">name</a>, <a href="#antlr-Xconversiontimeout">Xconversiontimeout</a>, <a href="#antlr-Xdbgconversion">Xdbgconversion</a>, <a href="#antlr-Xdbgst">Xdbgst</a>, <a href="#antlr-Xdfa">Xdfa</a>, <a href="#antlr-Xdfaverbose">Xdfaverbose</a>, <a href="#antlr-Xgrtree">Xgrtree</a>, <a href="#antlr-Xm">Xm</a>,
+      <a href="#antlr-Xmaxdfaedges">Xmaxdfaedges</a>, <a href="#antlr-Xmaxinlinedfastates">Xmaxinlinedfastates</a>, <a href="#antlr-Xminswitchalts">Xminswitchalts</a>, <a href="#antlr-Xmultithreaded">Xmultithreaded</a>, <a href="#antlr-Xnfastates">Xnfastates</a>, <a href="#antlr-Xnocollapse">Xnocollapse</a>,
+      <a href="#antlr-Xnomergestopstates">Xnomergestopstates</a>, <a href="#antlr-Xnoprune">Xnoprune</a>, <a href="#antlr-XsaveLexer">XsaveLexer</a>, <a href="#antlr-Xwatchconversion">Xwatchconversion</a>, <a href="#antlr-debug">debug</a>, <a href="#antlr-depend">depend</a>, <a href="#antlr-deps">deps</a>, <a href="#antlr-dfa">dfa</a>, <a href="#antlr-dump">dump</a>,
+      <a href="#antlr-imports">imports</a>, <a href="#antlr-language">language</a>, <a href="#antlr-message_format">message_format</a>, <a href="#antlr-nfa">nfa</a>, <a href="#antlr-package">package</a>, <a href="#antlr-profile">profile</a>, <a href="#antlr-report">report</a>, <a href="#antlr-srcs">srcs</a>, <a href="#antlr-trace">trace</a>)
 </pre>
 
 Runs [ANTLR 3](https://www.antlr3.org//) on a set of grammars.
 
-### Attributes
+**ATTRIBUTES**
 
-<table class="params-table">
-  <colgroup>
-    <col class="col-param" />
-    <col class="col-description" />
-  </colgroup>
-  <tbody>
-    <tr id="antlr-name">
-      <td><code>name</code></td>
-      <td>
-        <a href="https://bazel.build/docs/build-ref.html#name">Name</a>; required
-        <p>
-          A unique name for this target.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xconversiontimeout">
-      <td><code>Xconversiontimeout</code></td>
-      <td>
-        Integer; optional
-        <p>
-          Set NFA conversion timeout for each decision.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xdbgconversion">
-      <td><code>Xdbgconversion</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Dump lots of info during NFA conversion.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xdbgst">
-      <td><code>Xdbgst</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Put tags at start/stop of all templates in output.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xdfa">
-      <td><code>Xdfa</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Print DFA as text.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xdfaverbose">
-      <td><code>Xdfaverbose</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate DFA states in DOT with NFA configs.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xgrtree">
-      <td><code>Xgrtree</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Print the grammar AST.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xm">
-      <td><code>Xm</code></td>
-      <td>
-        Integer; optional
-        <p>
-          Max number of rule invocations during conversion.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xmaxdfaedges">
-      <td><code>Xmaxdfaedges</code></td>
-      <td>
-        Integer; optional
-        <p>
-          Max &quot;comfortable&quot; number of edges for single DFA state.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xmaxinlinedfastates">
-      <td><code>Xmaxinlinedfastates</code></td>
-      <td>
-        Integer; optional
-        <p>
-          Max DFA states before table used rather than inlining.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xminswitchalts">
-      <td><code>Xminswitchalts</code></td>
-      <td>
-        Integer; optional
-        <p>
-          Don't generate switch() statements for dfas smaller than given number.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xmultithreaded">
-      <td><code>Xmultithreaded</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Run the analysis in 2 threads.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xnfastates">
-      <td><code>Xnfastates</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          For nondeterminisms, list NFA states for each path.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xnocollapse">
-      <td><code>Xnocollapse</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Collapse incident edges into DFA states.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xnomergestopstates">
-      <td><code>Xnomergestopstates</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Max DFA states before table used rather than inlining.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xnoprune">
-      <td><code>Xnoprune</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Do not test EBNF block exit branches.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-XsaveLexer">
-      <td><code>XsaveLexer</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          For nondeterminisms, list NFA states for each path.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-Xwatchconversion">
-      <td><code>Xwatchconversion</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Don't delete temporary lexers generated from combined grammars.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-debug">
-      <td><code>debug</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate a parser that emits debugging events.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-depend">
-      <td><code>depend</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate file dependencies; don't actually run antlr.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-deps">
-      <td><code>deps</code></td>
-      <td>
-        <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a>; optional
-        <p>
-          The dependencies to use. Defaults to the most recent ANTLR 3 release,
-but if you need to use a different version, you can specify the
-dependencies here.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-dfa">
-      <td><code>dfa</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate a DFA for each decision point.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-dump">
-      <td><code>dump</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Print out the grammar without actions.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-imports">
-      <td><code>imports</code></td>
-      <td>
-        <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a>; optional
-        <p>
-          The grammar and .tokens files to import. Must be all in the same directory.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-language">
-      <td><code>language</code></td>
-      <td>
-        String; optional
-        <p>
-          The code generation target language. Either C, Cpp, CSharp2, CSharp3, JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-message_format">
-      <td><code>message_format</code></td>
-      <td>
-        String; optional
-        <p>
-          Specify output style for messages.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-nfa">
-      <td><code>nfa</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate an NFA for each rule.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-package">
-      <td><code>package</code></td>
-      <td>
-        String; optional
-        <p>
-          The enclosing namespace to use for C++.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-profile">
-      <td><code>profile</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate a parser that computes profiling information.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-report">
-      <td><code>report</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Print out a report about the grammar(s) processed.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-srcs">
-      <td><code>srcs</code></td>
-      <td>
-        <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a>; required
-        <p>
-          The grammar files to process.
-        </p>
-      </td>
-    </tr>
-    <tr id="antlr-trace">
-      <td><code>trace</code></td>
-      <td>
-        Boolean; optional
-        <p>
-          Generate a parser with trace output. If the default output is not enough, you can override the traceIn and traceOut methods.
-        </p>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+| Name  | Description | Type | Mandatory | Default |
+| --------------- | --------------- | --------------- | --------------- | --------------- |
+| <a name="antlr-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a name="antlr-Xconversiontimeout"></a>Xconversiontimeout |  Set NFA conversion timeout for each decision.   | Integer | optional | 0 |
+| <a name="antlr-Xdbgconversion"></a>Xdbgconversion |  Dump lots of info during NFA conversion.   | Boolean | optional | False |
+| <a name="antlr-Xdbgst"></a>Xdbgst |  Put tags at start/stop of all templates in output.   | Boolean | optional | False |
+| <a name="antlr-Xdfa"></a>Xdfa |  Print DFA as text.   | Boolean | optional | False |
+| <a name="antlr-Xdfaverbose"></a>Xdfaverbose |  Generate DFA states in DOT with NFA configs.   | Boolean | optional | False |
+| <a name="antlr-Xgrtree"></a>Xgrtree |  Print the grammar AST.   | Boolean | optional | False |
+| <a name="antlr-Xm"></a>Xm |  Max number of rule invocations during conversion.   | Integer | optional | 0 |
+| <a name="antlr-Xmaxdfaedges"></a>Xmaxdfaedges |  Max &quot;comfortable&quot; number of edges for single DFA state.   | Integer | optional | 0 |
+| <a name="antlr-Xmaxinlinedfastates"></a>Xmaxinlinedfastates |  Max DFA states before table used rather than inlining.   | Integer | optional | 0 |
+| <a name="antlr-Xminswitchalts"></a>Xminswitchalts |  Don't generate switch() statements for dfas smaller than given number.   | Integer | optional | 0 |
+| <a name="antlr-Xmultithreaded"></a>Xmultithreaded |  Run the analysis in 2 threads.   | Boolean | optional | False |
+| <a name="antlr-Xnfastates"></a>Xnfastates |  For nondeterminisms, list NFA states for each path.   | Boolean | optional | False |
+| <a name="antlr-Xnocollapse"></a>Xnocollapse |  Collapse incident edges into DFA states.   | Boolean | optional | False |
+| <a name="antlr-Xnomergestopstates"></a>Xnomergestopstates |  Max DFA states before table used rather than inlining.   | Boolean | optional | False |
+| <a name="antlr-Xnoprune"></a>Xnoprune |  Do not test EBNF block exit branches.   | Boolean | optional | False |
+| <a name="antlr-XsaveLexer"></a>XsaveLexer |  For nondeterminisms, list NFA states for each path.   | Boolean | optional | False |
+| <a name="antlr-Xwatchconversion"></a>Xwatchconversion |  Don't delete temporary lexers generated from combined grammars.   | Boolean | optional | False |
+| <a name="antlr-debug"></a>debug |  Generate a parser that emits debugging events.   | Boolean | optional | False |
+| <a name="antlr-depend"></a>depend |  Generate file dependencies; don't actually run antlr.   | Boolean | optional | False |
+| <a name="antlr-deps"></a>deps |  The dependencies to use. Defaults to the most recent ANTLR 3 release, but if you need to use a different version, you can specify the dependencies here.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [Label("@antlr3_runtime//jar:jar"), Label("@antlr3_tool//jar:jar"), Label("@stringtemplate4//jar:jar")] |
+| <a name="antlr-dfa"></a>dfa |  Generate a DFA for each decision point.   | Boolean | optional | False |
+| <a name="antlr-dump"></a>dump |  Print out the grammar without actions.   | Boolean | optional | False |
+| <a name="antlr-imports"></a>imports |  The grammar and .tokens files to import. Must be all in the same directory.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | optional | [] |
+| <a name="antlr-language"></a>language |  The code generation target language. Either C, Cpp, CSharp2, CSharp3, JavaScript, Java, ObjC, Python, Python3 or Ruby (case-sensitive).   | String | optional | "" |
+| <a name="antlr-message_format"></a>message_format |  Specify output style for messages.   | String | optional | "" |
+| <a name="antlr-nfa"></a>nfa |  Generate an NFA for each rule.   | Boolean | optional | False |
+| <a name="antlr-package"></a>package |  The package/namespace for the generated code.   | String | optional | "" |
+| <a name="antlr-profile"></a>profile |  Generate a parser that computes profiling information.   | Boolean | optional | False |
+| <a name="antlr-report"></a>report |  Print out a report about the grammar(s) processed.   | Boolean | optional | False |
+| <a name="antlr-srcs"></a>srcs |  The grammar files to process.   | <a href="https://bazel.build/docs/build-ref.html#labels">List of labels</a> | required |  |
+| <a name="antlr-trace"></a>trace |  Generate a parser with trace output. If the default output is not enough, you can override the traceIn and traceOut methods.   | Boolean | optional | False |
+
+
+<a name="#headers"></a>
+
+## headers
+
+<pre>
+headers(<a href="#headers-name">name</a>, <a href="#headers-rule">rule</a>)
+</pre>
+
+Filters the generated C/C++ header files from the generated files.
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| --------------- | --------------- | --------------- | --------------- | --------------- |
+| <a name="headers-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a name="headers-rule"></a>rule |  The name of the antlr() rule that generated the files.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
+
+
+<a name="#sources"></a>
+
+## sources
+
+<pre>
+sources(<a href="#sources-name">name</a>, <a href="#sources-rule">rule</a>)
+</pre>
+
+Filters the generated C/C++ source files from the generated files.
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| --------------- | --------------- | --------------- | --------------- | --------------- |
+| <a name="sources-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
+| <a name="sources-rule"></a>rule |  The name of the antlr() rule that generated the files.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
 
 
 <a name="#imports"></a>
@@ -329,26 +98,13 @@ dependencies here.
 imports(<a href="#imports-folder">folder</a>)
 </pre>
 
- Returns the grammar and token files found below the given lib directory. 
+Returns the grammar and token files found below the given lib directory.
 
-### Parameters
-
-<table class="params-table">
-  <colgroup>
-    <col class="col-param" />
-    <col class="col-description" />
-  </colgroup>
-  <tbody>
-    <tr id="imports-folder">
-      <td><code>folder</code></td>
-      <td>
-        required.
-      </td>
-    </tr>
-  </tbody>
-</table>
+**PARAMETERS**
 
 
+| Name  | Description | Default Value |
+| :-------------: | :-------------: | :-------------: |
+| folder |  <p align="center"> - </p>   |  none |
 
 
-[](ANTLR3END)
