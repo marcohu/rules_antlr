@@ -6,7 +6,7 @@ load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr4/Hello.g4"],
+    srcs = ["Hello.g4"],
     package = "hello.world",
 )
 

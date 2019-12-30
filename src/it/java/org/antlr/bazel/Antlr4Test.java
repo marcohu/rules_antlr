@@ -26,8 +26,8 @@ public class Antlr4Test extends BazelTestSupport
     @Test
     public void detectLanguage() throws Exception
     {
-        Path bin = build("//antlr4/DetectLanguage:cpp");
-        Path srcjar = bin.resolve("antlr4/DetectLanguage/cpp.srcjar");
+        Path bin = build("//antlr4/DetectLanguage/src/main/antlr4:cpp");
+        Path srcjar = bin.resolve("antlr4/DetectLanguage/src/main/antlr4/cpp.srcjar");
 
         assertContents(srcjar,
             "Cpp.interp",

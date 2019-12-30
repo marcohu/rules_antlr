@@ -2,15 +2,15 @@ load("@rules_java//java:defs.bzl", "java_library")
 
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr3.bzl", "antlr")
+load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr3/SimpleC.g"],
+    srcs = ["calc.g"],
 )
 
 java_library(
-    name = "SimpleC",
+    name = "Calc",
     srcs = [":generated"],
-    deps = ["@antlr3_runtime//jar"],
+    deps = ["@antlr2//jar"],
 )

@@ -6,7 +6,7 @@ load("@rules_antlr//antlr:antlr3.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = glob(["src/main/antlr3/*.g"]),
+    srcs = glob(["*.g"]),
 )
 
 java_library(

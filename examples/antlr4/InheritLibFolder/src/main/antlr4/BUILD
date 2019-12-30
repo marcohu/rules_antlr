@@ -2,16 +2,16 @@ load("@rules_java//java:defs.bzl", "java_library")
 
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr4.bzl", "antlr")
+load("@rules_antlr//antlr:antlr4.bzl", "antlr", "imports")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr4/Hello.g4"],
-    options = {"language": "Swift"},
+    srcs = glob(["*.g4"]),
+    imports = imports("imports"),
 )
 
 java_library(
-    name = "LanguageByOption",
+    name = "InheritLibFolder",
     srcs = [":generated"],
     deps = ["@antlr4_runtime//jar"],
 )

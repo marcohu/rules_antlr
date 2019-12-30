@@ -2,15 +2,16 @@ load("@rules_java//java:defs.bzl", "java_library")
 
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr2.bzl", "antlr")
+load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr2/calc.g"],
+    srcs = ["Hello.g4"],
+    layout = "src/antlrgrammars",
 )
 
 java_library(
-    name = "Calc",
+    name = "CustomLayout",
     srcs = [":generated"],
-    deps = ["@antlr2//jar"],
+    deps = ["@antlr4_runtime//jar"],
 )

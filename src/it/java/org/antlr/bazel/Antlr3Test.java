@@ -38,8 +38,8 @@ public class Antlr3Test extends BazelTestSupport
     @Test
     public void detectLanguage() throws Exception
     {
-        Path bin = build("//antlr3/DetectLanguage");
-        Path srcjar = bin.resolve("antlr3/DetectLanguage/csharp.srcjar");
+        Path bin = build("//antlr3/DetectLanguage/...");
+        Path srcjar = bin.resolve("antlr3/DetectLanguage/src/main/antlr3/csharp.srcjar");
 
         assertContents(srcjar,
             "Antlr/Examples/HoistedPredicates//TLexer.cs",

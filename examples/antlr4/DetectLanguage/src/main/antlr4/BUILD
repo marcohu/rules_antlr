@@ -6,42 +6,42 @@ load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "cpp",
-    srcs = glob(["src/main/antlr4/cpp/*.g4"]),
+    srcs = glob(["cpp/*.g4"]),
 )
 
 antlr(
     name = "csharp",
-    srcs = glob(["src/main/antlr4/csharp/*.g4"]),
+    srcs = glob(["csharp/*.g4"]),
 )
 
 antlr(
     name = "go",
-    srcs = glob(["src/main/antlr4/go/**/*.g4"]),
+    srcs = glob(["go/**/*.g4"]),
 )
 
 antlr(
     name = "javascript",
-    srcs = glob(["src/main/antlr4/javascript/*.g4"]),
+    srcs = glob(["javascript/*.g4"]),
 )
 
 antlr(
     name = "java",
-    srcs = glob(["src/main/antlr4/java/**/*.g4"]),
+    srcs = glob(["java/**/*.g4"]),
 )
 
 antlr(
     name = "python2",
-    srcs = glob(["src/main/antlr4/python2/*.g4"]),
+    srcs = glob(["python2/*.g4"]),
 )
 
 antlr(
     name = "python3",
-    srcs = glob(["src/main/antlr4/python3/*.g4"]),
+    srcs = glob(["python3/*.g4"]),
 )
 
 antlr(
     name = "swift",
-    srcs = glob(["src/main/antlr4/swift/*.g4"]),
+    srcs = glob(["swift/*.g4"]),
 )
 
 java_library(

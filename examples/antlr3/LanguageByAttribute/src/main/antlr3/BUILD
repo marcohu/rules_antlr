@@ -5,12 +5,13 @@ package(default_visibility = ["//visibility:public"])
 load("@rules_antlr//antlr:antlr3.bzl", "antlr")
 
 antlr(
-    name = "csharp",
-    srcs = ["src/main/antlr3/T.g"],
+    name = "generated",
+    srcs = ["SimpleC.g"],
+    language = "ObjC",
 )
 
 java_library(
-    name = "DetectLanguage",
-    srcs = [":csharp"],
+    name = "LanguageByAttribute",
+    srcs = [":generated"],
     deps = ["@antlr3_runtime//jar"],
 )

@@ -6,11 +6,12 @@ load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr4/foo/bar/Hello.g4"],
+    srcs = glob(["*.g4"]),
+    package = "inherit",
 )
 
 java_library(
-    name = "NamespaceGrammarOverConvention",
+    name = "InheritSameFolder",
     srcs = [":generated"],
     deps = ["@antlr4_runtime//jar"],
 )

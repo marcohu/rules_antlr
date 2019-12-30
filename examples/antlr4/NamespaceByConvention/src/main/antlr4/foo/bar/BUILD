@@ -6,12 +6,11 @@ load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/antlrgrammars/foo/bar/Hello.g4"],
-    layout = "src/antlrgrammars",
+    srcs = ["Hello.g4"],
 )
 
 java_library(
-    name = "CustomLayout",
+    name = "NamespaceByConvention",
     srcs = [":generated"],
     deps = ["@antlr4_runtime//jar"],
 )

@@ -6,12 +6,11 @@ load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = ["src/main/antlr4/foo/bar/Hello.g4"],
-    package = "hello.world",
+    srcs = ["Hello.g4"],
 )
 
 java_library(
-    name = "NamespaceByAttribute",
+    name = "NamespaceGrammarOverConvention",
     srcs = [":generated"],
     deps = ["@antlr4_runtime//jar"],
 )

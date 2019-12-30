@@ -2,16 +2,15 @@ load("@rules_java//java:defs.bzl", "java_library")
 
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_antlr//antlr:antlr4.bzl", "antlr", "imports")
+load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = glob(["src/main/antlr4/*.g4"]),
-    imports = imports("src/main/antlr4/imports"),
+    srcs = ["Hello.g4"],
 )
 
 java_library(
-    name = "InheritLibFolder",
+    name = "NamespaceByGrammar",
     srcs = [":generated"],
     deps = ["@antlr4_runtime//jar"],
 )
