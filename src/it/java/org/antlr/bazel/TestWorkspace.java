@@ -46,8 +46,8 @@ class TestWorkspace
             String contents = "workspace(name=\"examples\")\n" + "local_repository(\n"
                 + "    name = \"rules_antlr\",\n"
                 + "    path = \"../../../rules_antlr\",\n" + ")\n"
-                + "load(\"@rules_antlr//antlr:deps.bzl\", \"antlr_dependencies\")\n"
-                + "antlr_dependencies(2, 3, 4)";
+                + "load(\"@rules_antlr//antlr:repositories.bzl\", \"rules_antlr_dependencies\")\n"
+                + "rules_antlr_dependencies(2, 3, 4)";
             Files.write(workspace, contents.getBytes(StandardCharsets.UTF_8));
         }
     }

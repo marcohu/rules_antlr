@@ -24,8 +24,8 @@ http_archive(
     sha256 = "932f0637acc20b67d90e68e47d019961105b00c5991a72ffee33bc1e58541734",
 )
 
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
-antlr_dependencies(472)
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+rules_antlr_dependencies(472)
 ```
 
 More detailed instructions can be found in the

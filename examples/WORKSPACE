@@ -15,9 +15,9 @@ http_archive(
 load("@rules_python//python:repositories.bzl", "py_repositories")
 py_repositories()
 
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-antlr_dependencies(2, 3, 4)
+rules_antlr_dependencies(2, 3, 4)
 
 http_archive(
     name = "antlr4_runtimes",

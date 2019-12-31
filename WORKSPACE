@@ -26,9 +26,9 @@ http_jar(
     url = "https://jcenter.bintray.com/com/google/guava/guava/27.1-jre/guava-27.1-jre.jar",
 )
 
-load("//antlr:deps.bzl", "antlr_dependencies")
+load("//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-antlr_dependencies(2, 3, 4)
+rules_antlr_dependencies(2, 3, 4)
 
 git_repository(
     name = "io_bazel_stardoc",

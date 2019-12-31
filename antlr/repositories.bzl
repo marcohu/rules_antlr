@@ -6,7 +6,7 @@ v4 = [4, 471, 472]
 v3 = [3, 352]
 v2 = [2, 277]
 
-def antlr_dependencies(*versions):
+def rules_antlr_dependencies(*versions):
     """Loads the dependencies for the specified ANTLR releases.
 
     Args:
@@ -30,7 +30,7 @@ def antlr_dependencies(*versions):
     else:
         _antlr472_dependencies(False)
 
-def antlr_optimized_dependencies(*versions):
+def rules_antlr_optimized_dependencies(*versions):
     """Loads the dependencies for the "optimized" fork of ANTLR 4 maintained by Sam Harwell.
 
     Args:
