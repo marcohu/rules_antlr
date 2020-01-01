@@ -9,8 +9,8 @@ antlr(
     srcs = ["subc.g"],
     # to reference an existing grammar, you have to provide both the source and generated files
     imports = [
-        "//antlr2/TinyC/src/main/antlr2:parser",
         "//antlr2/TinyC/src/main/antlr2:generated",
+        "//antlr2/TinyC/src/main/antlr2:parser",
     ],
 )
 
