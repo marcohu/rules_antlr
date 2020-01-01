@@ -7,9 +7,7 @@ load("@rules_antlr//antlr:antlr2.bzl", "antlr")
 antlr(
     name = "generated",
     srcs = ["subc.g"],
-    # to reference an existing grammar, you have to provide both the source and generated files.
-    # By convention, the grammars come first, the generated files follow immediately. Otherwise
-    # processing will fail
+    # to reference an existing grammar, you have to provide both the source and generated files
     imports = [
         "//antlr2/TinyC/src/main/antlr2:parser",
         "//antlr2/TinyC/src/main/antlr2:generated",

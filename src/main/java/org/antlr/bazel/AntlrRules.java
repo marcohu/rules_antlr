@@ -646,12 +646,11 @@ public class AntlrRules
                 {
                     srcjarFound = true;
 
-                    // by convention the .srcjar has to be provided immediately after the
-                    // super grammar. This should be made more foolproof, but as probably
-                    // nobody will ever use this feature we just go with it for now
-                    String path = libs[i - 1];
+                    // the .srcjar can be provided either before or after the super grammar
+                    String path = libs[i > 0 ? i - 1 : i + 1];
 
-                    argument = argument.replace(";" + lib, "");
+                    // remove the .srcjar from the arguments
+                    argument = argument.replace(lib, "");
 
                     Path target = sandbox.resolve(path).getParent();
                     Files.createDirectories(target);
