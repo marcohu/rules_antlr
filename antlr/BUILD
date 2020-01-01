@@ -16,9 +16,9 @@ bzl_library(
 stardoc(
     name = "antlr4",
     out = "antlr4.md",
+    func_template = "@stardoc_templates//:func.vm",
     input = "antlr4.bzl",
     rule_template = "@stardoc_templates//:rule.vm",
-    func_template = "@stardoc_templates//:func.vm",
     deps = [":shared"],
 )
 
