@@ -10,7 +10,10 @@ filegroup(
 
 bzl_library(
     name = "shared",
-    srcs = ["impl.bzl"],
+    srcs = [
+        "impl.bzl",
+        "lang.bzl",
+    ],
 )
 
 stardoc(

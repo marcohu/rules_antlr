@@ -1,0 +1,13 @@
+diff --git lib/cpp/antlr/CharScanner.hpp lib/cpp/antlr/CharScanner.hpp
+index 8a97e97..fff4d78 100644
+--- lib/cpp/antlr/CharScanner.hpp
++++ lib/cpp/antlr/CharScanner.hpp
+@@ -7,7 +7,7 @@
+  *
+  * $Id: //depot/code/org.antlr/release/antlr-2.7.7/lib/cpp/antlr/CharScanner.hpp#2 $
+  */
+-
++#include <strings.h>
+ #include <antlr/config.hpp>
+ 
+ #include <map>

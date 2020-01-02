@@ -3,13 +3,8 @@
 load(
     ":impl.bzl",
     _antlr = "antlr",
-    _headers = "headers",
     _lib_dir = "lib_dir",
-    _sources = "sources",
 )
-
-sources = _sources
-headers = _headers
 
 def imports(folder):
     """Returns the grammar and token files found below the given lib directory."""

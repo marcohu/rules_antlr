@@ -8,11 +8,16 @@
 These build rules are used for processing [ANTLR](https://www.antlr.org)
 grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Python targets are supported.
 
+  * [Workspace Setup](#setup)
+    + [Details](docs/setup.md)
+  * [Build Rules](#build_rules)
+    - [Java Example](#java-example)
+
 <a name="setup"></a>
 ## Setup
 
 Add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace)
-file to include the external repository and load the necessary dependencies for the [`antlr`](docs/antlr4.md) rule:
+file to include the external repository and load the necessary Java dependencies for the [`antlr`](docs/antlr4.md) rule:
 
 ```python
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -89,7 +94,7 @@ Refer to the rule reference documentation for the available rules and attributes
 * <a href="docs/antlr2.md">ANTLR 2</a>
 
 
-<a name="basic-example"></a>
+<a name="java-example"></a>
 ## Basic Java Example
 
 Suppose you have the following directory structure for a simple ANTLR project:
@@ -142,6 +147,8 @@ INFO: Build completed successfully, 12 total actions
 To compile the generated files, add the generating target as input for the `java_library` or `java_binary` rules and reference the required ANTLR dependency:
 
 ```python
+load("@rules_java//java:defs.bzl", "java_library")
+
 java_library(
     name = "HelloWorld",
     srcs = [":parser"],

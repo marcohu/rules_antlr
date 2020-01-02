@@ -1,17 +1,7 @@
-load("@rules_antlr//antlr:antlr3.bzl", "antlr", "headers", "sources")
+load("@rules_antlr//antlr:antlr3.bzl", "antlr")
 
 antlr(
     name = "generated",
     srcs = ["T.g"],
     language = "C",
-)
-
-headers(
-    name = "headers",
-    rule = ":generated",
-)
-
-sources(
-    name = "sources",
-    rule = ":generated",
 )

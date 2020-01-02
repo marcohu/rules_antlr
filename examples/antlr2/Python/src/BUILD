@@ -1,5 +1,5 @@
-load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@rules_antlr//antlr:antlr2.bzl", "antlr")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 antlr(
     name = "generated",
@@ -17,6 +17,6 @@ py_binary(
     srcs = ["xml.py"],
     deps = [
         ":lib",
-        "@antlr2_runtimes//:py",
+        "@antlr2_runtimes//:python",
     ],
 )

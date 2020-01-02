@@ -1,11 +1,11 @@
+load("@rules_antlr//antlr:antlr3.bzl", "antlr")
 load("@rules_cc//cc:defs.bzl", "cc_library")
-load("@rules_antlr//antlr:antlr4.bzl", "antlr")
 
 antlr(
     name = "generated",
-    srcs = glob(["*.g4"]),
+    srcs = glob(["T.g"]),
     language = "Cpp",
-    package = "antlrcpptest",
+    package = "User",
 )
 
 cc_library(
@@ -14,6 +14,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":generated",
-        "@antlr4_runtimes//:cpp",
+        "@antlr3_runtimes//:cpp",
     ],
 )

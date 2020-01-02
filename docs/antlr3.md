@@ -52,44 +52,6 @@ Runs [ANTLR 3](https://www.antlr3.org//) on a set of grammars.
 | <a name="antlr-trace"></a>trace |  Generate a parser with trace output. If the default output is not enough, you can override the traceIn and traceOut methods.   | Boolean | optional | False |
 
 
-<a name="#headers"></a>
-
-## headers
-
-<pre>
-headers(<a href="#headers-name">name</a>, <a href="#headers-rule">rule</a>)
-</pre>
-
-Filters the generated C/C++ header files from the generated files.
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| --------------- | --------------- | --------------- | --------------- | --------------- |
-| <a name="headers-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a name="headers-rule"></a>rule |  The name of the antlr() rule that generated the files.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
-
-
-<a name="#sources"></a>
-
-## sources
-
-<pre>
-sources(<a href="#sources-name">name</a>, <a href="#sources-rule">rule</a>)
-</pre>
-
-Filters the generated C/C++ source files from the generated files.
-
-**ATTRIBUTES**
-
-
-| Name  | Description | Type | Mandatory | Default |
-| --------------- | --------------- | --------------- | --------------- | --------------- |
-| <a name="sources-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/docs/build-ref.html#name">Name</a> | required |  |
-| <a name="sources-rule"></a>rule |  The name of the antlr() rule that generated the files.   | <a href="https://bazel.build/docs/build-ref.html#labels">Label</a> | required |  |
-
-
 <a name="#imports"></a>
 
 ## imports

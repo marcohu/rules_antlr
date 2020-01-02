@@ -1,10 +1,10 @@
 # Setup
 
-To use the ANTLR rules, add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file to include
+To use the rules, add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file to include
 the external repository:
 
 ```python
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 ...
 http_archive(
     name = "rules_antlr",
@@ -14,7 +14,9 @@ http_archive(
 )
 ```
 
-Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file. For the most recent supported ANTLR release:
+Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file.
+
+For the most recent supported ANTLR release:
 
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
@@ -22,7 +24,8 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 rules_antlr_dependencies()
 ```
 
-If you need a different version or want to make the version explicit, you can specify the version number. Either specify just the major version:
+If you need a different version or want to make the version explicit, you can specify the
+version number. Either specify just the major version:
 
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
@@ -30,7 +33,7 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 antlr_dependencies(4)
 ```
 
-Or better make the version explicit to avoid coupling:
+Or better and recommended make the version explicit to avoid coupling:
 
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
@@ -38,13 +41,9 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 rules_antlr_dependencies(472)
 ```
 
-The currently supported release numbers are:
-
-| Release  Stream | Supported Versions|
-|-----------------|-------------------|
-| 4               | 471, 472          |
-| 3               | 352               |
-| 2               | 277               |
+> **_NOTE:_**
+If you don't use explicit versions, be careful when updating to a new rules_antlr
+release as the bundled dependencies might change.
 
 If you require several releases, you can specify several versions at once:
 
@@ -54,8 +53,36 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 rules_antlr_dependencies(277, 352, 472)
 ```
 
-If you don't use explicit versions, be careful when updating to a new rules_antlr
-release as the bundled dependencies might change.
+The examples above only load the default Java dependencies. If you require other runtimes,
+you have to provide the language target as well, in no particular order.
+
+To load C++ and Java dependencies for ANTLR 3.5.2 and 4.7.2:
+
+```python
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA")
+
+antlr_dependencies(352, CPP, 472, JAVA)
+```
+
+If you need different releases for different target languages, you can employ multiple
+calls:
+
+```python
+load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA", "PYTHON")
+
+antlr_dependencies(CPP, 472, JAVA)
+antlr_dependencies(352, PYTHON)
+```
+
+The currently supported releases are:
+
+| Release  Stream | Supported Versions| Bundled Runtimes |
+|-----------------|-------------------|------------------|
+| 4               | 471, 472          | C++, Java, Python2, Python3
+| 3               | 352               | C++, Java, Python2, Python3
+| 2               | 277               | C++, Java, Python2
 
 If your preferred ANTLR release is not supported out-of-the-box, you can pull
 the necessary dependencies yourself. E.g. for ANTLR 4.7:

@@ -3,12 +3,7 @@
 load(
     ":impl.bzl",
     _antlr = "antlr",
-    _headers = "headers",
-    _sources = "sources",
 )
-
-sources = _sources
-headers = _headers
 
 def _generate(ctx):
     return _antlr("2", ctx, _args)

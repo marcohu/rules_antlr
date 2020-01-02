@@ -1,5 +1,7 @@
 """The common ANTLR rule implementation."""
 
+load(":lang.bzl", "C", "CPP")
+
 AntlrInfo = provider(
     fields = {
         "sources": "The generated source files.",
@@ -8,6 +10,8 @@ AntlrInfo = provider(
     },
     doc = "A provider containing information about ANTLR code generation.",
 )
+
+_NullInfo = provider()
 
 def antlr(version, ctx, args):
     """Generates the source files.
@@ -26,7 +30,7 @@ def antlr(version, ctx, args):
     srcjar = None
     sources = []
     headers = []
-
+    cc = ctx.attr.language == CPP or ctx.attr.language == C
     output_type = "dir" if ctx.attr.language and ctx.attr.language != "Java" else "srcjar"
 
     if output_type == "srcjar":
@@ -40,7 +44,7 @@ def antlr(version, ctx, args):
         output_dir = sources.path
 
         # for C/C++ we must split headers from sources
-        if (ctx.attr.language == "Cpp" or ctx.attr.language == "C"):
+        if cc:
             headers = ctx.actions.declare_directory(ctx.attr.name + ".inc")
             outputs = [sources, headers]
         else:
@@ -70,6 +74,10 @@ def antlr(version, ctx, args):
         tools = tool_inputs,
     )
 
+    # for C/C++ we add the generated headers to the compilation context
+    if cc:
+        compilation_context = cc_common.create_compilation_context(headers = depset([headers]), system_includes = depset([headers.path + "/" + ctx.attr.package]))
+
     return [
         AntlrInfo(
             sources = sources,
@@ -79,38 +87,9 @@ def antlr(version, ctx, args):
         platform_common.TemplateVariableInfo({
             "INCLUDES": ctx.attr.name + ".inc/" + ctx.attr.package,
         }),
+        CcInfo(compilation_context = compilation_context) if cc else _NullInfo(),
         DefaultInfo(files = depset(outputs)),
     ]
-
-def _headers(ctx):
-    return [DefaultInfo(files = depset([ctx.attr.rule[AntlrInfo].headers]))]
-
-headers = rule(
-    implementation = _headers,
-    doc = "Filters the generated C/C++ header files from the generated files.",
-    attrs = {
-        "rule": attr.label(
-            allow_files = True,
-            mandatory = True,
-            doc = "The name of the antlr() rule that generated the files.",
-        ),
-    },
-)
-
-def _sources(ctx):
-    return [DefaultInfo(files = depset([ctx.attr.rule[AntlrInfo].sources]))]
-
-sources = rule(
-    implementation = _sources,
-    doc = "Filters the generated C/C++ source files from the generated files.",
-    attrs = {
-        "rule": attr.label(
-            allow_files = True,
-            mandatory = True,
-            doc = "The name of the antlr() rule that generated the files.",
-        ),
-    },
-)
 
 def extension(language):
     """Determines the extension to use for tree artifact output.

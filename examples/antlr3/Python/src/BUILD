@@ -17,6 +17,6 @@ py_binary(
     srcs = ["calc.py"],
     deps = [
         ":lib",
-        "@antlr3_runtimes//:py",
+        "@antlr3_runtimes//:python",
     ],
 )

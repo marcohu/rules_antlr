@@ -17,4 +17,5 @@ antlr(
     name = "generated",
     srcs = [":srcs"],
     language = "Cpp",
+    visibility = ["//visibility:public"],
 )

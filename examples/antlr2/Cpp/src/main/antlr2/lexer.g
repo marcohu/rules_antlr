@@ -1,11 +1,9 @@
-header { package tinyc; }
-
 /*
  * Make sure to run antlr.Tool on the lexer.g file first!
  */
 options {
 	mangleLiteralPrefix = "TK_";
-    language="Cpp";
+	language="Cpp";
 }
 
 class TinyCLexer extends Lexer;
@@ -19,18 +17,18 @@ tokens {
 	"int"; "char"; "if"; "else"; "while";
 }
 
-WS	:	(' '
+WS 	:	(' '
 	|	'\t'
 	|	'\n'	{newline();}
 	|	'\r')
-		{ _ttype = Token.SKIP; }
+		{ _ttype = antlr::Token::SKIP; }
 	;
 
 
 SL_COMMENT : 
 	"//" 
 	(~'\n')* '\n'
-	{ _ttype = Token.SKIP; newline(); }
+	{ _ttype = antlr::Token::SKIP; newline(); }
 	;
 
 ML_COMMENT
@@ -40,7 +38,7 @@ ML_COMMENT
 		|	~('*'|'\n')
 		)*
 		"*/"
-			{ $setType(Token.SKIP); }
+			{ $setType(antlr::Token::SKIP); }
 	;
 
 
@@ -137,6 +135,4 @@ options {
 }
 	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
 	;
-
-
 
