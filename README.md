@@ -9,7 +9,7 @@ These build rules are used for processing [ANTLR](https://www.antlr.org)
 grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Python targets are supported.
 
   * [Workspace Setup](#setup)
-    + [Details](docs/setup.md)
+    + [Details](docs/setup.md#setup)
   * [Build Rules](#build_rules)
     - [Java Example](#java-example)
 
@@ -17,7 +17,8 @@ grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Pyth
 ## Setup
 
 Add the following to your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace)
-file to include the external repository and load the necessary Java dependencies for the [`antlr`](docs/antlr4.md) rule:
+file to include the external repository and load the necessary Java dependencies for the
+[`antlr`](docs/antlr4.md#antlr) rule:
 
 ```python
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -33,8 +34,7 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 rules_antlr_dependencies(472)
 ```
 
-More detailed instructions can be found in the
-[Setup](docs/setup.md) document.
+More detailed instructions can be found in the [Setup](docs/setup.md#setup) document.
 
 ### Build Rules
 
@@ -89,9 +89,9 @@ antlr3(
 
 Refer to the rule reference documentation for the available rules and attributes:
 
-* <a href="docs/antlr4.md">ANTLR 4</a>
-* <a href="docs/antlr3.md">ANTLR 3</a>
-* <a href="docs/antlr2.md">ANTLR 2</a>
+* <a href="docs/antlr4.md#antlr">ANTLR 4</a>
+* <a href="docs/antlr3.md#antlr">ANTLR 3</a>
+* <a href="docs/antlr2.md#antlr">ANTLR 2</a>
 
 
 <a name="java-example"></a>
@@ -144,7 +144,10 @@ INFO: 8 processes: 6 processwrapper-sandbox, 2 worker.
 INFO: Build completed successfully, 12 total actions
 ```
 
-To compile the generated files, add the generating target as input for the `java_library` or `java_binary` rules and reference the required ANTLR dependency:
+To compile the generated files, add the generating target as input for the 
+[`java_library`](https://docs.bazel.build/versions/master/be/java.html#java_library) or
+[`java_binary`](https://docs.bazel.build/versions/master/be/java.html#java_binary) rules
+and reference the required ANTLR dependency:
 
 ```python
 load("@rules_java//java:defs.bzl", "java_library")
@@ -156,25 +159,47 @@ java_library(
 )
 ```
 
-Refer to the [examples](examples)
-directory for further samples.
+Refer to the [examples](examples) directory for further samples.
 
 
 ## Project Layout
 
-ANTLR rules will store all generated source files in a `target-name.srcjar` zip archive below your workspace [`bazel-bin`](https://docs.bazel.build/versions/master/output_directories.html#documentation-of-the-current-bazel-output-directory-layout) folder.
-Depending on the ANTLR version, there are three ways to control namespacing and directory structure for generated code, all with their pros and cons.
+ANTLR rules will store all generated source files in a `target-name.srcjar` zip archive
+below your workspace
+[`bazel-bin`](https://docs.bazel.build/versions/master/output_directories.html#documentation-of-the-current-bazel-output-directory-layout)
+folder. Depending on the ANTLR version, there are three ways to control namespacing and
+directory structure for generated code, all with their pros and cons.
 
-1. The [`package`](#antlr4.package) rule attribute ([`antlr4`](#antlr4) only). Setting the namespace via the [`package`](#antlr4.package) attribute will generate the corresponding target language specific namespacing code (where applicable) and puts the generated source files below a corresponding directory structure. To not create the directory structure, set the [`layout`](#antlr4.layout) attribute to `flat`.<br>Very expressive and allows language independent grammars, but only available with ANTLR 4, requires several runs for different namespaces, might complicate refactoring and can conflict with language specific code in `@header {...}` sections as they are mutually exclusive.
+1. The [`package`](docs/antlr4.md#antlr-package) rule attribute ([`antlr4`](docs/antlr4.md#antlr)
+only). Setting the namespace via the [`package`](docs/antlr4.md#antlr-package) attribute
+will generate the corresponding target language specific namespacing code (where
+applicable) and puts the generated source files below a corresponding directory structure.
+To not create the directory structure, set the [`layout`](docs/antlr4.md#antlr-layout) attribute to
+`flat`.<br>Very expressive and allows language independent grammars, but only available
+with ANTLR 4, requires several runs for different namespaces, might complicate refactoring
+and can conflict with language specific code in `@header {...}` sections as they are
+mutually exclusive.
 
-2. Language specific application code in grammar `@header {...}` section. To not create the corresponding directory structure, set the [`layout`](#antlr4.layout) attribute to `flat`.<br>Allows different namespaces to be processed in a single run and will not require changes to build files upon refactoring, but ties grammars to a specific language and can conflict with the [`package`](#antlr4.package) attribute as they are mutually exclusive.
+2. Language specific application code in grammar `@header {...}` section. To not create
+the corresponding directory structure, set the [`layout`](docs/antlr4.md#antlr-layout)
+attribute to `flat`.<br>Allows different namespaces to be processed in a single run and
+will not require changes to build files upon refactoring, but ties grammars to a specific
+language and can conflict with the [`package`](docs/antlr4.md#antlr-package) attribute as
+they are mutually exclusive.
 
-3. The project layout ([`antlr4`](#antlr4) only). Putting your grammars below a common project directory will determine namespace and corresponding directory structure for the generated source files from the relative project path. ANTLR rules uses different defaults for the different target languages (see below), but you can define the root directory yourself via the [`layout`](#antlr4.layout) attribute.<br>Allows different namespaces to be processed in a single run without language coupling, but requires conformity to a specific (albeit configurable) project layout and the [`layout`](#antlr4.layout) attribute for certain languages.
+3. The project layout ([`antlr4`](docs/antlr4.md#antlr) only). Putting your grammars below
+a common project directory will determine namespace and corresponding directory structure
+for the generated source files from the relative project path. ANTLR rules uses different
+defaults for the different target languages (see below), but you can define the root
+directory yourself via the [`layout`](docs/antlr4.md#antlr-package) attribute.<br>Allows
+different namespaces to be processed in a single run without language coupling, but
+requires conformity to a specific (albeit configurable) project layout and the
+[`layout`](docs/antlr4.md#antlr) attribute for certain languages.
 
 
 ### Common Project Directories
 
-The [`antlr4`](#antlr4) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
+The [`antlr4`](docs/antlr4.md#antlr) rule supports a common directory layout to figure out namespacing from the relative directory structure. The table below lists the default paths for the different target languages. The version number at the end is optional.
 
 | Language                 | Default Directory<span style="display:inline-block;width:4em"/>|
 |--------------------------|------------------|
@@ -187,4 +212,6 @@ The [`antlr4`](#antlr4) rule supports a common directory layout to figure out na
 | Python, Python2, Python3 | `src/antlr4`     |
 | Swift                    |  &nbsp;          |
 
-For languages with no default, you have to set your preference with the [`layout`](#antlr4.layout) attribute.
+For languages with no default, you have to set your preference with the
+[`layout`](docs/antlr4.md#antlr-layout) attribute.
+

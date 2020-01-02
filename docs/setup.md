@@ -30,7 +30,7 @@ version number. Either specify just the major version:
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-antlr_dependencies(4)
+rules_antlr_dependencies(4)
 ```
 
 Or better and recommended make the version explicit to avoid coupling:
@@ -41,9 +41,11 @@ load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 rules_antlr_dependencies(472)
 ```
 
+
 > **_NOTE:_**
 If you don't use explicit versions, be careful when updating to a new rules_antlr
 release as the bundled dependencies might change.
+
 
 If you require several releases, you can specify several versions at once:
 
@@ -62,7 +64,7 @@ To load C++ and Java dependencies for ANTLR 3.5.2 and 4.7.2:
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA")
 
-antlr_dependencies(352, CPP, 472, JAVA)
+rules_antlr_dependencies(352, CPP, 472, JAVA)
 ```
 
 If you need different releases for different target languages, you can employ multiple
@@ -72,8 +74,8 @@ calls:
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
 load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA", "PYTHON")
 
-antlr_dependencies(CPP, 472, JAVA)
-antlr_dependencies(352, PYTHON)
+rules_antlr_dependencies(CPP, 472, JAVA)
+rules_antlr_dependencies(352, PYTHON)
 ```
 
 The currently supported releases are:
@@ -116,9 +118,9 @@ http_jar(
 ```
 
 Look at the source code of
-[`repositories.bzl`](https://github.com/marcohu/rules_antlr/tree/master/antlr/repositories.bzl) for the
+[`repositories.bzl`](../antlr/repositories.bzl) for the
 default dependency names. You are not required to use these exact names. But if you don't, you have to provide your dependencies explicitly on rule
-invocation via the `deps` parameter.
+invocation via the [`deps`](antlr4.md#antlr-deps) parameter.
 
 
 As a convenience there is also a shortcut for the ["optimized" ANTLR4 fork](https://github.com/tunnelvisionlabs/antlr4) maintained by Sam Harwell:
