@@ -10,7 +10,7 @@ grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Pyth
 
   * [Workspace Setup](#setup)
     + [Details](docs/setup.md#setup)
-  * [Build Rules](#build_rules)
+  * [Build Rules](#build-rules)
     - [Java Example](#java-example)
 
 <a name="setup"></a>
@@ -191,10 +191,10 @@ they are mutually exclusive.
 a common project directory will determine namespace and corresponding directory structure
 for the generated source files from the relative project path. ANTLR rules uses different
 defaults for the different target languages (see below), but you can define the root
-directory yourself via the [`layout`](docs/antlr4.md#antlr-package) attribute.<br>Allows
+directory yourself via the [`layout`](docs/antlr4.md#antlr-layout) attribute.<br>Allows
 different namespaces to be processed in a single run without language coupling, but
 requires conformity to a specific (albeit configurable) project layout and the
-[`layout`](docs/antlr4.md#antlr) attribute for certain languages.
+[`layout`](docs/antlr4.md#antlr-layout) attribute for certain languages.
 
 
 ### Common Project Directories
