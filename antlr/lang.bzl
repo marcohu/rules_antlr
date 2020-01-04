@@ -9,3 +9,11 @@ PYTHON2 = "Python2"
 PYTHON3 = "Python3"
 RUST = "Rust"
 SWIFT = "Swift"
+
+def supported():
+    """Returns the supported languages.
+
+    Returns:
+      the list of supported languages.
+    """
+    return [C, CPP, JAVA, PYTHON, PYTHON2, PYTHON3]

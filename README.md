@@ -31,7 +31,7 @@ http_archive(
 )
 
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
-rules_antlr_dependencies(472)
+rules_antlr_dependencies("4.7.2")
 ```
 
 More detailed instructions can be found in the [Setup](docs/setup.md#setup) document.

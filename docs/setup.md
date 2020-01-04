@@ -16,16 +16,7 @@ http_archive(
 
 Then you can load the necessary external dependencies in your [`WORKSPACE`](https://docs.bazel.build/versions/master/build-ref.html#workspace) file.
 
-For the most recent supported ANTLR release:
-
-```python
-load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
-
-rules_antlr_dependencies()
-```
-
-If you need a different version or want to make the version explicit, you can specify the
-version number. Either specify just the major version:
+Either specify just the major version:
 
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
@@ -38,7 +29,7 @@ Or better and recommended make the version explicit to avoid coupling:
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-rules_antlr_dependencies(472)
+rules_antlr_dependencies("4.7.2")
 ```
 
 
@@ -47,12 +38,13 @@ If you don't use explicit versions, be careful when updating to a new rules_antl
 release as the bundled dependencies might change.
 
 
-If you require several releases, you can specify several versions at once:
+If you require several releases, you can specify several versions at once, but only from
+different release streams:
 
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-rules_antlr_dependencies(277, 352, 472)
+rules_antlr_dependencies("2.7.7", "3.5.2", "4.7.2")
 ```
 
 The examples above only load the default Java dependencies. If you require other runtimes,
@@ -61,30 +53,30 @@ you have to provide the language target as well, in no particular order.
 To load C++ and Java dependencies for ANTLR 3.5.2 and 4.7.2:
 
 ```python
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+load("@rules_antlr//antlr:repositories.bzl", "antlr_dependencies")
 load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA")
 
-rules_antlr_dependencies(352, CPP, 472, JAVA)
+rules_antlr_dependencies("3.5.2", CPP, "4.7.2", JAVA)
 ```
 
 If you need different releases for different target languages, you can employ multiple
 calls:
 
 ```python
-load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+load("@rules_antlr//antlr:repositories.bzl", "antlr_dependencies")
 load("@rules_antlr//antlr:lang.bzl", "CPP", "JAVA", "PYTHON")
 
-rules_antlr_dependencies(CPP, 472, JAVA)
-rules_antlr_dependencies(352, PYTHON)
+rules_antlr_dependencies(CPP, "4.7.2", JAVA)
+rules_antlr_dependencies("3.5.2", PYTHON)
 ```
 
 The currently supported releases are:
 
-| Release  Stream | Supported Versions| Bundled Runtimes |
-|-----------------|-------------------|------------------|
-| 4               | 471, 472          | C++, Java, Python2, Python3
-| 3               | 352               | C++, Java, Python2, Python3
-| 2               | 277               | C++, Java, Python2
+| Release  Stream | Supported Versions| Bundled Runtimes
+|-----------------|-------------------|---
+| 4               | 4.7.1, 4.7.2      | C++, Java, Python2, Python3
+| 3               | 3.5.2             | C++, Java, Python2, Python3
+| 2               | 2.7.7             | C++, Java, Python2
 
 If your preferred ANTLR release is not supported out-of-the-box, you can pull
 the necessary dependencies yourself. E.g. for ANTLR 4.7:
@@ -128,7 +120,7 @@ As a convenience there is also a shortcut for the ["optimized" ANTLR4 fork](http
 ```python
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_optimized_dependencies")
 
-rules_antlr_optimized_dependencies(472)
+rules_antlr_optimized_dependencies("4.7.2")
 ```
 
 It should support the same versions as the official ANTLR release.
