@@ -8,6 +8,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -53,7 +54,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars("G3.g4"))
@@ -83,7 +84,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -147,7 +148,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -170,7 +171,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -196,7 +197,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .language("Swift")
@@ -226,7 +227,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -257,7 +258,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -355,7 +356,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .layout("src/antlrgrammars")
@@ -388,7 +389,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .layout("flat")
                 .encoding("UTF-8")
@@ -421,7 +422,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -460,7 +461,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -493,7 +494,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -525,7 +526,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -557,7 +558,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -588,7 +589,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -616,7 +617,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -639,7 +640,7 @@ public class Antlr4Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("4")
-                .classpath(project.antlr4())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .encoding("UTF-8")
                 .grammars(project.grammars())
@@ -647,5 +648,19 @@ public class Antlr4Test extends BazelTestSupport
                 .args(project.args())
                 .generate();
         }
+    }
+
+
+    private String[] classpath() throws Exception
+    {
+        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+
+        return new String[] {
+            root.resolve("rules_antlr/external/antlr3_runtime/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/antlr4_runtime/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/antlr4_tool/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/javax_json/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/stringtemplate4/jar/downloaded.jar").toString(),
+        };
     }
 }

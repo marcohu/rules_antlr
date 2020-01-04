@@ -3,12 +3,12 @@ package org.antlr.bazel;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-
 
 /**
  * Antlr 2 tests.
@@ -26,7 +26,7 @@ public class Antlr2Test
                 .srcjar(project.srcjar().toString())
                 .version("2")
                 .encoding("")
-                .classpath(project.antlr2())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args())
@@ -53,7 +53,7 @@ public class Antlr2Test
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("2")
-                .classpath(project.antlr2())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args())
@@ -82,7 +82,7 @@ public class Antlr2Test
                 AntlrRules.create(ref.root())
                     .srcjar(ref.srcjar().toString())
                     .version("2")
-                    .classpath(ref.antlr2())
+                    .classpath(classpath())
                     .outputDirectory(ref.outputDirectory().toString())
                     .grammars("src/main/antlr2/lexer.g", "src/main/antlr2/tinyc.g")
                     .args(ref.args())
@@ -96,7 +96,7 @@ public class Antlr2Test
                 AntlrRules.create(project.root())
                     .srcjar(project.srcjar().toString())
                     .version("2")
-                    .classpath(project.antlr2())
+                    .classpath(classpath())
                     .outputDirectory(project.outputDirectory().toString())
                     .grammars("src/main/antlr2/subc.g")
                     .args(
@@ -128,7 +128,7 @@ public class Antlr2Test
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("2")
-                .classpath(project.antlr2())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars("src/main/antlr2/lexer.g", "src/main/antlr2/tinyc.g")
                 .args(project.args())
@@ -157,7 +157,7 @@ public class Antlr2Test
                 AntlrRules.create(ref.root())
                     .srcjar(ref.srcjar().toString())
                     .version("2")
-                    .classpath(ref.antlr2())
+                    .classpath(classpath())
                     .outputDirectory(ref.outputDirectory().toString())
                     .grammars("src/main/antlr2/lexer.g", "src/main/antlr2/tinyc.g")
                     .args(ref.args())
@@ -171,7 +171,7 @@ public class Antlr2Test
                 AntlrRules.create(project.root())
                     .srcjar(project.srcjar().toString())
                     .version("2")
-                    .classpath(project.antlr2())
+                    .classpath(classpath())
                     .outputDirectory(project.outputDirectory().toString())
                     .grammars("src/main/antlr2/subc.g")
                     .args(
@@ -186,5 +186,13 @@ public class Antlr2Test
                 "MyCParser.java",
                 "MyCParserTokenTypes.java");
         }
+    }
+
+
+    private String classpath()
+    {
+        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+
+        return root.resolve("rules_antlr/external/antlr2/jar/downloaded.jar").toString();
     }
 }

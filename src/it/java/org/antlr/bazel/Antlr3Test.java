@@ -8,6 +8,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 /**
  * ANTLR 3 tests.
@@ -24,7 +27,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args())
@@ -56,7 +59,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args("-lib", "src/main/antlr3/lib"))
@@ -78,7 +81,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars("CommonLexer.g"))
                 .args(project.args())
@@ -100,7 +103,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars("CommonLexer.g"))
                 .args(project.args("-lib", "src/main/antlr3/lib", "-XsaveLexer"))
@@ -124,7 +127,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args())
@@ -150,7 +153,7 @@ public class Antlr3Test extends BazelTestSupport
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
                 .version("3")
-                .classpath(project.antlr3())
+                .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
                 .grammars(project.grammars())
                 .args(project.args())
@@ -164,5 +167,16 @@ public class Antlr3Test extends BazelTestSupport
         {
             assertEquals("ANTLR terminated with 1 error", ex.getMessage());
         }
+    }
+
+    private String[] classpath() throws Exception
+    {
+        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+
+        return new String[] {
+            root.resolve("rules_antlr/external/antlr3_runtime/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/antlr3_tool/jar/downloaded.jar").toString(),
+            root.resolve("rules_antlr/external/stringtemplate4/jar/downloaded.jar").toString(),
+        };
     }
 }

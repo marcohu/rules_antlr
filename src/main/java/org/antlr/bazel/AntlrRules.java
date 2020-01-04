@@ -109,7 +109,7 @@ public class AntlrRules
     }
 
 
-    AntlrRules classpath(String[] classpath)
+    AntlrRules classpath(String... classpath)
     {
         this.classpath = classpath;
 

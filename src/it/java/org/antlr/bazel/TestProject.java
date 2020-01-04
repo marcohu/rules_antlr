@@ -109,24 +109,6 @@ class TestProject implements Closeable
     }
 
 
-    String[] antlr2()
-    {
-        return Dependencies.antlr2();
-    }
-
-
-    String[] antlr3()
-    {
-        return Dependencies.antlr3();
-    }
-
-
-    String[] antlr4()
-    {
-        return Dependencies.antlr4();
-    }
-
-
     String[] args(String... args)
     {
         List<String> a = new ArrayList<>();
