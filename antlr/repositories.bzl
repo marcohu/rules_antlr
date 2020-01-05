@@ -10,6 +10,16 @@ v2 = [2, "2.7.7"]
 def rules_antlr_dependencies(*versionsAndLanguages):
     """Loads the dependencies for the specified ANTLR releases.
 
+    You have to provide at least the version number of the ANTLR release you want to use. To
+    load the dependencies for languages besides Java, you have to indicate the languages as well.
+
+    ```python
+    load("@rules_antlr//antlr:lang.bzl", "CPP", "PYTHON")
+    load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+
+    rules_antlr_dependencies("4.7.2", CPP, PYTHON)
+    ```
+
     Args:
       *versionsAndLanguages: the ANTLR release versions to make available for the provided target languages.
     """
@@ -41,34 +51,37 @@ def rules_antlr_dependencies(*versionsAndLanguages):
             languages = [JAVA]
 
         for version in sorted(versions, key = _toString):
-            if (version == 4 or version == "4.7.2"):
+            if version == 4 or version == "4.7.2":
                 _antlr472_dependencies(languages)
-            elif (version == "4.7.1"):
+            elif version == "4.7.1":
                 _antlr471_dependencies(languages)
-            elif (version == 3 or version == "3.5.2"):
+            elif version == 3 or version == "3.5.2":
                 _antlr352_dependencies(languages)
-            elif (version == 2 or version == "2.7.7"):
+            elif version == 2 or version == "2.7.7":
                 _antlr277_dependencies(languages)
     else:
         fail("Missing ANTLR version", attr = "versionsAndLanguages")
 
-def rules_antlr_optimized_dependencies(*versions):
+def rules_antlr_optimized_dependencies(version):
     """Loads the dependencies for the "optimized" fork of ANTLR 4 maintained by Sam Harwell.
 
+    ```python
+    load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_optimized_dependencies")
+
+    rules_antlr_optimized_dependencies("4.7.2")
+    ```
+
     Args:
-      *versions: the ANTLR releases versions to make available.
+      version: the ANTLR release version to make available.
     """
-    if versions:
-        versions = sorted(versions)
-        for version in versions:
-            if (version == 4 or version == 472):
-                _antlr472_optimized_dependencies()
-            elif (version == 471):
-                _antlr471_optimized_dependencies()
-            else:
-                fail("Invalid ANTLR version provided: {0}. Currently supported are: {1}".format(version, v4), attr = "versions")
-    else:
+    if version == 4 or version == "4.7.2":
         _antlr472_optimized_dependencies()
+    elif version == "4.7.1":
+        _antlr471_optimized_dependencies()
+    elif type(version) == "int" or str(version).isdigit():
+        fail('Integer version \'{}\' no longer valid. Use semantic version "{}" instead.'.format(version, ".".join(str(version).elems())), attr = "version")
+    else:
+        fail('Unsupported ANTLR version provided: "{0}". Currently supported are: {1}'.format(version, v4), attr = "version")
 
 def _antlr472_dependencies(languages):
     _antlr4_dependencies(
