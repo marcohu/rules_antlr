@@ -35,7 +35,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: Missing ANTLR version"));
     }
 
@@ -53,7 +53,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: Missing ANTLR version"));
     }
 
@@ -71,7 +71,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: Unsupported ANTLR version provided: \"4.0\"."));
     }
 
@@ -89,7 +89,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: Integer version '471' no longer valid. Use semantic version \"4.7.1\" instead."));
     }
 
@@ -107,7 +107,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: Invalid language provided: \"Haskell\"."));
     }
 
@@ -125,7 +125,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Calc/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
         assertTrue(c.output().contains("attribute versionsAndLanguages: You can only load one version from ANTLR 4. You specified both \"4.7.1\" and \"4.7.2\"."));
     }
 
@@ -143,7 +143,7 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Cpp/...").build();
-        assertEquals(1, c.exitValue());
+        assertEquals(c.output(), 1, c.exitValue());
     }
 
     @Test
@@ -160,6 +160,6 @@ public class RepositoriesTest
         TestWorkspace workspace = new TestWorkspace(true);
         Path file = workspace.file("WORKSPACE", contents);
         Command c = new Command(workspace.root, "//antlr2/Cpp/...").build();
-        assertEquals(0, c.exitValue());
+        assertEquals(c.output(), 0, c.exitValue());
     }
 }
