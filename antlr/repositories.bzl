@@ -21,9 +21,9 @@ def rules_antlr_dependencies(*versionsAndLanguages):
         for versionOrLanguage in versionsAndLanguages:
             if not versionOrLanguage in supportedVersions:
                 if type(versionOrLanguage) == "int" or str(versionOrLanguage).isdigit():
-                    fail('Integer version \'{}\' no longer supported. Use semantic version "{}" instead.'.format(versionOrLanguage, ".".join(str(versionOrLanguage).elems())), attr = "versionsAndLanguages")
+                    fail('Integer version \'{}\' no longer valid. Use semantic version "{}" instead.'.format(versionOrLanguage, ".".join(str(versionOrLanguage).elems())), attr = "versionsAndLanguages")
                 elif str(versionOrLanguage).replace(".", "").isdigit():
-                    fail('Invalid ANTLR version provided: "{0}". Currently supported are: {1}'.format(versionOrLanguage, supportedVersions), attr = "versionsAndLanguages")
+                    fail('Unsupported ANTLR version provided: "{0}". Currently supported are: {1}'.format(versionOrLanguage, supportedVersions), attr = "versionsAndLanguages")
                 elif not versionOrLanguage in supportedLanguages():
                     fail('Invalid language provided: "{0}". Currently supported are: {1}'.format(versionOrLanguage, supportedLanguages()), attr = "versionsAndLanguages")
                 languages.append(versionOrLanguage)
@@ -31,7 +31,7 @@ def rules_antlr_dependencies(*versionsAndLanguages):
                 versions.append(versionOrLanguage)
 
         if not versions:
-            fail("Missing ANTLR release version", attr = "versionsAndLanguages")
+            fail("Missing ANTLR version", attr = "versionsAndLanguages")
 
         # only one version allowed per ANTLR release stream
         _validateVersions(versions)
@@ -47,7 +47,7 @@ def rules_antlr_dependencies(*versionsAndLanguages):
                 _antlr471_dependencies(languages)
             elif (version == 3 or version == "3.5.2"):
                 _antlr352_dependencies(languages)
-            elif (version == 2 or version == "2.7.2"):
+            elif (version == 2 or version == "2.7.7"):
                 _antlr277_dependencies(languages)
     else:
         fail("Missing ANTLR version", attr = "versionsAndLanguages")
@@ -147,13 +147,12 @@ def _antlr471_optimized_dependencies():
     _antlr4_transitive_dependencies()
 
 def _antlr4_dependencies(languages, archive, dependencies):
-    if JAVA in languages:
-        for name in dependencies:
-            _download(
-                name = name,
-                path = dependencies[name]["path"],
-                sha256 = dependencies[name]["sha256"],
-            )
+    for name in dependencies:
+        _download(
+            name = name,
+            path = dependencies[name]["path"],
+            sha256 = dependencies[name]["sha256"],
+        )
 
     build_script = _antlr4_build_script(languages)
 
@@ -245,13 +244,12 @@ def _antlr352_dependencies(languages):
     )
 
 def _antlr3_dependencies(languages, archive, dependencies):
-    if JAVA in languages:
-        for name in dependencies:
-            _download(
-                name = name,
-                path = dependencies[name]["path"],
-                sha256 = dependencies[name]["sha256"],
-            )
+    for name in dependencies:
+        _download(
+            name = name,
+            path = dependencies[name]["path"],
+            sha256 = dependencies[name]["sha256"],
+        )
 
     build_script = _antlr3_build_script(languages)
 
@@ -315,13 +313,12 @@ def _antlr277_dependencies(languages):
     )
 
 def _antlr2_dependencies(languages, archive, dependencies):
-    if JAVA in languages:
-        for name in dependencies:
-            _download(
-                name = name,
-                path = dependencies[name]["path"],
-                sha256 = dependencies[name]["sha256"],
-            )
+    for name in dependencies:
+        _download(
+            name = name,
+            path = dependencies[name]["path"],
+            sha256 = dependencies[name]["sha256"],
+        )
 
     build_script = _antlr2_build_script(languages)
 
@@ -331,7 +328,7 @@ def _antlr2_dependencies(languages, archive, dependencies):
             sha256 = "853aeb021aef7586bda29e74a6b03006bcb565a755c86b66032d8ec31b67dbb9",
             strip_prefix = "antlr-2.7.7",
             urls = ["https://www.antlr2.org/download/antlr-2.7.7.tar.gz"],
-            patches = ["@rules_antlr//external:antlr2_strings.patch"],
+            patches = ["@rules_antlr//third_party:antlr2_strings.patch"],
             build_file_content = build_script,
         )
 
@@ -382,7 +379,7 @@ def _validateVersions(versions):
         p = store.get(v)
         if p:
             fail(
-                "You can only load one version from ANTLR {0}. You specified both {1} and {2}.".format(v, p, version),
+                'You can only load one version from ANTLR {0}. You specified both "{1}" and "{2}".'.format(v, p, version),
                 attr = "versionsAndLanguages",
             )
         store[v] = version

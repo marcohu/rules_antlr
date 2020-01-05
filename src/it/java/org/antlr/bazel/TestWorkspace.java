@@ -30,6 +30,19 @@ class TestWorkspace
      */
     public TestWorkspace() throws IOException
     {
+        this(false);
+    }
+
+    /**
+     * Creates a new TestWorkspace object.
+     *
+     * @param  empty  {@code true} to indicate that no default WORKSPACE file should be
+     *                created.
+     *
+     * @throws  IOException  if an I/O error occurred.
+     */
+    public TestWorkspace(boolean empty) throws IOException
+    {
         Path examples = Projects.path("examples");
 
         assertTrue(Files.exists(examples));
@@ -38,7 +51,7 @@ class TestWorkspace
 
         Path workspace = examples.resolve("WORKSPACE");
 
-        if (Files.notExists(workspace))
+        if (!empty && Files.notExists(workspace))
         {
             // we can't use the workspace file when running under Bazel as the linked
             // folder structure is slightly different and the path to the local
@@ -50,6 +63,13 @@ class TestWorkspace
                 + "rules_antlr_dependencies(2, 3, 4)";
             Files.write(workspace, contents.getBytes(StandardCharsets.UTF_8));
         }
+    }
+
+    public Path file(String path, String contents) throws IOException
+    {
+        Path file = root.resolve(path);
+        Files.write(file, contents.getBytes(StandardCharsets.UTF_8));
+        return file;
     }
 
     /**
