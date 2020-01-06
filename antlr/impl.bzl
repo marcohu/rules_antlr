@@ -1,6 +1,6 @@
 """The common ANTLR rule implementation."""
 
-load(":lang.bzl", "C", "CPP", "GO")
+load(":lang.bzl", "C", "CPP", "GO", "PYTHON", "PYTHON2", "PYTHON3")
 
 AntlrInfo = provider(
     fields = {
@@ -104,9 +104,9 @@ def extension(language):
     Returns:
       the extension to use, might be empty.
     """
-    if language == "Cpp" or language == "C":
+    if language == CPP or language == C:
         return ".cc"
-    if language == "Python":
+    if language == PYTHON or language == PYTHON2 or language == PYTHON3:
         return ".py"
     if language == GO:
         return ".go"
