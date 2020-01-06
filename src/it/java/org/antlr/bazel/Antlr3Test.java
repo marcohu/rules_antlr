@@ -169,6 +169,25 @@ public class Antlr3Test extends BazelTestSupport
         }
     }
 
+
+    @Test
+    public void buildPython2() throws Exception
+    {
+        TestWorkspace workspace = new TestWorkspace();
+        Command c = new Command(workspace.root, "//antlr3/Python2/...").build();
+        assertEquals(c.output(), 0, c.exitValue());
+    }
+
+
+    @Test
+    public void buildPython3() throws Exception
+    {
+        TestWorkspace workspace = new TestWorkspace();
+        Command c = new Command(workspace.root, "//antlr3/Python3/...").build();
+        assertEquals(c.output(), 0, c.exitValue());
+    }
+
+
     private String[] classpath() throws Exception
     {
         Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));

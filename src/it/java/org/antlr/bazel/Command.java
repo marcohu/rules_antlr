@@ -67,7 +67,7 @@ class Command
         // try to share it manually
         Process p = new ProcessBuilder()
             .command(
-                "bazel", "build", "--repository_cache", repositoryCache.toString(), target)
+                "bazel", "build", "--jobs", "2", "--repository_cache", repositoryCache.toString(), target)
             .directory(directory.toFile())
             .redirectErrorStream(true)
             .start();

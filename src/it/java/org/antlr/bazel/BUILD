@@ -18,6 +18,7 @@ java_library(
         "//antlr:srcs",
         "//src/it/resources/antlr2:srcs",
         "//src/main/java/org/antlr/bazel:srcs",
+        "//third_party:srcs",
         "@examples//antlr2:srcs",
     ],
     deps = [

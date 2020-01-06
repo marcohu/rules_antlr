@@ -14,6 +14,8 @@ filegroup(
         "NamespaceByConvention",
         "NamespaceByGrammar",
         "NamespaceGrammarOverConvention",
+        "Python2",
+        "Python3",
     ],
     visibility = ["//visibility:public"],
 )

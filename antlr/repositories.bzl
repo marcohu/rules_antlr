@@ -238,6 +238,10 @@ py_library(
     imports = ["runtime/Python3/src"],
     visibility = ["//visibility:public"],
 )
+alias(
+    name = "python3",
+    actual = ":python",
+)
 """
 
     return (script, workspace)
