@@ -19,6 +19,3 @@ script:
 
 language: java
 
-cache:
-  directories:
-  - $HOME/.cache/bazel
