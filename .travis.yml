@@ -11,8 +11,8 @@ addons:
 script:
   - bazel version
   - cd examples
-  # build example first to populate shared repository cache which is read-only during testing
-  - bazel build //antlr2/Cpp/...
+  # build examples first to populate shared repository cache which is read-only during testing
+  - bazel build //antlr2/Cpp/... //antlr4/Go/...
   - cd ..
   - bazel test --jobs 2 --test_output=errors --test_verbose_timeout_warnings --test_timeout=300,300,900,3000 //...
   - bazel shutdown
