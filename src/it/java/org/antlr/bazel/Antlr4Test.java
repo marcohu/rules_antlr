@@ -121,7 +121,7 @@ public class Antlr4Test
     @Test
     public void invalidClasspath() throws Exception
     {
-        try (TestProject project = TestProject.create("examples/antlr4/HelloWorld"))
+        try (TestProject project = TestProject.create("examples/antlr4/Java"))
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
@@ -425,7 +425,7 @@ public class Antlr4Test
     @Test
     public void log() throws Exception
     {
-        try (TestProject project = TestProject.create("examples/antlr4/HelloWorld"))
+        try (TestProject project = TestProject.create("examples/antlr4/Java"))
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
@@ -464,7 +464,7 @@ public class Antlr4Test
     @Test
     public void namespaceAttribute() throws Exception
     {
-        try (TestProject project = TestProject.create("examples/antlr4/HelloWorld"))
+        try (TestProject project = TestProject.create("examples/antlr4/Java"))
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
@@ -592,7 +592,7 @@ public class Antlr4Test
     @Test
     public void namespaceNone() throws Exception
     {
-        try (TestProject project = TestProject.create("examples/antlr4/HelloWorld"))
+        try (TestProject project = TestProject.create("examples/antlr4/Java"))
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
