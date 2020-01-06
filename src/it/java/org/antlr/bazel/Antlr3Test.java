@@ -22,7 +22,7 @@ public class Antlr3Test
     @Test
     public void basic() throws Exception
     {
-        try (TestProject project = TestProject.create("examples/antlr3/SimpleC"))
+        try (TestProject project = TestProject.create("examples/antlr3/Java"))
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
