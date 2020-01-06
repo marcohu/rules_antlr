@@ -22,29 +22,37 @@ import org.junit.Test;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr4Test extends BazelTestSupport
+public class Antlr4Test
 {
     @Test
-    public void detectLanguage() throws Exception
+    public void detectCppLanguage() throws Exception
     {
-        Path bin = build("//antlr4/DetectLanguage/src/main/antlr4:cpp");
-        Path srcjar = bin.resolve("antlr4/DetectLanguage/src/main/antlr4/cpp.srcjar");
+        try (TestProject project = TestProject.create("examples/antlr4/DetectLanguage/src/main/antlr4/cpp"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("4")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .encoding("UTF-8")
+                .grammars(project.grammars())
+                .args(project.args())
+                .generate();
 
-        assertContents(srcjar,
-            "Cpp.interp",
-            "Cpp.tokens",
-            "CppBaseListener.cpp",
-            "CppBaseListener.h",
-            "CppLexer.cpp",
-            "CppLexer.h",
-            "CppLexer.interp",
-            "CppLexer.tokens",
-            "CppListener.cpp",
-            "CppListener.h",
-            "CppParser.cpp",
-            "CppParser.h");
+            project.validate("Cpp.interp",
+                "Cpp.tokens",
+                "CppBaseListener.cpp",
+                "CppBaseListener.h",
+                "CppLexer.cpp",
+                "CppLexer.h",
+                "CppLexer.interp",
+                "CppLexer.tokens",
+                "CppListener.cpp",
+                "CppListener.h",
+                "CppParser.cpp",
+                "CppParser.h");
+        }
     }
-
 
     @Test
     public void inheritLibFolder() throws Exception
@@ -648,33 +656,6 @@ public class Antlr4Test extends BazelTestSupport
                 .args(project.args())
                 .generate();
         }
-    }
-
-
-    @Test
-    public void buildGo() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr4/Go/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
-    }
-
-
-    @Test
-    public void buildPython2() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr4/Python2/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
-    }
-
-
-    @Test
-    public void buildPython3() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr4/Python3/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
     }
 
 

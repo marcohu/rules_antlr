@@ -62,7 +62,7 @@ class TestWorkspace
                 + "    name = \"rules_antlr\",\n"
                 + "    path = \"../../../rules_antlr\",\n" + ")\n"
                 + "load(\"@rules_antlr//antlr:repositories.bzl\", \"rules_antlr_dependencies\")\n"
-                + "rules_antlr_dependencies(2, 3, 4, \"Go\", \"Python\", \"Python2\")\n"
+                + "rules_antlr_dependencies(2, 3, 4, \"Cpp\", \"Go\", \"Python\", \"Python2\")\n"
                 + "http_archive(\n"
                 + "    name = \"io_bazel_rules_go\",\n"
                 + "    urls = [\n"

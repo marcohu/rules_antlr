@@ -3,6 +3,7 @@ package org.antlr.bazel;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitOption;
@@ -56,9 +57,14 @@ class TestProject implements Closeable
         }
         else
         {
-            Path target = Projects.path(project).resolve("src");
-            Path link = root.resolve("src");
-            Files.createSymbolicLink(link, target);
+            try (DirectoryStream<Path> entries = Files.newDirectoryStream(Projects.path(project)))
+            {
+                for (Path target : entries)
+                {
+                    Path link = root.resolve(target.getFileName());
+                    Files.createSymbolicLink(link, target);
+                }
+            }
         }
 
         outputDirectory = Files.createDirectories(root.resolve("target"));

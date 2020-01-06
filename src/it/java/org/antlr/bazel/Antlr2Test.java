@@ -189,15 +189,6 @@ public class Antlr2Test
     }
 
 
-    @Test
-    public void buildPython() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr2/Python/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
-    }
-
-
     private String classpath()
     {
         Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));

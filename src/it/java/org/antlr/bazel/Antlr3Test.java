@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  *
  * @author  Marco Hunsicker
  */
-public class Antlr3Test extends BazelTestSupport
+public class Antlr3Test
 {
     @Test
     public void basic() throws Exception
@@ -39,17 +39,24 @@ public class Antlr3Test extends BazelTestSupport
 
 
     @Test
-    public void detectLanguage() throws Exception
+    public void detectCSharpLanguage() throws Exception
     {
-        Path bin = build("//antlr3/DetectLanguage/...");
-        Path srcjar = bin.resolve("antlr3/DetectLanguage/src/main/antlr3/csharp.srcjar");
+        try (TestProject project = TestProject.create("examples/antlr3/DetectLanguage/src/main/antlr3"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .grammars(project.grammars())
+                .args(project.args())
+                .generate();
 
-        assertContents(srcjar,
-            "Antlr/Examples/HoistedPredicates//TLexer.cs",
-            "Antlr/Examples/HoistedPredicates//TParser.cs",
-            "Antlr/Examples/HoistedPredicates//T.tokens");
+            project.validate("Antlr/Examples/HoistedPredicates/TLexer.cs",
+                "Antlr/Examples/HoistedPredicates/TParser.cs",
+                "Antlr/Examples/HoistedPredicates/T.tokens");
+        }
     }
-
 
     @Test
     public void inheritFromLibFolder() throws Exception
@@ -167,24 +174,6 @@ public class Antlr3Test extends BazelTestSupport
         {
             assertEquals("ANTLR terminated with 1 error", ex.getMessage());
         }
-    }
-
-
-    @Test
-    public void buildPython2() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr3/Python2/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
-    }
-
-
-    @Test
-    public void buildPython3() throws Exception
-    {
-        TestWorkspace workspace = new TestWorkspace();
-        Command c = new Command(workspace.root, "//antlr3/Python3/...").build();
-        assertEquals(c.output(), 0, c.exitValue());
     }
 
 

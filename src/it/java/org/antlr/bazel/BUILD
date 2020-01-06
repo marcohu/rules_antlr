@@ -33,7 +33,7 @@ java_library(
 
 java_tests(
     name = "antlr2",
-    default_test_size = "medium",
+    default_test_size = "small",
     test_files = ["Antlr2Test.java"],
     deps = [":antlr2_tests"],
 )
@@ -63,7 +63,7 @@ java_library(
 
 java_tests(
     name = "antlr3",
-    default_test_size = "medium",
+    default_test_size = "small",
     test_files = ["Antlr3Test.java"],
     deps = [":antlr3_tests"],
 )
@@ -95,7 +95,7 @@ java_library(
 
 java_tests(
     name = "antlr4",
-    default_test_size = "medium",
+    default_test_size = "small",
     test_files = ["Antlr4Test.java"],
     deps = [":antlr4_tests"],
 )
