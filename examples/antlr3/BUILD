@@ -5,10 +5,10 @@ filegroup(
         "DetectLanguage",
         "InheritLibFolder",
         "InheritSameFolder",
+        "Java",
         "LanguageByAttribute",
         "Python2",
         "Python3",
-        "SimpleC",
     ],
     visibility = ["//visibility:public"],
 )
