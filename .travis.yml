@@ -18,3 +18,7 @@ script:
   - bazel shutdown
 
 language: java
+
+cache:
+  directories:
+  - $HOME/.cache/bazel
