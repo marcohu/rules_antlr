@@ -1,8 +1,10 @@
 filegroup(
     name = "srcs",
     srcs = [
+        "Cpp",
         "CustomLayout",
         "DetectLanguage",
+        "Go",
         "HelloWorld",
         "InheritLibFolder",
         "InheritSameFolder",

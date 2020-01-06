@@ -1,7 +1,7 @@
 """Loads ANTLR dependencies."""
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
-load(":lang.bzl", "C", "CPP", "JAVA", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
+load(":lang.bzl", "C", "CPP", "GO", "JAVA", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
 
 v4 = [4, "4.7.1", "4.7.2"]
 v3 = [3, "3.5.2"]
@@ -167,7 +167,7 @@ def _antlr4_dependencies(languages, archive, dependencies):
             sha256 = dependencies[name]["sha256"],
         )
 
-    build_script = _antlr4_build_script(languages)
+    build_script, workspace = _antlr4_build_script(languages)
 
     if build_script:
         http_archive(
@@ -176,10 +176,12 @@ def _antlr4_dependencies(languages, archive, dependencies):
             strip_prefix = archive["prefix"],
             url = archive["url"],
             build_file_content = build_script,
+            workspace_file_content = workspace,
         )
 
 def _antlr4_build_script(languages):
     script = ""
+    workspace = ""
 
     if CPP in languages:
         script += """
@@ -192,8 +194,33 @@ cc_library(
 )
 """
 
-    if PYTHON2 in languages:
+    if GO in languages:
+        workspace += _load_http(workspace) + """
+http_archive(
+    name = "io_bazel_rules_go",
+    urls = [
+        "https://storage.googleapis.com/bazel-mirror/github.com/bazelbuild/rules_go/releases/download/v0.20.3/rules_go-v0.20.3.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.20.3/rules_go-v0.20.3.tar.gz",
+    ],
+    sha256 = "e88471aea3a3a4f19ec1310a55ba94772d087e9ce46e41ae38ecebe17935de7b",
+)
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_rules_dependencies()
+go_register_toolchains()
+"""
         script += """
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+go_library(
+    name = "go",
+    srcs = glob(["runtime/Go/antlr/*.go"]),
+    importpath = "github.com/antlr/antlr4/runtime/Go/antlr",
+    visibility = ["//visibility:public"],
+)
+"""
+
+    if PYTHON2 in languages:
+        workspace += _load_http(workspace) + _load_rules_python_repositories(workspace)
+        script += _load_rules_python_defs(script) + """
 py_library(
     name = "python2",
     srcs = glob(["runtime/Python3/src/*.py"]),
@@ -203,7 +230,8 @@ py_library(
 """
 
     if PYTHON in languages or PYTHON3 in languages:
-        script += """
+        workspace += _load_http(workspace) + _load_rules_python_repositories(workspace)
+        script += _load_rules_python_defs(script) + """
 py_library(
     name = "python",
     srcs = glob(["runtime/Python3/src/*.py"]),
@@ -212,7 +240,24 @@ py_library(
 )
 """
 
-    return script
+    return (script, workspace)
+
+def _load_http(workspace):
+    return "" if workspace.find("@bazel_tools//tools/build_defs/repo:http.bzl") > -1 else 'load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")'
+
+def _load_rules_python_repositories(workspace):
+    return "" if workspace.find('load("@rules_python//python:repositories.bzl", "py_repositories")') > -1 else """
+http_archive(
+    name = "rules_python",
+    sha256 = "aa96a691d3a8177f3215b14b0edc9641787abaaa30363a080165d06ab65e1161",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.0.1/rules_python-0.0.1.tar.gz",
+)
+load("@rules_python//python:repositories.bzl", "py_repositories")
+py_repositories()
+"""
+
+def _load_rules_python_defs(script):
+    return "" if script.find('load("@rules_python//python:defs.bzl"') > -1 else 'load("@rules_python//python:defs.bzl", "py_library")'
 
 def _antlr4_transitive_dependencies():
     return {

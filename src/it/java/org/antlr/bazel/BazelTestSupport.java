@@ -58,7 +58,7 @@ class BazelTestSupport
         TestWorkspace workspace = new TestWorkspace();
 
         Command c = new Command(workspace.root, target).build();
-        assertEquals(0, c.exitValue());
+        assertEquals(c.output(), 0, c.exitValue());
 
         return workspace.path("bazel-bin");
     }

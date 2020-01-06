@@ -191,7 +191,8 @@ public class AntlrRules
                                 outputDirectory
                                     .getFileName()
                                     .toString()
-                                    .replace(".cc", ".antlr")));
+                                    .replace(".cc", ".antlr")
+                                    .replace(".go", ".antlr")));
                 Path headers = Files.createDirectories(
                         outputDirectory
                             .getParent()
@@ -220,6 +221,8 @@ public class AntlrRules
                         .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C}");
                     PathMatcher cheaders = outputDirectory.getFileSystem()
                         .getPathMatcher("glob:**.{h,hh,hpp,hxx,inc,inl,H}");
+                    PathMatcher gosources = outputDirectory.getFileSystem()
+                        .getPathMatcher("glob:**.{go}");
 
                     for (Path entry : entries)
                     {
@@ -276,6 +279,20 @@ public class AntlrRules
 
                                     continue;
                                 }
+
+                                break;
+                            }
+
+                            case GO:
+                            {
+                                if (!gosources.matches(entry))
+                                {
+                                    Files.move(entry, other.resolve(entry.getFileName()));
+
+                                    continue;
+                                }
+
+                                break;
                             }
                         }
 

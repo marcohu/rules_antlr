@@ -651,6 +651,15 @@ public class Antlr4Test extends BazelTestSupport
     }
 
 
+    @Test
+    public void buildGo() throws Exception
+    {
+        TestWorkspace workspace = new TestWorkspace();
+        Command c = new Command(workspace.root, "//antlr4/Go/...").build();
+        assertEquals(c.output(), 0, c.exitValue());
+    }
+
+
     private String[] classpath() throws Exception
     {
         Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));

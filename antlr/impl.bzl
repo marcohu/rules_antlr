@@ -1,6 +1,6 @@
 """The common ANTLR rule implementation."""
 
-load(":lang.bzl", "C", "CPP")
+load(":lang.bzl", "C", "CPP", "GO")
 
 AntlrInfo = provider(
     fields = {
@@ -28,6 +28,7 @@ def antlr(version, ctx, args):
         fail("No grammars provided, either add the srcs attribute or check your filespec", attr = "srcs")
 
     srcjar = None
+    data = []
     sources = []
     headers = []
     cc = ctx.attr.language == CPP or ctx.attr.language == C
@@ -45,8 +46,12 @@ def antlr(version, ctx, args):
 
         # for C/C++ we must split headers from sources
         if cc:
+            data = [ctx.actions.declare_directory(ctx.attr.name + ".antlr")]
             headers = ctx.actions.declare_directory(ctx.attr.name + ".inc")
             outputs = [sources, headers]
+        elif ctx.attr.language == GO:
+            data = [ctx.actions.declare_directory(ctx.attr.name + ".antlr")]
+            outputs = [sources]
         else:
             outputs = [sources]
 
@@ -55,7 +60,7 @@ def antlr(version, ctx, args):
     ctx.actions.run(
         arguments = [args(ctx, output_dir)],
         inputs = ctx.files.srcs + ctx.files.imports,
-        outputs = outputs,
+        outputs = outputs + data,
         mnemonic = "ANTLR" + version,
         executable = ctx.executable._tool,
         env = {
@@ -103,6 +108,8 @@ def extension(language):
         return ".cc"
     if language == "Python":
         return ".py"
+    if language == GO:
+        return ".go"
     return ""
 
 def lib_dir(imports):

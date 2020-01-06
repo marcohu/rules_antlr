@@ -16,4 +16,4 @@ def supported():
     Returns:
       the list of supported languages.
     """
-    return [C, CPP, JAVA, PYTHON, PYTHON2, PYTHON3]
+    return [C, CPP, GO, JAVA, PYTHON, PYTHON2, PYTHON3]

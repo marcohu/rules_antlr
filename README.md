@@ -6,7 +6,7 @@
 # ANTLR Rules for Bazel
 
 These build rules are used for processing [ANTLR](https://www.antlr.org)
-grammars with [Bazel](https://bazel.build/). Currently only C/C++, Java and Python targets are supported.
+grammars with [Bazel](https://bazel.build/). Currently C/C++, Go, Java and Python targets are supported.
 
   * [Workspace Setup](#setup)
     + [Details](docs/setup.md#setup)
@@ -212,6 +212,6 @@ The [`antlr4`](docs/antlr4.md#antlr) rule supports a common directory layout to 
 | Python, Python2, Python3 | `src/antlr4`     |
 | Swift                    |  &nbsp;          |
 
-For languages with no default, you have to set your preference with the
+For languages with no default, you would have to set your preference with the
 [`layout`](docs/antlr4.md#antlr-layout) attribute.
 
