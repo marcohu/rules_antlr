@@ -1,7 +1,7 @@
 """Loads ANTLR dependencies."""
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
-load(":lang.bzl", "C", "CPP", "GO", "JAVA", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
+load(":lang.bzl", "C", "CPP", "GO", "JAVA", "OBJC", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
 
 v4 = [4, "4.7.1", "4.7.2"]
 v3 = [3, "3.5.2"]
@@ -356,6 +356,7 @@ py_library(
     visibility = ["//visibility:public"],
 )
 """
+
     return script
 
 def _antlr277_dependencies(languages):

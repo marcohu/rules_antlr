@@ -7,6 +7,7 @@ filegroup(
         "InheritSameFolder",
         "Java",
         "LanguageByAttribute",
+        "ObjC",
         "Python2",
         "Python3",
     ],

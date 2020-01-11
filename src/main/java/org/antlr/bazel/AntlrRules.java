@@ -50,6 +50,7 @@ public class AntlrRules
     private Path outputDirectory;
     private final Path sandbox;
     private Path srcjar;
+    private String target;
     private Version version;
     private Output output;
     private boolean split = true;
@@ -88,6 +89,7 @@ public class AntlrRules
             .namespace(env.get("PACKAGE_NAME"))
             .language(env.get("TARGET_LANGUAGE"))
             .layout(env.get("DIRECTORY_LAYOUT"))
+            .target(env.get("TARGET"))
             .args(args)
             .generate();
     }
@@ -187,28 +189,15 @@ public class AntlrRules
                 Path other = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".antlr")
-                                    .replace(".go", ".antlr")));
+                            .resolve(target + ".antlr"));
                 Path headers = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".inc")));
+                            .resolve(target + ".inc"));
                 Path includes = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".inc")));
+                            .resolve(target + ".inc"));
                 Files.createDirectories(includes);
 
                 List<String> files = new ArrayList<>();
@@ -218,9 +207,9 @@ public class AntlrRules
                     PathMatcher expanded = outputDirectory.getFileSystem()
                         .getPathMatcher("glob:**/expanded*.g");
                     PathMatcher csources = outputDirectory.getFileSystem()
-                        .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C}");
+                        .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C,m,mm}");
                     PathMatcher cheaders = outputDirectory.getFileSystem()
-                        .getPathMatcher("glob:**.{h,hh,hpp,hxx,inc,inl,H}");
+                        .getPathMatcher("glob:**.{h,hh,hpp,hxx,h++,inc,inl,ipp,pch,tlh,tli,H}");
                     PathMatcher gosources = outputDirectory.getFileSystem()
                         .getPathMatcher("glob:**.{go}");
 
@@ -259,6 +248,7 @@ public class AntlrRules
                         {
                             case C :
                             case CPP :
+                            case OBJC:
                             {
                                 if (cheaders.matches(entry))
                                 {
@@ -269,7 +259,6 @@ public class AntlrRules
                                                 .resolve(entry.getFileName());
                                         Files.createDirectories(target.getParent());
                                         Files.move(entry, target);
-
                                         continue;
                                     }
                                 }
@@ -429,6 +418,16 @@ public class AntlrRules
     {
         this.srcjar = sandbox.resolve(srcjar);
         this.output = srcjar.isBlank() ? Output.FOLDER : Output.SRCJAR;
+
+        return this;
+    }
+
+
+    AntlrRules target(String target)
+    {
+        if (target == null) throw new NullPointerException("target must not be null");
+
+        this.target = target;
 
         return this;
     }

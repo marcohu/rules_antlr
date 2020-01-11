@@ -1,12 +1,12 @@
 """The common ANTLR rule implementation."""
 
-load(":lang.bzl", "C", "CPP", "GO", "PYTHON", "PYTHON2", "PYTHON3")
+load(":lang.bzl", "C", "CPP", "GO", "OBJC", "PYTHON", "PYTHON2", "PYTHON3")
 
 AntlrInfo = provider(
     fields = {
         "sources": "The generated source files.",
-        "headers": "For C/C++ the generated header files.",
-        "data": "Additional ANTLR data files",
+        "headers": "The generated header files (for C/C++/ObjC).",
+        "data": "Additional ANTLR data files.",
     },
     doc = "A provider containing information about ANTLR code generation.",
 )
@@ -31,7 +31,7 @@ def antlr(version, ctx, args):
     data = []
     sources = []
     headers = []
-    cc = ctx.attr.language == CPP or ctx.attr.language == C
+    cc = ctx.attr.language == CPP or ctx.attr.language == C or ctx.attr.language == OBJC
     output_type = "dir" if ctx.attr.language and ctx.attr.language != "Java" else "srcjar"
 
     if output_type == "srcjar":
@@ -71,6 +71,7 @@ def antlr(version, ctx, args):
             "OUTPUT_DIRECTORY": output_dir,
             "PACKAGE_NAME": ctx.attr.package,
             "SRC_JAR": srcjar.path if srcjar else "",
+            "TARGET": ctx.attr.name,
             "TARGET_LANGUAGE": ctx.attr.language,
             "TOOL_CLASSPATH": ",".join([f.path for f in tool_inputs]),
         },
@@ -82,16 +83,19 @@ def antlr(version, ctx, args):
     # for C/C++ we add the generated headers to the compilation context
     if cc:
         compilation_context = cc_common.create_compilation_context(headers = depset([headers]), system_includes = depset([headers.path + "/" + ctx.attr.package]))
-
+        print("DIR ", dir(compilation_context))
+        print("HEADERS", headers)
+    info = CcInfo(compilation_context = compilation_context) if cc else _NullInfo()
+    print("INFO", info, headers)
     return [
         AntlrInfo(
             sources = sources,
             headers = headers,
             data = [ctx.attr.name + ".antlr"],
         ),
-        platform_common.TemplateVariableInfo({
-            "INCLUDES": ctx.attr.name + ".inc/" + ctx.attr.package,
-        }),
+#        platform_common.TemplateVariableInfo({
+#            "INCLUDES": ctx.attr.name + ".inc/" + ctx.attr.package,
+#        }),
         CcInfo(compilation_context = compilation_context) if cc else _NullInfo(),
         DefaultInfo(files = depset(outputs)),
     ]
@@ -106,10 +110,12 @@ def extension(language):
     """
     if language == CPP or language == C:
         return ".cc"
-    if language == PYTHON or language == PYTHON2 or language == PYTHON3:
-        return ".py"
     if language == GO:
         return ".go"
+    if language == OBJC:
+        return ".objc"
+    if language == PYTHON or language == PYTHON2 or language == PYTHON3:
+        return ".py"
     return ""
 
 def lib_dir(imports):

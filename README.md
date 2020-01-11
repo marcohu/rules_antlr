@@ -6,12 +6,30 @@
 # ANTLR Rules for Bazel
 
 These build rules are used for processing [ANTLR](https://www.antlr.org)
-grammars with [Bazel](https://bazel.build/). Currently C/C++, Go, Java and Python targets are supported.
+grammars with [Bazel](https://bazel.build/).
 
+  * [Support Matrix](#matrix)
   * [Workspace Setup](#setup)
     + [Details](docs/setup.md#setup)
   * [Build Rules](#build-rules)
     - [Java Example](#java-example)
+
+<a name="matrix"></a>
+## Support Matrix
+
+|         | antlr4        | antlr3        | antlr2
+|---------|:-------------:|:-------------:|:----:|
+| C       |               | Gen           | Gen
+| C++     | Gen + Runtime | Gen + Runtime | Gen + Runtime
+| Go      | Gen + Runtime |               |
+| Java    | Gen + Runtime | Gen + Runtime | Gen + Runtime
+| ObjC    |               | Gen           |
+| Python2 | Gen + Runtime | Gen + Runtime | Gen + Runtime
+| Python3 | Gen + Runtime | Gen + Runtime |
+
+Gen: Code Generation
+Runtime: Runtime Library bundled
+
 
 <a name="setup"></a>
 ## Setup
