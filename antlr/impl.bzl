@@ -83,19 +83,13 @@ def antlr(version, ctx, args):
     # for C/C++ we add the generated headers to the compilation context
     if cc:
         compilation_context = cc_common.create_compilation_context(headers = depset([headers]), system_includes = depset([headers.path + "/" + ctx.attr.package]))
-        print("DIR ", dir(compilation_context))
-        print("HEADERS", headers)
-    info = CcInfo(compilation_context = compilation_context) if cc else _NullInfo()
-    print("INFO", info, headers)
+
     return [
         AntlrInfo(
             sources = sources,
             headers = headers,
             data = [ctx.attr.name + ".antlr"],
         ),
-#        platform_common.TemplateVariableInfo({
-#            "INCLUDES": ctx.attr.name + ".inc/" + ctx.attr.package,
-#        }),
         CcInfo(compilation_context = compilation_context) if cc else _NullInfo(),
         DefaultInfo(files = depset(outputs)),
     ]
