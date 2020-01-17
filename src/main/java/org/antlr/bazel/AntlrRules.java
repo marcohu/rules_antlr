@@ -417,7 +417,7 @@ public class AntlrRules
     AntlrRules srcjar(String srcjar)
     {
         this.srcjar = sandbox.resolve(srcjar);
-        this.output = srcjar.isBlank() ? Output.FOLDER : Output.SRCJAR;
+        this.output = srcjar.trim().isEmpty() ? Output.FOLDER : Output.SRCJAR;
 
         return this;
     }
