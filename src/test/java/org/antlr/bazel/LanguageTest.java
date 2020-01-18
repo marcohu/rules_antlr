@@ -116,6 +116,9 @@ public class LanguageTest
             JAVA.detectNamespace("header {package foo.bar;}").toString());
         assertEquals("foo.bar",
             JAVA.detectNamespace("header {package\nfoo.bar;}").toString());
+        assertEquals("org.antlr.v4.parse", JAVA.detectNamespace("// @header test { comment }\n@lexer::header {\npackage org.antlr.v4.parse;\n}").toString());
+        assertEquals("org.antlr.v4.parse", JAVA.detectNamespace("/* @header test { comment } */\n@lexer::header {\npackage org.antlr.v4.parse;\n}").toString());
+        assertEquals("org.antlr.v4.parse", JAVA.detectNamespace("/*\n * @header test { comment }\n */\n@lexer::header {\npackage org.antlr.v4.parse;\n}").toString());
 
         assertEquals(null, OBJC.detectNamespace(""));
 
