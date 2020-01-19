@@ -38,6 +38,11 @@ import java.util.TreeMap;
  */
 public class AntlrRules
 {
+    private final static CopyOption[] COPY_OPTIONS = {
+        StandardCopyOption.COPY_ATTRIBUTES,
+        StandardCopyOption.REPLACE_EXISTING
+    };
+
     private String[] args;
     private String[] classpath;
     private Charset encoding = Charset.defaultCharset();
@@ -130,6 +135,8 @@ public class AntlrRules
 
     void generate() throws Exception
     {
+        expandSrcJarImports();
+
         Map<Namespace, Collection<Grammar>> namespaces = groupByNamespace(grammars);
 
         // use reflection so we are not tied to a specific ANTLR version
@@ -315,12 +322,6 @@ public class AntlrRules
 
                     Files.walkFileTree(outputDirectory, new SimpleFileVisitor<Path>()
                         {
-                            CopyOption[] options =
-                                {
-                                    StandardCopyOption.COPY_ATTRIBUTES,
-                                    StandardCopyOption.REPLACE_EXISTING
-                                };
-
                             @Override
                             public FileVisitResult visitFile(Path file, BasicFileAttributes attr)
                                 throws IOException
@@ -357,7 +358,7 @@ public class AntlrRules
                                 }
 
                                 Files.createDirectories(target.getParent());
-                                Files.copy(file, target, options);
+                                Files.copy(file, target, COPY_OPTIONS);
 
                                 return CONTINUE;
                             }
@@ -535,6 +536,52 @@ public class AntlrRules
         }
 
         return new ContextClassLoader(urls, null);
+    }
+
+
+    private void expandSrcJarImports() throws IOException
+    {
+        for (int i = 0; i < args.length; i++)
+        {
+            // ANTLR can't handle imports in an archive. We therefore expand it and alter
+            // the lib path accordingly
+            if (args[i].equals("-lib") && args[i + 1].endsWith(".srcjar"))
+            {
+                Path srcjar = sandbox.resolve(args[i + 1]);
+                URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
+
+                try (FileSystem fs = FileSystems.newFileSystem(uri, new HashMap<String, String>()))
+                {
+                    Path root = fs.getPath("/");
+                    Path target = sandbox.resolve(this.target + ".imports");
+
+                    Files.createDirectories(target);
+                    Files.walkFileTree(root, new SimpleFileVisitor<Path>()
+                    {
+                        @Override
+                        public FileVisitResult preVisitDirectory(Path dir,
+                            BasicFileAttributes attrs) throws IOException
+                        {
+                            Files.createDirectories(target.resolve(root.relativize(dir).toString()));
+
+                            return FileVisitResult.CONTINUE;
+                        }
+
+
+                        @Override
+                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                            throws IOException
+                        {
+                            Files.copy(file, target.resolve(file.getFileName().toString()), COPY_OPTIONS);
+
+                            return FileVisitResult.CONTINUE;
+                        }
+                    });
+
+                    args[i + 1] = sandbox.relativize(target).toString();
+                }
+            }
+        }
     }
 
 

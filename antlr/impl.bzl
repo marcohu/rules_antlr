@@ -122,7 +122,10 @@ def lib_dir(imports):
     """
     lib = {}
     for resource in imports:
-        lib[resource.path.replace("/" + resource.basename, "")] = None
+        if resource.path.endswith(".srcjar"):
+            lib[resource.path] = None
+        else:
+            lib[resource.path.replace("/" + resource.basename, "")] = None
     count = len(lib)
 
     # the lib directory does not allow nested directories
