@@ -35,4 +35,4 @@ py_repositories()
 load("@rules_antlr//antlr:lang.bzl", "C", "CPP", "GO", "JAVA", "OBJC", "PYTHON", "PYTHON2")
 load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
 
-rules_antlr_dependencies(2, 3, "4.7.2", C, CPP, GO, OBJC, PYTHON, PYTHON2)
+rules_antlr_dependencies(2, 3, "4.8-1", C, CPP, GO, OBJC, PYTHON, PYTHON2)
