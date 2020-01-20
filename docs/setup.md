@@ -74,7 +74,7 @@ The currently supported releases are:
 
 | Release  Stream | Supported Versions| Bundled Runtimes
 |-----------------|-------------------|---
-| 4               | 4.7.1, 4.7.2, 4.8-1 | C++, Go, Java, Python2, Python3
+| 4               | 4.7.1, 4.7.2, 4.8 | C++, Go, Java, Python2, Python3
 | 3               | 3.5.2             | C++, Java, Python2, Python3
 | 2               | 2.7.7             | C++, Java, Python2
 
