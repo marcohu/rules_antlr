@@ -8,9 +8,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_antlr",
-    sha256 = "f7c73e1fe3d3b1be3b65172da756a326d12100f6a8d1ef8327498705c0d52efc",
-    strip_prefix = "rules_antlr-0.4.0",
-    urls = ["https://github.com/marcohu/rules_antlr/archive/0.4.0.tar.gz"],
+    sha256 = "",
+    strip_prefix = "rules_antlr-0.5.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz"],
 )
 ```
 
