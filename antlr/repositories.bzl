@@ -51,15 +51,15 @@ PACKAGES = {
             "sha256": "43516d19beae35909e04d06af6c0c58c17bc94e0070c85e8dc9929ca640dc91d",
         },
         "4.7.4-opt": {
-            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
+            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.4/antlr4-runtime-4.7.4.jar",
             "sha256": "c0616e1eb3b7aa6b4de9a304ea458d50cac279f78b0b65bf7a8176701f8402ee",
         },
         "4.7.3-opt": {
-            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
+            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.3/antlr4-runtime-4.7.3.jar",
             "sha256": "5f4f0c4031e4b83cb369ef00f4909cdb6f62b11e3d253f83a6184d80c5eb3157",
         },
         "4.7.2-opt": {
-            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar",
+            "path": "com/tunnelvisionlabs/antlr4-runtime/4.7.2/antlr4-runtime-4.7.2.jar",
             "sha256": "fdec73953ba059034336a8e0b0ea5204f6897900bf0b0fa35347ce8a8bb88816",
         },
         "4.7.1-opt": {
