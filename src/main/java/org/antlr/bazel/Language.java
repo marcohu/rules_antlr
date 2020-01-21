@@ -541,7 +541,8 @@ enum Language
      */
     private static String header(String grammar)
     {
-        Matcher header = HEADER.matcher(grammar);
+        // remove comments to avoid erroneous matches
+        Matcher header = HEADER.matcher(grammar.replaceAll("(?m://.*$)|(?s:/\\*.*?\\*/)",""));
 
         return header.find() ? header.group(1) : null;
     }

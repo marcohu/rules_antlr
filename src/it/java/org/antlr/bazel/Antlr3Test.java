@@ -177,6 +177,29 @@ public class Antlr3Test
     }
 
 
+    @Test
+    public void objC() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/ObjC"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .grammars(project.grammars())
+                .args(project.args())
+                .generate();
+
+            project.validate("SimpleCLexer.h",
+                "SimpleCLexer.m",
+                "SimpleCParser.h",
+                "SimpleCParser.m",
+                "SimpleC.tokens");
+        }
+    }
+
+
     private String[] classpath() throws Exception
     {
         Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));

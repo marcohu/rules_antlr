@@ -1,18 +1,23 @@
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools:gen_test_rules.bzl", "java_tests")
 
-filegroup(
+java_library(
     name = "support",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    javacopts = ["--release 11"],
+    deps = [
+        "//src/test/java/org/antlr/bazel:tests",
+        "@junit//jar",
+    ],
 )
 
 java_library(
     name = "antlr2_tests",
     testonly = True,
-    srcs = glob(["Antlr2Test.java"]) + [":support"],
+    srcs = glob(["Antlr2Test.java"]),
     data = [
         "//:srcs",
         "//antlr:srcs",
@@ -22,6 +27,7 @@ java_library(
         "@examples//antlr2:srcs",
     ],
     deps = [
+        ":support",
         "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@antlr2//jar",
@@ -41,7 +47,7 @@ java_tests(
 java_library(
     name = "antlr3_tests",
     testonly = True,
-    srcs = glob(["Antlr3Test.java"]) + [":support"],
+    srcs = glob(["Antlr3Test.java"]),
     data = [
         "//:srcs",
         "//antlr:srcs",
@@ -50,6 +56,7 @@ java_library(
         "@examples//antlr3:srcs",
     ],
     deps = [
+        ":support",
         "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@antlr3_runtime//jar",
@@ -71,7 +78,7 @@ java_tests(
 java_library(
     name = "antlr4_tests",
     testonly = True,
-    srcs = glob(["Antlr4Test.java"]) + [":support"],
+    srcs = glob(["Antlr4Test.java"]),
     data = [
         "//:srcs",
         "//antlr:srcs",
@@ -80,6 +87,7 @@ java_library(
         "@examples//antlr4:srcs",
     ],
     deps = [
+        ":support",
         "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@antlr3_runtime//jar",
@@ -103,7 +111,7 @@ java_tests(
 java_library(
     name = "repository_tests",
     testonly = True,
-    srcs = glob(["RepositoriesTest.java"]) + [":support"],
+    srcs = glob(["RepositoriesTest.java"]),
     data = [
         "//:srcs",
         "//antlr:srcs",
@@ -113,6 +121,7 @@ java_library(
         "@examples//antlr2:srcs",
     ],
     deps = [
+        ":support",
         "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@antlr2//jar",

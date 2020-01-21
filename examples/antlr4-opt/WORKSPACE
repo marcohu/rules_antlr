@@ -1,0 +1,10 @@
+workspace(name = "antlr4_opt")
+
+local_repository(
+    name = "rules_antlr",
+    path = "../..",
+)
+
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_optimized_dependencies")
+
+rules_antlr_optimized_dependencies("4.7.4")

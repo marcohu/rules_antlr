@@ -8,9 +8,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_antlr",
-    sha256 = "f7c73e1fe3d3b1be3b65172da756a326d12100f6a8d1ef8327498705c0d52efc",
-    strip_prefix = "rules_antlr-0.4.0",
-    urls = ["https://github.com/marcohu/rules_antlr/archive/0.4.0.tar.gz"],
+    sha256 = "",
+    strip_prefix = "rules_antlr-0.5.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz"],
 )
 ```
 
@@ -74,7 +74,7 @@ The currently supported releases are:
 
 | Release  Stream | Supported Versions| Bundled Runtimes
 |-----------------|-------------------|---
-| 4               | 4.7.1, 4.7.2      | C++, Go, Java, Python2, Python3
+| 4               | 4.7.1, 4.7.2, 4.8 | C++, Go, Java, Python2, Python3
 | 3               | 3.5.2             | C++, Java, Python2, Python3
 | 2               | 2.7.7             | C++, Java, Python2
 

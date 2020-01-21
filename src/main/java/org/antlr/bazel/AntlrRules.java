@@ -38,6 +38,11 @@ import java.util.TreeMap;
  */
 public class AntlrRules
 {
+    private final static CopyOption[] COPY_OPTIONS = {
+        StandardCopyOption.COPY_ATTRIBUTES,
+        StandardCopyOption.REPLACE_EXISTING
+    };
+
     private String[] args;
     private String[] classpath;
     private Charset encoding = Charset.defaultCharset();
@@ -50,6 +55,7 @@ public class AntlrRules
     private Path outputDirectory;
     private final Path sandbox;
     private Path srcjar;
+    private String target;
     private Version version;
     private Output output;
     private boolean split = true;
@@ -88,6 +94,7 @@ public class AntlrRules
             .namespace(env.get("PACKAGE_NAME"))
             .language(env.get("TARGET_LANGUAGE"))
             .layout(env.get("DIRECTORY_LAYOUT"))
+            .target(env.get("TARGET"))
             .args(args)
             .generate();
     }
@@ -128,6 +135,8 @@ public class AntlrRules
 
     void generate() throws Exception
     {
+        expandSrcJarImports();
+
         Map<Namespace, Collection<Grammar>> namespaces = groupByNamespace(grammars);
 
         // use reflection so we are not tied to a specific ANTLR version
@@ -187,28 +196,15 @@ public class AntlrRules
                 Path other = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".antlr")
-                                    .replace(".go", ".antlr")));
+                            .resolve(target + ".antlr"));
                 Path headers = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".inc")));
+                            .resolve(target + ".inc"));
                 Path includes = Files.createDirectories(
                         outputDirectory
                             .getParent()
-                            .resolve(
-                                outputDirectory
-                                    .getFileName()
-                                    .toString()
-                                    .replace(".cc", ".inc")));
+                            .resolve(target + ".inc"));
                 Files.createDirectories(includes);
 
                 List<String> files = new ArrayList<>();
@@ -218,9 +214,9 @@ public class AntlrRules
                     PathMatcher expanded = outputDirectory.getFileSystem()
                         .getPathMatcher("glob:**/expanded*.g");
                     PathMatcher csources = outputDirectory.getFileSystem()
-                        .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C}");
+                        .getPathMatcher("glob:**.{c,cc,cpp,cxx,c++,C,m,mm}");
                     PathMatcher cheaders = outputDirectory.getFileSystem()
-                        .getPathMatcher("glob:**.{h,hh,hpp,hxx,inc,inl,H}");
+                        .getPathMatcher("glob:**.{h,hh,hpp,hxx,h++,inc,inl,ipp,pch,tlh,tli,H}");
                     PathMatcher gosources = outputDirectory.getFileSystem()
                         .getPathMatcher("glob:**.{go}");
 
@@ -259,6 +255,7 @@ public class AntlrRules
                         {
                             case C :
                             case CPP :
+                            case OBJC:
                             {
                                 if (cheaders.matches(entry))
                                 {
@@ -269,7 +266,6 @@ public class AntlrRules
                                                 .resolve(entry.getFileName());
                                         Files.createDirectories(target.getParent());
                                         Files.move(entry, target);
-
                                         continue;
                                     }
                                 }
@@ -326,12 +322,6 @@ public class AntlrRules
 
                     Files.walkFileTree(outputDirectory, new SimpleFileVisitor<Path>()
                         {
-                            CopyOption[] options =
-                                {
-                                    StandardCopyOption.COPY_ATTRIBUTES,
-                                    StandardCopyOption.REPLACE_EXISTING
-                                };
-
                             @Override
                             public FileVisitResult visitFile(Path file, BasicFileAttributes attr)
                                 throws IOException
@@ -368,7 +358,7 @@ public class AntlrRules
                                 }
 
                                 Files.createDirectories(target.getParent());
-                                Files.copy(file, target, options);
+                                Files.copy(file, target, COPY_OPTIONS);
 
                                 return CONTINUE;
                             }
@@ -428,7 +418,17 @@ public class AntlrRules
     AntlrRules srcjar(String srcjar)
     {
         this.srcjar = sandbox.resolve(srcjar);
-        this.output = srcjar.isBlank() ? Output.FOLDER : Output.SRCJAR;
+        this.output = srcjar.trim().isEmpty() ? Output.FOLDER : Output.SRCJAR;
+
+        return this;
+    }
+
+
+    AntlrRules target(String target)
+    {
+        if (target == null) throw new NullPointerException("target must not be null");
+
+        this.target = target;
 
         return this;
     }
@@ -536,6 +536,52 @@ public class AntlrRules
         }
 
         return new ContextClassLoader(urls, null);
+    }
+
+
+    private void expandSrcJarImports() throws IOException
+    {
+        for (int i = 0; i < args.length; i++)
+        {
+            // ANTLR can't handle imports in an archive. We therefore expand it and alter
+            // the lib path accordingly
+            if (args[i].equals("-lib") && args[i + 1].endsWith(".srcjar"))
+            {
+                Path srcjar = sandbox.resolve(args[i + 1]);
+                URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
+
+                try (FileSystem fs = FileSystems.newFileSystem(uri, new HashMap<String, String>()))
+                {
+                    Path root = fs.getPath("/");
+                    Path target = sandbox.resolve(this.target + ".imports");
+
+                    Files.createDirectories(target);
+                    Files.walkFileTree(root, new SimpleFileVisitor<Path>()
+                    {
+                        @Override
+                        public FileVisitResult preVisitDirectory(Path dir,
+                            BasicFileAttributes attrs) throws IOException
+                        {
+                            Files.createDirectories(target.resolve(root.relativize(dir).toString()));
+
+                            return FileVisitResult.CONTINUE;
+                        }
+
+
+                        @Override
+                        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                            throws IOException
+                        {
+                            Files.copy(file, target.resolve(file.getFileName().toString()), COPY_OPTIONS);
+
+                            return FileVisitResult.CONTINUE;
+                        }
+                    });
+
+                    args[i + 1] = sandbox.relativize(target).toString();
+                }
+            }
+        }
     }
 
 
