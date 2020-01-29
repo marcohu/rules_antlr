@@ -14,6 +14,7 @@ java_library(
     ],
     deps = [
         "//src/main/java/org/antlr/bazel",
+        "@assertj//jar",
         "@guava//jar",
         "@jimfs//jar",
         "@junit//jar",

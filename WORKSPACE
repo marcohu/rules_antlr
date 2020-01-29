@@ -9,6 +9,12 @@ local_repository(
 )
 
 http_jar(
+    name = "assertj",
+    sha256 = "ae84617817b71eb834a14c0bdeb8af2b495dcf3ed64ed6ef5c9a7732ca9cf110",
+    url = "https://repo1.maven.org/maven2/org/assertj/assertj-core/3.14.0/assertj-core-3.14.0.jar",
+)
+
+http_jar(
     name = "junit",
     sha256 = "59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a",
     url = "https://jcenter.bintray.com/junit/junit/4.12/junit-4.12.jar",
