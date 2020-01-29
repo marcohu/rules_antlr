@@ -5,4 +5,3 @@ antlr(
     srcs = glob(["SimpleC.g"]),
     language = "ObjC",
 )
-
