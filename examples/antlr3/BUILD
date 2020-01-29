@@ -3,6 +3,7 @@ filegroup(
     srcs = [
         "Cpp",
         "DetectLanguage",
+        "ImportGenerated",
         "InheritLibFolder",
         "InheritSameFolder",
         "Java",

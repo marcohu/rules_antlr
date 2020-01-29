@@ -58,6 +58,7 @@ public class Antlr3Test
         }
     }
 
+
     @Test
     public void inheritFromLibFolder() throws Exception
     {
@@ -65,6 +66,28 @@ public class Antlr3Test
         {
             AntlrRules.create(project.root())
                 .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .grammars(project.grammars())
+                .args(project.args("-lib", "src/main/antlr3/lib"))
+                .generate();
+
+            project.validate("Simple_CommonLexer.java",
+                "SimpleLexer.java",
+                "SimpleParser.java",
+                "Simple.tokens");
+        }
+    }
+
+
+    @Test
+    public void ignoreImportedGrammar() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/InheritLibFolder").folder())
+        {
+            AntlrRules.create(project.root())
+                .srcjar("")
                 .version("3")
                 .classpath(classpath())
                 .outputDirectory(project.outputDirectory().toString())
@@ -200,9 +223,90 @@ public class Antlr3Test
     }
 
 
+    @Test
+    public void importGenerated() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/ImportGenerated"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .target("importGenerated")
+                .grammars("src/parse/ANTLRLexer.g", "src/parse/ANTLRParser.g")
+                .args(project.args())
+                .generate();
+
+            String srcjar = project.srcjar().toString();
+
+            project.validate(
+                "org/antlr/v4/parse/ANTLRLexer.java",
+                "org/antlr/v4/parse/ANTLRLexer.tokens",
+                "org/antlr/v4/parse/ANTLRParser.java",
+                "org/antlr/v4/parse/ANTLRParser.tokens");
+
+            Path outputDirectory = project.outputDirectory().getParent().resolve("slave");
+            Files.createDirectories(outputDirectory);
+
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(outputDirectory.toString())
+                .target("importGenerated")
+                .grammars("src/codegen/SourceGenTriggers.g")
+                .args(project.args(project.args("-lib", srcjar)))
+                .generate();
+
+            project.validate(
+                "org/antlr/v4/parse/ANTLRLexer.java",
+                "org/antlr/v4/parse/ANTLRLexer.tokens",
+                "org/antlr/v4/parse/ANTLRParser.java",
+                "org/antlr/v4/parse/ANTLRParser.tokens");
+        }
+    }
+
+
+    @Test(expected = IllegalStateException.class)
+    public void unexpectedGenerated() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr3/ImportGenerated"))
+        {
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .target("importGenerated")
+                .grammars("src/parse/ANTLRLexer.g", "src/parse/ANTLRParser.g")
+                .args(project.args())
+                .generate();
+
+            String srcjar = project.srcjar().toString();
+
+            project.validate(
+                "org/antlr/v4/parse/ANTLRLexer.java",
+                "org/antlr/v4/parse/ANTLRLexer.tokens",
+                "org/antlr/v4/parse/ANTLRParser.java",
+                "org/antlr/v4/parse/ANTLRParser.tokens");
+
+            AntlrRules.create(project.root())
+                .srcjar(project.srcjar().toString())
+                .version("3")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .target("importGenerated")
+                .grammars("src/codegen/SourceGenTriggers.g")
+                .args(project.args(project.args("-lib", srcjar)))
+                .generate();
+        }
+    }
+
+
     private String[] classpath() throws Exception
     {
-        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+        Path root = Paths.get(Environment.variable("RUNFILES_DIR"));
 
         return new String[] {
             root.resolve("rules_antlr/external/antlr3_runtime/jar/downloaded.jar").toString(),

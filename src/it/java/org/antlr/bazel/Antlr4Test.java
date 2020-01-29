@@ -617,6 +617,83 @@ public class Antlr4Test
 
 
     @Test
+    public void folder() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr4/Java").folder())
+        {
+            AntlrRules.create(project.root())
+                .target("folder")
+                .srcjar("")
+                .version("4")
+                .classpath(classpath())
+                .outputDirectory(project.outputDirectory().toString())
+                .encoding("UTF-8")
+                .grammars(project.grammars())
+                .args(project.args())
+                .generate();
+
+            project.validate("HelloLexer.tokens",
+                "Hello.tokens",
+                "HelloBaseListener.java",
+                "HelloParser.java",
+                "HelloLexer.interp",
+                "HelloListener.java",
+                "HelloLexer.java",
+                "Hello.interp");
+        }
+    }
+
+
+    @Test
+    public void main() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr4/Go").folder())
+        {
+            Environment.variable("DIRECTORY_LAYOUT", "src/main/antlr4");
+            Environment.variable("ENCODING", "UTF-8");
+            Environment.variable("GRAMMARS", String.join(",", project.grammars()));
+            Environment.variable("OUTPUT_DIRECTORY", project.outputDirectory().toString());
+            Environment.variable("PACKAGE_NAME", "foo.bar");
+            Environment.variable("SRC_JAR", "");
+            Environment.variable("TARGET", "main");
+            Environment.variable("TARGET_LANGUAGE", "Go");
+            Environment.variable("TOOL_CLASSPATH", String.join(",", classpath()));
+            Environment.variable("ANTLR_VERSION", "4");
+
+            AntlrRules.main("-Dlanguage=Go", "-o", project.outputDirectory().toString(), "-Xlog");
+
+            project.validate(
+                "foo.bar/json_base_listener.go",
+                "foo.bar/json_lexer.go",
+                "foo.bar/json_listener.go",
+                "foo.bar/json_parser.go");
+        }
+
+        try (TestProject project = TestProject.create("examples/antlr4/Cpp").folder())
+        {
+            Environment.variable("DIRECTORY_LAYOUT", "src/antlr4");
+            Environment.variable("ENCODING", "UTF-8");
+            Environment.variable("GRAMMARS", String.join(",", project.grammars()));
+            Environment.variable("OUTPUT_DIRECTORY", project.outputDirectory().toString());
+            Environment.variable("PACKAGE_NAME", "foo.bar");
+            Environment.variable("SRC_JAR", "");
+            Environment.variable("TARGET", "main");
+            Environment.variable("TARGET_LANGUAGE", "Cpp");
+            Environment.variable("TOOL_CLASSPATH", String.join(",", classpath()));
+            Environment.variable("ANTLR_VERSION", "4");
+
+            AntlrRules.main("-Dlanguage=Cpp", "-o", project.outputDirectory().toString());
+
+            project.validate(
+                "foo.bar/TLexer.cpp",
+                "foo.bar/TParser.cpp",
+                "foo.bar/TParserBaseListener.cpp",
+                "foo.bar/TParserListener.cpp");
+        }
+    }
+
+
+    @Test
     public void namespacePackageConflictsWithGrammar() throws Exception
     {
         try (TestProject project = TestProject.create(
@@ -661,7 +738,7 @@ public class Antlr4Test
 
     private String[] classpath() throws Exception
     {
-        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+        Path root = Paths.get(Environment.variable("RUNFILES_DIR"));
 
         return new String[] {
             root.resolve("rules_antlr/external/antlr3_runtime/jar/downloaded.jar").toString(),

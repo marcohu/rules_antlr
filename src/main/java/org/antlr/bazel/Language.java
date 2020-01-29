@@ -298,6 +298,8 @@ enum Language
         private final Pattern module = Pattern.compile("module\\s*(.*?)\\s*$",
             Pattern.DOTALL | Pattern.MULTILINE);
 
+        private final DirectoryLayout layout = new DirectoryLayout();
+
         @Override
         public String toPath(String namespace)
         {
@@ -334,7 +336,7 @@ enum Language
         @Override
         public DirectoryLayout getLayout()
         {
-            throw new UnsupportedOperationException("Not yet implemented");
+            return layout;
         }
     },
 

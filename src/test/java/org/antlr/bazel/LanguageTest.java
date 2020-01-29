@@ -81,6 +81,7 @@ public class LanguageTest
         assertEquals("", OBJC.getLayout().toString());
         assertEquals(".*[\\\\/]src[\\\\/]antlr[234]?[\\\\/](.*)",
             PYTHON.getLayout().toString());
+        assertEquals("", RUBY.getLayout().toString());
         assertEquals("", SWIFT.getLayout().toString());
     }
 

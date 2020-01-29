@@ -9,8 +9,12 @@ java_library(
     ),
     javacopts = ["--release 11"],
     deps = [
+        "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@junit//jar",
+    ],
+    resources = [
+        "//src/it/resources/META-INF/services:srcs",
     ],
 )
 

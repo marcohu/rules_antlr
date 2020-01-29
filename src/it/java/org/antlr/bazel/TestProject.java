@@ -36,6 +36,7 @@ class TestProject implements Closeable
     private final String name;
     private final Path outputDirectory;
     private final Path root;
+    private boolean folder;
 
     /**
      * Creates a new TestProject object.
@@ -104,6 +105,12 @@ class TestProject implements Closeable
         return new TestProject(project, copy);
     }
 
+
+    public TestProject folder()
+    {
+        folder = true;
+        return this;
+    }
 
     @Override
     public void close() throws IOException
@@ -184,7 +191,7 @@ class TestProject implements Closeable
 
     Path srcjar()
     {
-        return outputDirectory.resolve(name + ".srcjar");
+        return folder ? outputDirectory : outputDirectory.resolve(name + ".srcjar");
     }
 
 
@@ -199,20 +206,36 @@ class TestProject implements Closeable
     {
         Path srcjar = srcjar();
 
-        assertTrue(Files.exists(srcjar));
+        assertTrue(srcjar + " does not exist", Files.exists(srcjar));
 
-        URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
+        if (srcjar.toString().endsWith(".srcjar"))
+        {
+            URI uri = URI.create("jar:file:" + srcjar.toUri().getPath());
 
-        try (FileSystem fs = FileSystems.newFileSystem(uri, new HashMap<String, String>()))
+            try (FileSystem fs = FileSystems.newFileSystem(uri, new HashMap<String, String>()))
+            {
+                for (String path : paths)
+                {
+                    if (Files.notExists(fs.getPath(path)))
+                    {
+                        throw new AssertionError(
+                            String.format("Path does not exist: %s. Archive contains: %s",
+                                path,
+                                contents(fs.getPath("/"))));
+                    }
+                }
+            }
+        }
+        else
         {
             for (String path : paths)
             {
-                if (Files.notExists(fs.getPath(path)))
+                if (Files.notExists(srcjar.resolve(path)))
                 {
                     throw new AssertionError(
                         String.format("Path does not exist: %s. Archive contains: %s",
                             path,
-                            contents(fs.getPath("/"))));
+                            contents(srcjar)));
                 }
             }
         }

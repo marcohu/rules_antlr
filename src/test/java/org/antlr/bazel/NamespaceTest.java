@@ -56,6 +56,8 @@ public class NamespaceTest
     @Test
     public void of()
     {
+        assertEquals("org\\antlr/test",
+            Namespace.of(Paths.get("org\\antlr/test"), Language.C).toString());
         assertEquals("org::antlr::test",
             Namespace.of(Paths.get("org\\antlr/test"), Language.CPP).toString());
         assertEquals("org.antlr.test",
@@ -80,6 +82,8 @@ public class NamespaceTest
     @Test
     public void toPath()
     {
+        assertEquals("org\\antlr/test",
+            Namespace.of("org\\antlr/test").toPath(Language.C));
         assertEquals("org/antlr/test",
             Namespace.of("org::antlr::test").toPath(Language.CPP));
         assertEquals("org/antlr/test",

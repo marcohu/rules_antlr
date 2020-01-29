@@ -4,11 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+
 
 /**
  * Antlr 2 tests.
@@ -189,9 +191,57 @@ public class Antlr2Test
     }
 
 
+    @Test
+    public void main() throws Exception
+    {
+        try (TestProject project = TestProject.create("examples/antlr2/InheritTinyC",
+            true).folder())
+        {
+            try (TestProject ref = TestProject.create("examples/antlr2/TinyC", true).folder())
+            {
+                String[] grammars = ref.grammars();
+
+                Arrays.sort(grammars);
+
+                Environment.variable("DIRECTORY_LAYOUT", "src");
+                Environment.variable("ENCODING", "UTF-8");
+                Environment.variable("GRAMMARS", String.join(",", grammars));
+                Environment.variable("OUTPUT_DIRECTORY", ref.outputDirectory().toString());
+                Environment.variable("PACKAGE_NAME", "");
+                Environment.variable("SRC_JAR", "");
+                Environment.variable("TARGET_LANGUAGE", "Java");
+                Environment.variable("TARGET", "main");
+                Environment.variable("TOOL_CLASSPATH", String.join(",", classpath()));
+                Environment.variable("ANTLR_VERSION", "2");
+
+                AntlrRules.main("-o", ref.outputDirectory().toString());
+
+                Path target = ref.srcjar();
+
+                Environment.variable("DIRECTORY_LAYOUT", "src");
+                Environment.variable("ENCODING", "UTF-8");
+                Environment.variable("GRAMMARS", String.join(",", project.grammars()));
+                Environment.variable("OUTPUT_DIRECTORY", project.outputDirectory().toString());
+                Environment.variable("PACKAGE_NAME", "");
+                Environment.variable("SRC_JAR", "");
+                Environment.variable("TARGET_LANGUAGE", "Java");
+                Environment.variable("TARGET", "main");
+                Environment.variable("TOOL_CLASSPATH", String.join(",", classpath()));
+                Environment.variable("ANTLR_VERSION", "2");
+
+                AntlrRules.main(
+                    "-o", project.outputDirectory().toString(),
+                    "-glib",
+                    ref.root().resolve("src/main/antlr2/tinyc.g;") + ref.srcjar().toString()
+                );
+            }
+        }
+    }
+
+
     private String classpath()
     {
-        Path root = Paths.get(System.getenv().get("RUNFILES_DIR"));
+        Path root = Paths.get(Environment.variable("RUNFILES_DIR"));
 
         return root.resolve("rules_antlr/external/antlr2/jar/downloaded.jar").toString();
     }

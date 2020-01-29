@@ -78,23 +78,21 @@ public class AntlrRules
      *
      * @throws  Exception  if an error occurred.
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String... args) throws Exception
     {
         // for simplicity we use environment variables for configuration and pass through
         // the command-line arguments to ANTLR
-        Map<String, String> env = System.getenv();
-
         AntlrRules.create()
-            .srcjar(env.get("SRC_JAR"))
-            .version(env.get("ANTLR_VERSION"))
-            .classpath(env.get("TOOL_CLASSPATH").split(","))
-            .outputDirectory(env.get("OUTPUT_DIRECTORY"))
-            .encoding(env.get("ENCODING"))
-            .grammars(env.get("GRAMMARS").split(","))
-            .namespace(env.get("PACKAGE_NAME"))
-            .language(env.get("TARGET_LANGUAGE"))
-            .layout(env.get("DIRECTORY_LAYOUT"))
-            .target(env.get("TARGET"))
+            .srcjar(Environment.variable("SRC_JAR"))
+            .version(Environment.variable("ANTLR_VERSION"))
+            .classpath(Environment.variable("TOOL_CLASSPATH").split(","))
+            .outputDirectory(Environment.variable("OUTPUT_DIRECTORY"))
+            .encoding(Environment.variable("ENCODING"))
+            .grammars(Environment.variable("GRAMMARS").split(","))
+            .namespace(Environment.variable("PACKAGE_NAME"))
+            .language(Environment.variable("TARGET_LANGUAGE"))
+            .layout(Environment.variable("DIRECTORY_LAYOUT"))
+            .target(Environment.variable("TARGET"))
             .args(args)
             .generate();
     }
@@ -746,6 +744,40 @@ public class AntlrRules
                                 }
                             });
                     }
+                }
+                else if (Files.isDirectory(sandbox.resolve(lib)))
+                {
+                    srcjarFound = true;
+
+                    // the .srcjar can be provided either before or after the super grammar
+                    String path = libs[i > 0 ? i - 1 : i + 1];
+
+                    // remove the .srcjar from the arguments
+                    argument = argument.replace(lib, "").replaceAll("^;", "").replaceAll(";$", "");
+
+                    Path target = Paths.get(argument).getParent();
+
+                    Files.walkFileTree(sandbox.resolve(lib),
+                        new SimpleFileVisitor<Path>()
+                        {
+                            @Override
+                            public FileVisitResult visitFile(Path file,
+                                BasicFileAttributes attr) throws IOException
+                            {
+                                if (file.getFileName().toString().endsWith(".txt"))
+                                {
+                                    Path copy = target.resolve(
+                                        file.getFileName().toString());
+
+                                    if (Files.notExists(copy))
+                                    {
+                                        Files.copy(file, copy);
+                                    }
+                                }
+
+                                return CONTINUE;
+                            }
+                        });
                 }
             }
 
