@@ -6,6 +6,7 @@ load("//tools:gen_test_rules.bzl", "java_tests")
 
 java_library(
     name = "tests",
+    testonly = True,
     srcs = glob(["*.java"]),
     data = [
         "@examples//antlr2:srcs",

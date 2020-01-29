@@ -3,6 +3,7 @@ load("//tools:gen_test_rules.bzl", "java_tests")
 
 java_library(
     name = "support",
+    testonly = True,
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
