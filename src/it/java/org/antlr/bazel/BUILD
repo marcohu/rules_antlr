@@ -8,13 +8,13 @@ java_library(
         exclude = ["*Test.java"],
     ),
     javacopts = ["--release 11"],
+    resources = [
+        "//src/it/resources/META-INF/services:srcs",
+    ],
     deps = [
         "//src/main/java/org/antlr/bazel",
         "//src/test/java/org/antlr/bazel:tests",
         "@junit//jar",
-    ],
-    resources = [
-        "//src/it/resources/META-INF/services:srcs",
     ],
 )
 
