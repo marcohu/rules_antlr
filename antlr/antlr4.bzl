@@ -58,6 +58,7 @@ def _args(ctx, output_dir):
     if ctx.attr.no_visitor:
         args.add("-no-visitor")
 
+    args.add("-Xexact-output-dir")
     args.add("-o")
     args.add(output_dir)
 

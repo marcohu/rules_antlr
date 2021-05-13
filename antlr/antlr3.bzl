@@ -48,7 +48,7 @@ def _args(ctx, output_dir):
     if ctx.attr.nfa:
         args.add("-nfa")
 
-    args.add("-o")
+    args.add("-fo")
     args.add(output_dir)
 
     if ctx.attr.profile:

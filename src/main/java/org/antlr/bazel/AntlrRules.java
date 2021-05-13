@@ -376,7 +376,7 @@ public class AntlrRules
 
         for (String grammar : grammars)
         {
-            this.grammars.add(sandbox.resolve(grammar).toString());
+            this.grammars.add(grammar.toString());
         }
 
         return this;
