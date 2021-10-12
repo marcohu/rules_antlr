@@ -32,13 +32,49 @@ def antlr(version, ctx, args):
     sources = []
     headers = []
     cc = ctx.attr.language == CPP or ctx.attr.language == C or ctx.attr.language == OBJC
-    output_type = "dir" if ctx.attr.language and ctx.attr.language != "Java" else "srcjar"
+    output_type = None
+
+    if ctx.attr.language == "Java":
+        output_type = "srcjar"
+    elif ctx.attr.language == "Rust":
+        output_type = "files"
+    else:
+        output_type = "dir"
 
     if output_type == "srcjar":
         # the Java rules are special in that the output is a .jar file
         srcjar = ctx.actions.declare_file(ctx.attr.name + "." + output_type)
         output_dir = ctx.configuration.bin_dir.path + "/rules_antlr"
         outputs = [srcjar]
+    elif output_type == "files":
+        if len(ctx.files.srcs) > 1:
+            fail("Declaring files is only supported when there's a single grammar as input")
+        grammar_name = ctx.files.srcs[0].basename.replace('.g4', '')
+        crate_wrapper = ctx.actions.declare_file("lib.rs")
+        output_dir = crate_wrapper.dirname + "/" + ctx.attr.package
+        outputs = [
+            ctx.actions.declare_file("{}/{}.interp".format(ctx.attr.package, grammar_name)),
+            ctx.actions.declare_file("{}/{}Lexer.interp".format(ctx.attr.package, grammar_name)),
+            ctx.actions.declare_file("{}/{}.tokens".format(ctx.attr.package, grammar_name)),
+            ctx.actions.declare_file("{}/{}Lexer.tokens".format(ctx.attr.package, grammar_name)),
+            ctx.actions.declare_file("{}/{}lexer.rs".format(ctx.attr.package, grammar_name.lower())),
+            ctx.actions.declare_file("{}/{}listener.rs".format(ctx.attr.package, grammar_name.lower())),
+            ctx.actions.declare_file("{}/{}parser.rs".format(ctx.attr.package, grammar_name.lower())),
+            ctx.actions.declare_file("{}/{}visitor.rs".format(ctx.attr.package, grammar_name.lower()))
+        ]
+        ctx.actions.write(
+            output = crate_wrapper,
+            content = """
+#![feature(try_blocks)]
+
+extern crate antlr_rust;
+
+#[path = "{pkg}/{grammar}lexer.rs"] pub mod {grammar}lexer;
+#[path = "{pkg}/{grammar}listener.rs"] pub mod {grammar}listener;
+#[path = "{pkg}/{grammar}parser.rs"] pub mod {grammar}parser;
+#[path = "{pkg}/{grammar}visitor.rs"] pub mod {grammar}visitor;
+            """.format(pkg=ctx.attr.package, grammar=grammar_name.lower())
+        )
     else:
         # for all other languages we use directories
         sources = ctx.actions.declare_directory(ctx.attr.name + extension(ctx.attr.language))
@@ -79,6 +115,7 @@ def antlr(version, ctx, args):
         progress_message = "Processing ANTLR {} grammars".format(version),
         tools = tool_inputs,
     )
+    outputs.append(crate_wrapper)
 
     # for C/C++ we add the generated headers to the compilation context
     if cc:
