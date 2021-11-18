@@ -33,6 +33,7 @@ def antlr(version, ctx, args):
     headers = []
     cc = ctx.attr.language == CPP or ctx.attr.language == C or ctx.attr.language == OBJC
     output_type = None
+    crate_wrapper = None
 
     if ctx.attr.language == "Java":
         output_type = "srcjar"
@@ -115,7 +116,8 @@ extern crate antlr_rust;
         progress_message = "Processing ANTLR {} grammars".format(version),
         tools = tool_inputs,
     )
-    outputs.append(crate_wrapper)
+    if crate_wrapper:
+        outputs.append(crate_wrapper)
 
     # for C/C++ we add the generated headers to the compilation context
     if cc:
