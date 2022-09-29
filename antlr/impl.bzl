@@ -66,8 +66,6 @@ def antlr(version, ctx, args):
         ctx.actions.write(
             output = crate_wrapper,
             content = """
-#![feature(try_blocks)]
-
 extern crate antlr_rust;
 
 #[path = "{pkg}/{grammar}lexer.rs"] pub mod {grammar}lexer;

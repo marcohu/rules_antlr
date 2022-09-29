@@ -69,8 +69,8 @@ PACKAGES = {
     },
     "antlr4_tool": {
         "4.8.2-rust": {
-            "path": "https://github.com/rrevenantt/antlr4rust/releases/download/antlr4-4.8-2-Rust-0.2/antlr4-4.8-2-SNAPSHOT-complete.jar",
-            "sha256": "00b7690be39cf4a4afeae7a227e6d2d35ce0f70b788ab51f9af897db44084c76",
+            "path": "https://github.com/rrevenantt/antlr4rust/releases/download/antlr4-4.8-2-Rust0.3.0-beta/antlr4-4.8-2-SNAPSHOT-complete.jar",
+            "sha256": "d23d7b0006f7477243d2d85c54632baa1932a5e05588e0c2548dbe3dd69f4637",
         },
         "4.8": {
             "path": "org/antlr/antlr4/4.8/antlr4-4.8.jar",
