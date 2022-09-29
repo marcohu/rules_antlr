@@ -3,7 +3,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load(":lang.bzl", "C", "CPP", "GO", "JAVA", "OBJC", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
 
-v4 = [4, "4.7.1", "4.7.2", "4.8"]
+v4 = [4, "4.7.1", "4.7.2", "4.8", "4.8.2-rust"]
 v4_opt = [4, "4.7.1", "4.7.2", "4.7.3", "4.7.4"]
 v3 = [3, "3.5.2"]
 v2 = [2, "2.7.7"]
@@ -68,6 +68,10 @@ PACKAGES = {
         },
     },
     "antlr4_tool": {
+        "4.8.2-rust": {
+            "path": "https://github.com/rrevenantt/antlr4rust/releases/download/antlr4-4.8-2-Rust0.3.0-beta/antlr4-4.8-2-SNAPSHOT-complete.jar",
+            "sha256": "d23d7b0006f7477243d2d85c54632baa1932a5e05588e0c2548dbe3dd69f4637",
+        },
         "4.8": {
             "path": "org/antlr/antlr4/4.8/antlr4-4.8.jar",
             "sha256": "6e4477689371f237d4d8aa40642badbb209d4628ccdd81234d90f829a743bac8",
@@ -181,6 +185,8 @@ def rules_antlr_dependencies(*versionsAndLanguages):
         for version in sorted(versions, key = _toString):
             if version == 4 or version == "4.8":
                 _antlr48_dependencies(languages)
+            elif version == "4.8.2-rust":
+                _antlr482_rust_dependencies(languages)
             elif version == "4.7.2":
                 _antlr472_dependencies(languages)
             elif version == "4.7.1":
@@ -216,6 +222,19 @@ def rules_antlr_optimized_dependencies(version):
         fail('Integer version \'{}\' no longer valid. Use semantic version "{}" instead.'.format(version, ".".join(str(version).elems())), attr = "version")
     else:
         fail('Unsupported ANTLR version provided: "{0}". Currently supported are: {1}'.format(version, v4_opt), attr = "version")
+
+def _antlr482_rust_dependencies(languages):
+    _antlr4_dependencies(
+        "4.8",
+        languages,
+        {
+            "antlr4_runtime": "4.8",
+            "antlr4_tool": "4.8.2-rust",
+            "antlr3_runtime": "3.5.2",
+            "stringtemplate4": "4.3",
+            "javax_json": "1.0.4",
+        },
+    )
 
 def _antlr48_dependencies(languages):
     _antlr4_dependencies(

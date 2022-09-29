@@ -4,3 +4,4 @@ bazel-*/
 .project
 .settings/
 /bin/
+.ijwb

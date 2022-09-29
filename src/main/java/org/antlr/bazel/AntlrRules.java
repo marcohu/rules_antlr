@@ -290,6 +290,10 @@ public class AntlrRules
 
                                 break;
                             }
+                            case RUST:
+                            {
+                                break;
+                            }
                         }
 
                         // source files should be stored below their corresponding

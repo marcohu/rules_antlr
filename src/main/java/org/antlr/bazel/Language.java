@@ -370,6 +370,36 @@ enum Language
         {
             return layout;
         }
+    },
+    RUST
+    {
+        @Override
+        public String toPath(String namespace)
+        {
+            return null;
+        }
+
+
+        @Override
+        public String toId(Path path)
+        {
+            return null;
+        }
+
+
+        @Override
+        public Namespace detectNamespace(String grammar)
+        {
+            return null;
+        }
+
+
+        @Override
+        public DirectoryLayout getLayout()
+        {
+            return new DirectoryLayout("flat");
+        }
+
     };
 
     private static final Pattern OPTIONS = Pattern.compile("options\\s*\\{.*?\\}",
@@ -522,6 +552,10 @@ enum Language
             case "Swift" :
             {
                 return SWIFT;
+            }
+            case "Rust" :
+            {
+                return RUST;
             }
 
             default :
