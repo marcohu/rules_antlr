@@ -3,13 +3,18 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load(":lang.bzl", "C", "CPP", "GO", "JAVA", "OBJC", "PYTHON", "PYTHON2", "PYTHON3", supportedLanguages = "supported")
 
-v4 = [4, "4.7.1", "4.7.2", "4.8", "4.9.3"]
+v4 = [4, "4.7.1", "4.7.2", "4.8", "4.9.3", "4.13.1"]
 v4_opt = [4, "4.7.1", "4.7.2", "4.7.3", "4.7.4"]
 v3 = [3, "3.5.2"]
 v2 = [2, "2.7.7"]
 
 PACKAGES = {
     "antlr": {
+        "4.13.1": {
+            "url": "https://github.com/antlr/antlr4/archive/4.13.1.tar.gz",
+            "prefix": "antlr4-4.13.1",
+            "sha256": "da20d487524d7f0a8b13f73a8dc326de7fc2e5775f5a49693c0a4e59c6b1410c",
+        },
         "4.9.3": {
             "url": "https://github.com/antlr/antlr4/archive/4.9.3.tar.gz",
             "prefix": "antlr4-4.9.3",
@@ -43,6 +48,10 @@ PACKAGES = {
         },
     },
     "antlr4_runtime": {
+        "4.13.1": {
+            "path": "org/antlr/antlr4-runtime/4.13.1/antlr4-runtime-4.13.1.jar",
+            "sha256": "54665d2838cc66458343468efc539e454fc95b46a8a04b13c6ac43fc9be63505",
+        },
         "4.9.3": {
             "path": "org/antlr/antlr4-runtime/4.9.3/antlr4-runtime-4.9.3.jar",
             "sha256": "131a6594969bc4f321d652ea2a33bc0e378ca312685ef87791b2c60b29d01ea5",
@@ -77,6 +86,10 @@ PACKAGES = {
         },
     },
     "antlr4_tool": {
+        "4.13.1": {
+            "path": "org/antlr/antlr4/4.13.1/antlr4-4.13.1.jar",
+            "sha256": "ce261dce69525839aa9fc5bd232ce1b813a7a40a75030713cc4a80ef8170f3d5",
+        },
         "4.9.3": {
             "path": "org/antlr/antlr4/4.9.3/antlr4-4.9.3.jar",
             "sha256": "386fec520b8962fe37f448af383920ea33d7a532314b36d7ba9ccec1ba95eb37",
@@ -192,7 +205,9 @@ def rules_antlr_dependencies(*versionsAndLanguages):
             languages = [JAVA]
 
         for version in sorted(versions, key = _toString):
-            if version == 4 or version == "4.9.3":
+            if version == 4 or version == "4.13.1":
+                _antlr4131_dependencies(languages)
+            elif version == "4.9.3":
                 _antlr493_dependencies(languages)
             elif version == "4.8":
                 _antlr48_dependencies(languages)
@@ -239,6 +254,18 @@ def _antlr493_dependencies(languages):
         {
             "antlr4_runtime": "4.9.3",
             "antlr4_tool": "4.9.3",
+            "antlr3_runtime": "3.5.2",
+            "stringtemplate4": "4.3",
+            "javax_json": "1.0.4",
+        },
+    )
+def _antlr4131_dependencies(languages):
+    _antlr4_dependencies(
+        "4.13.1",
+        languages,
+        {
+            "antlr4_runtime": "4.13.1",
+            "antlr4_tool": "4.13.1",
             "antlr3_runtime": "3.5.2",
             "stringtemplate4": "4.3",
             "javax_json": "1.0.4",
